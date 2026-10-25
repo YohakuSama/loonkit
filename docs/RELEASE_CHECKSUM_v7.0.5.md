@@ -1,0 +1,3 @@
+# v7.0.5 profile SHA256
+
+90e8df088d899ff00dd3033d2a644372ae3052cf84ea4a0d476550c15ab22b8c  LoonKit.lcf

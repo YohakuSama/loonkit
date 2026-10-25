@@ -36,7 +36,9 @@ jobs:
           cd "$RUNNER_TEMP/loonkit-upgrade"
           git checkout --detach "$GITHUB_SHA"
           git -c user.name="Release CI" -c user.email="ci@example.invalid" status --porcelain
-          for version in v7.0.5 v7.0.6; do
+          current="$(python3 -c "import json; print(json.load(open('build/release_spec.json'))['stable_release_version'])")"
+          for delta in 1 2; do
+            version="$(python3 -c 'import sys; s=sys.argv[1].split("."); s[-1]=str(int(s[-1])+int(sys.argv[2])); print(".".join(s))' "$current" "$delta")"
             python3 scripts/release_engine.py --start-next "$version"
             python3 scripts/release_engine.py --check
             python3 scripts/verify_release.py --check
