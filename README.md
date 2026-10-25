@@ -8,7 +8,7 @@
 
 [![Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml)
 
-[**获取配置**](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf) · [功能概览](#功能概览) · [快速开始](#快速开始) · [问题反馈](https://github.com/YohakuSama/loonkit/issues)
+[**获取稳定性排障配置**](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf) · [功能概览](#功能概览) · [快速开始](#快速开始) · [问题反馈](https://github.com/YohakuSama/loonkit/issues)
 
 </div>
 
@@ -16,9 +16,15 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 当前版本：**v6.5.8**。
 
+## VPN 反复断开 / 自动重连排查
+
+如果 Loon 导入本项目配置后出现 VPN 自动关闭并重新连接，可先使用 **[Safe Routing 配置](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** 进行稳定性对比测试（[查看文件](./LoonKit.Safe.lcf)）。此版本用普通域名/IP 匹配规则替换了 `Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal` 六个高密度复合规则集。保留原始 v6.5.8 正式配置不变。
+
+**注意**：这是待实机验证的应急配置，不保证重连一定由复合规则引起；地区分流改为静态域名判断，Apple OTA 始终直连，行为与原版不完全相同。详见 [适用范围、差异及测试方法](./docs/SAFE_ROUTING.md)。
+
 ## 快速开始
 
-**[下载 / 导入 LoonKit.lcf](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)** · [查看配置](./LoonKit.lcf)
+**[安全分流排障配置 LoonKit.Safe.lcf](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** · [原始 v6.5.8 配置](./LoonKit.lcf)
 
 1. 在 Loon 中导入配置。
 2. 添加自己的节点或订阅，在 `Proxy` 中选择线路。
