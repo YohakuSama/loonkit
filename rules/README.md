@@ -6,11 +6,11 @@
 
 - 明确的本地 AI 主机优先。
 - 广告资源处理拦截与隐私端点。
-- Apple、Microsoft、Paypal、Bilibili、AppleOTA 使用普通 DOMAIN / DOMAIN-SUFFIX 规则；同域名 GeoIP 自动切分暂时不再支持。
+- Apple、Microsoft、Paypal、Bilibili、AppleOTA 使用普通 DOMAIN / DOMAIN-SUFFIX 规则；按服务策略处理对应域名。
 - 其余请求按国内服务、AI、流媒体、社交和共享基础设施规则分流。
 - GEOIP,CN,DIRECT,no-resolve 与 Final 处理剩余请求。
 
-旧版地区规则以 AND+GEOIP 嵌套判断；用户实测命中后触发 VPN 重启。现役版移除复合 GEOIP，删除与本地 GEOIP,CN,DIRECT,no-resolve 冗余的 RegionalCN 远程订阅；普通服务域名按服务策略组路由，不再等价保留 CN/海外同域名自动切分。
+现役配置使用普通域名规则，并移除了与本地 GEOIP,CN,DIRECT,no-resolve 重复的 RegionalCN 远程订阅。
 
 ## 来源与生成
 

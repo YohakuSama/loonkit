@@ -805,7 +805,7 @@
   "stage": "FORMAL_RELEASE",
   "old_main_rollback_commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
-  "approved_runtime_directives_sha256": "2a63eb7a2a350015e5717ef5e8aa26b376ec9875b8e8ce99c5dfc18cec15922d",
+  "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
     "version": "v6.5.10",
     "profile_sha256": "dad4a801d387ef9d41e0db53b62b74de2848da24520dd08f90b15a824c83f111",
