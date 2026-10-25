@@ -1,6 +1,0 @@
-# LoonKit v6.5.5-beta.4 immutable beta overlay; generated from rules/beta/policy_overrides.json
-DOMAIN,api.statsig.com
-DOMAIN,client-api.arkoselabs.com
-DOMAIN-SUFFIX,featuregates.org
-DOMAIN-SUFFIX,host.livekit.cloud
-DOMAIN-SUFFIX,turn.livekit.cloud

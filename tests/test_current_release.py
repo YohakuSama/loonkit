@@ -9,8 +9,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from release_engine import check, render
-from audit_upstream_703 import owner
-from audit_v702 import lines
+from route_diagnostics import Router
 
 LOCAL_TRAE = ("DOMAIN,trae-api-sg.mchost.guru,AI", "DOMAIN,trae-api-us.mchost.guru,AI")
 DIRECT_GROUPS = ("Apple", "Microsoft", "Bilibili", "Speedtest", "Line")
@@ -21,6 +20,7 @@ class CurrentRoutingTests(unittest.TestCase):
     def setUpClass(cls):
         cls.current = (ROOT / "LoonKit.lcf").read_bytes()
         cls.manifest = json.loads((ROOT / "build/release_manifest.json").read_text())
+        cls.router = Router()
 
     def test_exact_reviewed_runtime_diff(self):
         self.assertEqual(self.current, render(ROOT))
@@ -31,16 +31,14 @@ class CurrentRoutingTests(unittest.TestCase):
                 self.assertIn(group + " = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,", group_section)
 
     def test_trae_routing_not_taken_by_tiktok_or_cn(self):
-        rows = self.manifest["runtime_resources"]
-        remote = {row["path"]: lines((ROOT / row["path"]).read_bytes()) for row in rows}
         local = [x.strip() for x in self.current.decode().split("[Rule]\n", 1)[1].split("\n[", 1)[0].splitlines() if x.strip()]
         for line in LOCAL_TRAE:
             if line in local:
-                self.assertEqual(owner(line.split(",")[1], remote, rows, local), "AI")
+                self.assertEqual(self.router.match(line.split(",")[1])["predicted_policy"], "AI")
         if any("trae.ai" in line for line in local):
-            self.assertEqual(owner("trae.ai", remote, rows, local), "AI")
-        self.assertEqual(owner("tiktok.com", remote, rows, local), "TikTok")
-        self.assertEqual(owner("raw.githubusercontent.com", remote, rows, local), "Proxy")
+            self.assertEqual(self.router.match("trae.ai")["predicted_policy"], "AI")
+        self.assertEqual(self.router.match("tiktok.com")["predicted_policy"], "TikTok")
+        self.assertEqual(self.router.match("raw.githubusercontent.com")["predicted_policy"], "Proxy")
         for line in LOCAL_TRAE:
             self.assertLessEqual(local.count(line), 1)
 

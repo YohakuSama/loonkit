@@ -1,0 +1,45 @@
+name: LoonKit Maintenance CI
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 3 * * 1'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rules/**'
+      - 'build/**'
+      - 'beta/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/**'
+permissions:
+  contents: read
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify current publication, beta and retained evidence
+        run: |
+          python3 scripts/source_lock.py --check
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/beta_assets.py --check
+          python3 scripts/beta_domestic_rules.py --check
+          python3 scripts/beta_policy_review.py --check
+          python3 scripts/beta_channel.py --remote
+          python3 scripts/beta_cleanup.py --verify-archives
+          python3 scripts/license_evidence.py --check
+      - name: Production and beta regression suite
+        run: python3 scripts/test_suites.py all
+      - name: Audit potential lossless rule reduction (read-only)
+        run: python3 scripts/optimize_runtime_rules.py --audit
+      - name: Ensure validators never rewrite published files
+        run: |
+          git diff --exit-code
+          test -z "$(git status --porcelain)"

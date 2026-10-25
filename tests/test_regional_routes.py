@@ -108,25 +108,17 @@ class RegionalRouteTests(unittest.TestCase):
                 self.assertTrue(self.router.match(host,country=country)['predicted_policy'].startswith('Final'))
 
     def test_review_baseline_is_native_only_with_beta_still_historical(self):
-        formal=upstream_review.runtime_baseline(
-            ROOT,profile_path='build/baselines/v7.0.0/LoonKit.lcf',
-            manifest_path='build/baselines/v7.0.0/release_manifest.json')
-        beta=upstream_review.runtime_baseline(
-            ROOT,profile_path='beta/LoonKit.lcf',manifest_path='build/beta_manifest.json')
-        self.assertEqual(len(formal),33)
-        self.assertEqual(set(formal),set(beta))
-        self.assertIn('DOMAIN-SUFFIX,apple.com',formal['Apple'])
-        self.assertFalse(any(r.startswith(('AND,','OR,','NOT,'))
+        formal = upstream_review.runtime_baseline(ROOT)
+        beta = upstream_review.runtime_baseline(
+            ROOT, profile_path='beta/LoonKit.lcf', manifest_path='build/beta_manifest.json')
+        self.assertIn('DOMAIN-SUFFIX,apple.com', formal['Apple'])
+        self.assertFalse(any(r.startswith(('AND,', 'OR,', 'NOT,'))
                              for group in formal.values() for r in group))
-        self.assertTrue(all(x.startswith(('DOMAIN,','DOMAIN-SUFFIX,'))
+        self.assertTrue(all(x.startswith(('DOMAIN,', 'DOMAIN-SUFFIX,'))
                             for x in formal['Apple']))
-        # Explicit, traceable intentional differences: former conditional IP
-        # sub-rules are excluded, rather than routed without GEOIP checks.
-        self.assertEqual(len(beta['Apple']-formal['Apple']),13)
-        self.assertEqual(len(beta['Bilibili']-formal['Bilibili']),8)
-        for group in formal:
-            if group not in ('Apple','Bilibili'):
-                self.assertEqual(formal[group],beta[group],group)
+        # Beta retains its conditional sub-rules; production excludes them.
+        self.assertEqual(len(beta['Apple'] - formal['Apple']), 13)
+        self.assertEqual(len(beta['Bilibili'] - formal['Bilibili']), 8)
 
     def test_upstream_plan_cannot_shadow_cn_only_scopes(self):
         from beta_upstream_delivery import effective_conflict

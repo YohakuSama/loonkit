@@ -1,7 +1,7 @@
 name: LoonKit Production CI
 on:
   push:
-    branches: [main, refactor/v701-unified-routing-candidate]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:

@@ -1,8 +1,0 @@
-# Cloudflare policy — Loon native DOMAIN / DOMAIN-SUFFIX rules
-DOMAIN-SUFFIX,cloudflare-dns.com
-DOMAIN-SUFFIX,cloudflare.com
-DOMAIN-SUFFIX,cloudflareaccess.com
-DOMAIN-SUFFIX,cloudflareclient.com
-DOMAIN-SUFFIX,cloudflarestatus.com
-DOMAIN-SUFFIX,cloudflarewarp.com
-DOMAIN-SUFFIX,one.one.one

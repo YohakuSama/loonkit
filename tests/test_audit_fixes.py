@@ -12,7 +12,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import beta_channel
 import beta_cleanup
-import reviewed_release
 from route_diagnostics import Router
 
 
@@ -63,46 +62,19 @@ class AuditFixTests(unittest.TestCase):
             self.assertEqual(self.owner(host),'AdBlock',host)
 
     def test_protected_general_and_geoip_are_byte_identical(self):
-        old = (ROOT/'build/baselines/v6.5.6/LoonKit.lcf').read_text()
-        new = (ROOT/'LoonKit.lcf').read_text()
-        for name in ['General','Rule','Plugin','Remote Filter']:
-            clean=lambda text:[x for x in beta_channel.section(text,name).splitlines() if x.strip() and not x.lstrip().startswith('#')]
-            old_lines, new_lines = clean(old), clean(new)
-            if name == 'General':
-                # v6.5.10 intentionally changes only node latency probe URL.
-                # Keep all other DNS, TUN and connectivity directives identical.
-                self.assertEqual([l for l in old_lines if not l.startswith('proxy-test-url = ')],
-                                 [l for l in new_lines if not l.startswith('proxy-test-url = ')])
-                self.assertIn('proxy-test-url = http://www.bing.com', new_lines)
-            elif name == 'Rule':
-                # Gemini and GitHub Copilot have reviewed, service-specific local overrides.
-                self.assertEqual(
-                    old_lines,
-                    [l.replace('DOMAIN,gemini.google.com,Gemini','DOMAIN,gemini.google.com,AI')
-                      .replace('DOMAIN,aistudio.google.com,Gemini','DOMAIN,aistudio.google.com,AI')
-                     for l in new_lines if l not in {
-                       'DOMAIN,copilot-proxy.githubusercontent.com,AI',
-                       'DOMAIN,copilot-telemetry-service.githubusercontent.com,AI',
-                       'DOMAIN,copilot-telemetry.githubusercontent.com,AI',
-                       'DOMAIN,copilot-workspace.githubnext.com,AI',
-                       'DOMAIN,trae-api-sg.mchost.guru,AI',
-                       'DOMAIN,trae-api-us.mchost.guru,AI',
-                     }],
-                    name)
-                self.assertEqual(sum(x == 'GEOIP,CN,DIRECT,no-resolve' for x in new_lines),1)
-                self.assertEqual(new_lines[-1], 'FINAL,Final')
-            elif name == 'Plugin':
-                spec=json.loads((ROOT/'build/release_spec.json').read_text())
-                manifest=json.loads((ROOT/'build/release_manifest.json').read_text())
-                plugin_path=manifest['plugin_path']
-                self.assertTrue(plugin_path.startswith('release/'))
-                self.assertTrue((ROOT/plugin_path).is_file())
-                expected=('https://raw.githubusercontent.com/YohakuSama/loonkit/'
-                          +spec['plugin_assets_commit']+'/'+plugin_path+', enabled=true')
-                self.assertEqual(new_lines,[expected])
-                self.assertEqual(len(old_lines),1)
-            else:
-                self.assertEqual(old_lines, new_lines, name)
+        recipe = json.loads((ROOT / 'build/release_recipe.json').read_text())
+        old = (ROOT / recipe['base']['path']).read_text()
+        new = (ROOT / 'LoonKit.lcf').read_text()
+        for name in ['General', 'Rule', 'Remote Filter']:
+            clean = lambda text: [x for x in beta_channel.section(text, name).splitlines()
+                                  if x.strip() and not x.lstrip().startswith('#')]
+            self.assertEqual(clean(old), clean(new), name)
+        spec = json.loads((ROOT / 'build/release_spec.json').read_text())
+        manifest = json.loads((ROOT / 'build/release_manifest.json').read_text())
+        expected = ('https://raw.githubusercontent.com/YohakuSama/loonkit/'
+                    + spec['plugin_assets_commit'] + '/' + manifest['plugin_path']
+                    + ', enabled=true')
+        self.assertEqual(beta_channel.section(new, 'Plugin').strip(), expected)
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)
         self.assertIn('dns-reject-mode = LOOPBACKIP',new)
 

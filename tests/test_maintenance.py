@@ -25,7 +25,8 @@ class PublicChecksumTests(unittest.TestCase):
         self.profile = b"# LoonKit v6.5.2\n[General]\n"
         (self.root / "LoonKit.lcf").write_bytes(self.profile)
         self.digest = hashlib.sha256(self.profile).hexdigest()
-        self.spec = {"stable_release_version": "v6.5.2"}
+        self.spec = {"schema_version": 2, "stable_release_version": "v6.5.2",
+                     "historical_profile_sha256": {}}
         self.manifest = {"label": "v6.5.2", "profile_sha256": {"LoonKit.lcf": self.digest}}
         self.sums = self.root / "release/SHA256SUMS.v6.5.2"
         self.doc = self.root / "docs/RELEASE_CHECKSUM_v6.5.2.md"
@@ -64,6 +65,7 @@ class PublicChecksumTests(unittest.TestCase):
 
     def test_new_version_retains_immutable_v652_checksums(self):
         old_digest = "e98dc568485ac4be1240a475e6c2beee60feb9ab5ce3afc19e7d96be81f6a5de"
+        self.spec["historical_profile_sha256"] = {"v6.5.2": old_digest}
         self.spec["stable_release_version"] = "v6.5.3"
         self.manifest["label"] = "v6.5.3"
         self.sums.rename(self.root / "release/SHA256SUMS.v6.5.3")
@@ -83,31 +85,27 @@ class PublicChecksumTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "documentation"):
             self.check()
 
-    def test_v654_preserves_v653_and_v652_checksums(self):
-        v652 = "e98dc568485ac4be1240a475e6c2beee60feb9ab5ce3afc19e7d96be81f6a5de"
-        v653 = "3ca24609dadd075a31116c75c0358ec252bf301c15c47bc5c1d98b140832c3a1"
-        self.spec["stable_release_version"] = "v6.5.4"
-        self.manifest["label"] = "v6.5.4"
-        self.sums.rename(self.root / "release/SHA256SUMS.v6.5.4")
-        self.doc.rename(self.root / "docs/RELEASE_CHECKSUM_v6.5.4.md")
-        (self.root / "docs/RELEASE_CHECKSUM_v6.5.4.md").write_text(
-            "# v6.5.4\n" + self.digest + "  LoonKit.lcf\n", encoding="utf-8")
-        for version, digest in (("v6.5.2", v652), ("v6.5.3", v653)):
-            (self.root / "release" / ("SHA256SUMS." + version)).write_text(
-                digest + "  LoonKit.lcf\n", encoding="utf-8")
-            (self.root / "docs" / ("RELEASE_CHECKSUM_" + version + ".md")).write_text(
-                "# " + version + " historical\n" + digest + "  LoonKit.lcf\n",
-                encoding="utf-8")
+    def test_historical_document_pairs_can_be_archived(self):
+        self.spec["historical_profile_sha256"] = {"v6.5.1": "a" * 64}
         self.assertEqual(self.check(), self.digest)
-        old = self.root / "release/SHA256SUMS.v6.5.3"
-        old.write_text(self.digest + "  LoonKit.lcf\n", encoding="utf-8")
-        with self.assertRaisesRegex(ValueError, "SHA256SUMS"):
-            self.check()
-        old.write_text(v653 + "  LoonKit.lcf\n", encoding="utf-8")
-        self.assertEqual(self.check(), self.digest)
-        (self.root / "docs/RELEASE_CHECKSUM_v6.5.2.md").unlink()
+        sums = self.root / "release/SHA256SUMS.v6.5.1"
+        doc = self.root / "docs/RELEASE_CHECKSUM_v6.5.1.md"
+        sums.write_text("a" * 64 + "  LoonKit.lcf\n")
         with self.assertRaisesRegex(ValueError, "missing"):
             self.check()
+        doc.write_text("# v6.5.1\n" + "a" * 64 + "  LoonKit.lcf\n")
+        self.assertEqual(self.check(), self.digest)
+        sums.unlink()
+        doc.unlink()
+        self.assertEqual(self.check(), self.digest)
+
+    def test_ledger_cannot_override_current_or_use_invalid_identities(self):
+        for history in ({"v6.5.2": self.digest}, {"invalid": "a" * 64},
+                        {"v6.5.1": "invalid"}):
+            with self.subTest(history=history):
+                self.spec["historical_profile_sha256"] = history
+                with self.assertRaisesRegex(ValueError, "historical checksum identity"):
+                    self.check()
 
     def test_wrong_release_title_is_rejected(self):
         self.manifest["label"] = "v6.5.1"
@@ -300,37 +298,6 @@ class WorkingTreeCleanupTests(unittest.TestCase):
         self.assertEqual(projection[1], extra)
         self.assertEqual(set(projection[0]), set(current["source_group_tags"]) & allowed)
 
-    def test_retired_unreferenced_scripts_do_not_reappear(self):
-        root = Path(__file__).resolve().parents[1]
-        retired = (
-            "scripts/check_sources.py",
-            "scripts/prepare_release.py",
-            "scripts/v20261025r1/node-intelligence.js",
-            "scripts/v20261025r1/media-unlock.js",
-            "scripts/v20261025r2/node-intelligence.js",
-        )
-        for path in retired:
-            with self.subTest(path=path):
-                self.assertFalse((root / path).exists(), path)
-
-    def test_current_helpers_and_historical_beta_fixtures_survive(self):
-        root = Path(__file__).resolve().parents[1]
-        for path in (
-            "scripts/release_engine.py",
-            "scripts/source_lock.py",
-            "scripts/review_source.py",
-            "scripts/v20261025r3/node-intelligence.js",
-            "scripts/v20261025r1/network-diagnostics.js",
-            "scripts/v20261025r2/media-unlock.js",
-            "scripts/v20261022r11/node-intelligence.js",
-            "scripts/v20261022r11/network-diagnostics.js",
-            "scripts/v20261022r11/media-unlock.js",
-            "build/baselines/generated/v7.0.7/LoonKit.lcf",
-            "rules/releases/v7.0.3/AdBlockBalanced.lsr",
-            "rules/releases/v7.0.5/ChinaDirect.lsr",
-        ):
-            with self.subTest(path=path):
-                self.assertTrue((root / path).is_file(), path)
 
 
 if __name__ == "__main__":

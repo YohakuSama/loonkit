@@ -1,6 +1,5 @@
 {
   "schema_version": 2,
-  "rc_label": "vNext-RC2",
   "stable_release_version": "v7.0.9",
   "status": "FORMAL_RELEASE",
   "release_rules_dir": "rules/releases/v7.0.3",
@@ -16,17 +15,9 @@
   "optional_service_plugin_commit": null,
   "unified_service_diagnostics_script_commit": "51918fda81d85545d0bc4e8453042f7c2f761de0",
   "node_script_commit": "51918fda81d85545d0bc4e8453042f7c2f761de0",
-  "promoted_candidate_version": "v6.5.5-beta.4",
-  "promoted_candidate_commit": "adc567168eed8e21dc8d80aebc40b85f35fc1a1b",
-  "promoted_overlay_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
-  "promoted_beta_config_sha256": "fd1a01c6f8363a5dffaa1db9dbf044014c711fa48ea46e34a7c107180acbe0b7",
-  "approved_runtime_directives_sha256": "16c7ae59c51dc46ed92af8cb38d9aa2635062a0b1bbb5aa5ab21659600f539a9",
-  "baseline_template_path": "build/baselines/v6.5.4/LoonKit.lcf",
-  "baseline_manifest_path": "build/baselines/v6.5.4/release_manifest.json",
   "current_runtime_directives_sha256": "472273e3651e1cdc6601cb9d78e82a5e635a59cdcf0a031d05004f6706a66b6b",
   "previous_formal_profile_sha256": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3",
   "previous_formal_profile_path": "build/baselines/generated/v7.0.8/LoonKit.lcf",
-  "previous_formal_manifest_path": "build/baselines/generated/v7.0.7/release_manifest.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
   "historical_profile_sha256": {
     "v6.5.6": "d75c37a9dc0dcb8a109c1cdaa0cae647a95b7f70dcf22ec94a5e1ac179528b11",
@@ -46,9 +37,5 @@
     "v7.0.7": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0",
     "v7.0.8": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3"
   },
-  "native_rules_release_commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
-  "native_rules_release_path": "rules/releases/v6.5.9/",
-  "removed_redundant_remote": "Our-RegionalCN",
-  "service_geoip_composite_removed": true,
   "release_engine": "generic"
 }

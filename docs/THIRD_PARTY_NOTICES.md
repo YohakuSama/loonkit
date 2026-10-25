@@ -44,7 +44,7 @@ LoonKit 现役规则资源的 SHA256、固定提交、对应策略组及实际�
 
 发现遗漏署名、许可信息不准确或素材权利问题，请通过 [Issues](https://github.com/YohakuSama/loonkit/issues) 提供相应资源路径和参考来源。
 
-[返回首页](../README.md) · [发布检查](./RELEASE_READINESS.md)
+[返回首页](../README.md) · [发布检查](./CHANGELOG.md)
 
 ## v6.5.5 候选的第三方依赖
 

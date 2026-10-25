@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run active checks on every change; full historical/beta checks separately."""
+"""Run production checks on every change; include beta with the full suite."""
 from __future__ import annotations
 import argparse
 from pathlib import Path
@@ -8,20 +8,12 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS = ROOT / "tests"
-HISTORICAL = frozenset((
-    "test_native_only_loom_trial.py", "test_release_promoted.py",
-    "test_release_promotion_gate.py", "test_routing_candidate.py",
-    "test_v702_candidate.py", "test_v703_formal.py",
-))
-
-
 def run(mode: str) -> bool:
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     selected = []
     for path in sorted(TESTS.glob("test_*.py")):
-        if mode == "current" and (path.name.startswith("test_beta_") or
-                                   path.name in HISTORICAL):
+        if mode == "current" and path.name.startswith("test_beta_"):
             continue
         suite.addTests(loader.discover(str(TESTS), pattern=path.name))
         selected.append(path.name)
