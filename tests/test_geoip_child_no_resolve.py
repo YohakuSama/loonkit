@@ -1,6 +1,8 @@
 """No-resolve-only six-subscription test: never modify published v6.5.8 or DNS."""
 from pathlib import Path
 import re
+import subprocess
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,6 +44,16 @@ class TestNoResolveGeoIPChildren(unittest.TestCase):
     def setUpClass(cls):
         cls.original = config("LoonKit.lcf")
         cls.candidate = config("LoonKit.GeoIPNoResolve.lcf")
+
+    def test_experimental_source_builder_is_reproducible(self):
+        check = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/build_geoip_no_resolve_trial.py"),
+             "--check"],
+            cwd=ROOT, capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
+        self.assertIn("6 non-production no-resolve experiment assets",
+                      check.stdout)
 
     def test_six_original_matchers_preserved_and_only_geoip_flag_added(self):
         total = 0
