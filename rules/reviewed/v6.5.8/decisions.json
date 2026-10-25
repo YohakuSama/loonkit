@@ -275,7 +275,8 @@
         "DOMAIN-SUFFIX,vz.download.prss.microsoft.com",
         "DOMAIN-SUFFIX,windbg.download.prss.microsoft.com",
         "DOMAIN-SUFFIX,windowsupdate.microsoft.com",
-        "DOMAIN-SUFFIX,yfcdn.net"
+        "DOMAIN-SUFFIX,yfcdn.net",
+        "DOMAIN-SUFFIX,servicewechat.com"
       ],
       "regional": false
     }
