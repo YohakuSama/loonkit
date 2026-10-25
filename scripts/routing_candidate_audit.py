@@ -38,7 +38,10 @@ def section(data: str, name: str) -> str:
 
 def audit() -> dict:
     manifest = json.loads(CANDIDATE.read_text(encoding="utf-8"))
-    old = (ROOT / "LoonKit.lcf").read_text(encoding="utf-8")
+    baseline = (ROOT / manifest["baseline_profile"]).read_bytes()
+    if sha256(baseline) != manifest["baseline_profile_sha256"]:
+        raise ValueError("immutable base profile changed")
+    old = baseline.decode("utf-8")
     candidate = (ROOT / manifest["preview_profile"]).read_text(encoding="utf-8")
     original = manifest["baseline_resources"]
     newer = manifest["candidate_resources"]

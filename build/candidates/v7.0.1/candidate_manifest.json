@@ -731,5 +731,7 @@
       "sha256": "842c6ada846c126938746fab2352a2a9d968671afb914f94e56dc154d053dd4b",
       "matcher_count": 114709
     }
-  ]
+  ],
+  "baseline_profile": "build/candidates/v7.0.1/baseline_v7.0.0.lcf",
+  "baseline_profile_sha256": "a5c0fb40987bf8079ed84167702593d5dd8ce631a03e3df704be09e3578d87b0"
 }
