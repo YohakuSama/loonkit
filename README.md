@@ -24,7 +24,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 2. 添加自己的节点或订阅，在 `Proxy` 中选择线路。
 3. 刷新远程规则和插件，按需调整各服务策略。Apple、Microsoft、Bilibili、Line、Speedtest 默认直连，必要时可切换代理。
 
-节点测速使用 `http://www.bing.com`；互联网连接检测与网络诊断保持原有设置。
+节点测速（全局、Auto、Fallback）统一使用 `http://www.bing.com`；独立的直连互联网检测仍使用原有 204 地址。
 
 ## 功能概览
 
@@ -47,7 +47,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 | `AdBlock` | 切换广告拦截与放行。 |
 | `Final` | 处理未命中其他规则的请求。 |
 
-43 份 `.lsr` 远程规则按国内直连、AI、Google/YouTube、GitHub、流媒体及社交服务分类；40 张 PNG 图标集中于 `icons/`。
+43 份 `.lsr` 远程规则按国内直连、AI、Google/YouTube、GitHub、流媒体及社交服务分类；40 张 PNG 图标集中于 `icons/`。Auto、Fallback 初始均覆盖全部节点，建议导入个人订阅后分别在 Loon 的筛选节点页面配置候选池与主备顺序。
 
 [节点选择](./docs/NODE_SELECTION.md) · [DNS 设置](./docs/DNS_PRIVACY.md) · [Loon App 设置](./docs/LOON_APP_SETTINGS.md)
 
@@ -56,7 +56,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 - **节点信息**：查看入口、代理出口 IP、地区和运营商。
 - **网络检测**：检查直连、代理和 DNS。
 - **解锁检测**：检测 DAZN、Discovery+、Paramount+、Disney+、Netflix、ChatGPT 和 YouTube Premium。
-- **网络切换提醒**：可在插件设置中开启。
+
 
 [使用说明](./docs/NETWORK_DIAGNOSTICS.md) · [分流排查](./docs/ROUTE_DIAGNOSTICS.md)
 
