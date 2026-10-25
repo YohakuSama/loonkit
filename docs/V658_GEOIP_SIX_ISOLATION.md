@@ -1,5 +1,17 @@
 # 六份 GEOIP 复合规则导致 VPN 重启：单变量定位（v6.5.8）
 
+## 最新进展：在已稳定的 456 条基础上，Apple 与 Microsoft 均触发重启
+
+用户复测：单独启用 AppleOTA、AppleOTA+Bilibili、AppleOTA+Bilibili+PayPal 均**没有 VPN 重启**（但都有 DNS 泄漏）。基于第三档（456 条），添加 **Microsoft 的 645 条**之后出现重启；**不加入 Microsoft 而改为增加 Apple 的 1,574 条**，也出现重启。
+
+因此 Apple 与 Microsoft 现在都属于**组合触发重点嫌疑**，但不能据此认定任一订阅单独运行也会造成重启。加上此前 Group A（RegionalCN+AppleOTA+Bilibili）同样重启，RegionalCN 也是待隔离候选。
+
+**下一档不再添加 Apple 或 Microsoft**，而是从已稳定的 AppleOTA+Bilibili+PayPal 基线上仅加入 RegionalCN（2,553 条），合计 **3,009 条**：
+[AppleOTA_Bilibili_Paypal_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_RegionalCN.lcf)。这份保持原始 v6.5.8 DNS、DoH、TUN、GEOIP/FINAL、其他 31 个订阅和原版规则内容完全不变。若 VPN 再次重启，**不要继续添加任何目标规则**，下一步用 OnlyRegionalCN（或部分规则子集）缩小范围；如意外稳定，则说明重启取决于不同基线中的组合关系。
+
+**注意**：Group A、Group B 和两个失败的“456+单份”都可能存在多个触发条件；目前还不能简单推断规则数量阈值或某条逻辑规则是唯一根因。DNS 泄漏独立未通过，增减服务规则并不能直接消除 DNS 查询；不要把不重启误判为无泄漏。
+
+
 ## 2026-10-25 最新实机结论：Microsoft 加入后复现重启
 
 | 六份可疑订阅的加载组合 | 复合规则数 | VPN | DNS 泄漏 |
@@ -71,6 +83,7 @@ FINAL,Final
 | [OnlyBilibili.lcf](../diagnostics/v6.5.8-geoip-six/OnlyBilibili.lcf) | Bilibili | 32 |
 | [OnlyMicrosoft.lcf](../diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf) | Microsoft | 32 |
 | [AppleOTA_Bilibili_Paypal_Apple.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple.lcf) | AppleOTA、Bilibili、PayPal、Apple（2,030 条；禁用 Microsoft） | 35 |
+| [AppleOTA_Bilibili_Paypal_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_RegionalCN.lcf) | AppleOTA、Bilibili、PayPal、RegionalCN（3,009 条；禁用 Microsoft 和 Apple） | 35 |
 | [AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf) | 除 Microsoft 外其他五项（4,583 条） | 36 |
 | [OnlyApple.lcf](../diagnostics/v6.5.8-geoip-six/OnlyApple.lcf) | Apple | 32 |
 | [OnlyPaypal.lcf](../diagnostics/v6.5.8-geoip-six/OnlyPaypal.lcf) | Paypal | 32 |
@@ -86,10 +99,10 @@ FINAL,Final
 
 ## 当前最少的有效实机测试顺序
 
-1. 在 456 条稳定组合加入 Microsoft（总计 1,101 条）后**已实测 VPN 重启**。因此暂时不再添加 Microsoft，先导入 [AppleOTA_Bilibili_Paypal_Apple.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple.lcf) 测试新增 Apple 后的 VPN 稳定性。
-2. **只有 Apple 版不重启时**，再导入 [AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf) 测试 RegionalCN。若任一步重启，停止加量并单独测试新增的规则集。
-3. 如两份不含 Microsoft 的配置都稳定，再通过 [OnlyMicrosoft.lcf](../diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf) 或 Microsoft 的规则行二分确定它单独还是与其他订阅组合时触发，不直接修改 immutable v6.5.8 原文件。
-4. **DNS 泄漏另行对照**，不要误把 VPN 不重启解释为 DNS 安全。静态 DNS 参数在这些配置中完全一致；检查 Loon 加密 DNS 失败回退开关、实际解析器 IP、IPv6、节点解析及对照 [None.lcf](../diagnostics/v6.5.8-geoip-six/None.lcf) 的结果。不能依靠给域名加 DIRECT 来消除 DNS 查询。
+1. **AppleOTA+Bilibili+PayPal（456 条）已知 VPN 正常**。在此基础上增加 Microsoft 或增加 Apple，都已经实测触发 VPN 重启。暂时不要重复这两个实验。
+2. **当前只测试 [AppleOTA_Bilibili_Paypal_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_RegionalCN.lcf)**，保持原网络、节点、Loon/iOS 版本、DNS App 开关及远程规则的刷新状态不变。
+3. 如果新配置仍重启，三份大型列表（RegionalCN、Microsoft、Apple）均在已测组合中出现问题。下一步不是继续叠加，而是对单份列表做对照或把触发列表按原始规则行区段分割，以区分某行触发和总规模/交互触发。
+4. DNS 泄漏需要用 None（禁用六项）及已知稳定的 456 条配置做独立对照，检查实际解析器、IPv6 和 App 内“加密 DNS 失败回退普通 DNS”选项。保留 `GEOIP,CN,DIRECT,no-resolve`，不额外加 CN DIRECT 规则。
 
 **每次测试记录**：是否正常导入、六份中实际启用哪几份、规则刷新是否出错、最短复现间隔、iOS 诊断分析中的 Network Extension 退出或 Jetsam 记录，并对比 DNS 测试结果。注意不要公开付费节点、订阅 Token 和设备标识。
 
