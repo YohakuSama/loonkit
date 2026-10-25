@@ -1,4 +1,4 @@
-"""v7.0.4 route regression coverage via the generic release engine."""
+"""Current stable route regression coverage via the generic release engine."""
 from __future__ import annotations
 
 import json
@@ -24,7 +24,7 @@ class RoutingV704Tests(unittest.TestCase):
 
     def test_exact_reviewed_runtime_diff(self):
         self.assertEqual(self.current, render(ROOT))
-        self.assertEqual(self.current.decode().splitlines()[0], "# LoonKit v7.0.4")
+        self.assertEqual(self.current.decode().splitlines()[0], "# LoonKit " + json.loads((ROOT / "build/release_spec.json").read_text())["stable_release_version"])
         group_section = self.current.decode().split("[Proxy Group]\n", 1)[1].split("\n[", 1)[0]
         for group in DIRECT_GROUPS:
             self.assertIn(group + " = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,", group_section)
@@ -42,7 +42,7 @@ class RoutingV704Tests(unittest.TestCase):
 
     def test_checksum_and_immutable_resources(self):
         result = check(ROOT)
-        self.assertEqual(result["version"], "v7.0.4")
+        self.assertEqual(result["version"], json.loads((ROOT / "build/release_spec.json").read_text())["stable_release_version"])
         self.assertEqual(result["resources"], 43)
         self.assertEqual(result["groups"], 39)
         self.assertEqual(result["matchers"], 196565)

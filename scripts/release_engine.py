@@ -152,7 +152,18 @@ def write(root: Path = ROOT) -> str:
     manifest = load(root, "build/release_manifest.json")
     manifest["label"] = recipe["target_version"]
     manifest["profile_sha256"] = {"LoonKit.lcf": digest}
+    manifest["reviewed_recipe"] = RECIPE
+    manifest["runtime_change"] = {
+        "version": recipe["target_version"],
+        "runtime_semantics": "EXPLICIT_DECLARATIVE_RECIPE",
+        "recipe_change_count": len(recipe["changes"]),
+    }
     save_json(root, "build/release_manifest.json", manifest)
+    # Keep the verified active directives checksum in sync with every patch.
+    active = "\n".join(line for line in profile.decode("utf-8").splitlines()
+                       if line.strip() and not line.lstrip().startswith("#")) + "\n"
+    spec["current_runtime_directives_sha256"] = sha256(active.encode("utf-8"))
+    save_json(root, "build/release_spec.json", spec)
     version = recipe["target_version"]
     (root / "release" / ("SHA256SUMS." + version)).write_text(
         digest + "  LoonKit.lcf\n", encoding="utf-8")
@@ -180,6 +191,9 @@ def start_next(root: Path, target: str) -> str:
     spec["stable_release_version"] = target
     spec["release_gate_file"] = None  # New versions do not fabricate human test attestations.
     save_json(root, "build/release_spec.json", spec)
+    manifest = load(root, "build/release_manifest.json")
+    manifest["previous_release"] = {"version": old, "profile_sha256": sha256(old_bytes)}
+    save_json(root, "build/release_manifest.json", manifest)
     save_json(root, RECIPE, {"schema_version": 1, "target_version": target,
         "base": {"path": "build/baselines/previous/LoonKit.lcf",
                  "sha256": sha256(old_bytes)}, "changes": []})
