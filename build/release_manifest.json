@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "label": "v6.5.8",
+  "label": "v6.5.9",
   "profile_sha256": {
-    "LoonKit.lcf": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715"
+    "LoonKit.lcf": "c0e2bbc6f4565104a7bfa4474d2ac63df617dcc1805216b942712d361d1c23b1"
   },
   "runtime_resources": [
     {
@@ -14,16 +14,6 @@
       "enabled": "true",
       "sha256": "eb4b30b96232bd76f4308f2333478ed94d1c2d885079ffd0da4b7b5f66738349",
       "matcher_count": 76895
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/RegionalCN.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/RegionalCN.list",
-      "policy": "DIRECT",
-      "tag": "Our-RegionalCN",
-      "enabled": "true",
-      "sha256": "2cf437e6215ca84c1e954224dceb91a5bde11d21655d9b13d8b753a3ea0b6496",
-      "matcher_count": 2553
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/Service-Spotify.list",
@@ -136,13 +126,13 @@
       "matcher_count": 5
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/AppleOTA.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/AppleOTA.list",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8452034ad371e75d13fd3ff2a17eff92f1149727/rules/releases/v6.5.9/AppleOTA.list",
+      "commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
+      "path": "rules/releases/v6.5.9/AppleOTA.list",
       "policy": "Apple",
       "tag": "Our-AppleOTA",
       "enabled": "true",
-      "sha256": "363a61641ddaa968bef36e80eb8581e5d6c483c421049f719381c4ca835a692f",
+      "sha256": "7330e1e6f9b9d9330acc3c28ae63683244f41860aa1543a7619a6092d723ed4f",
       "matcher_count": 82
     },
     {
@@ -216,14 +206,14 @@
       "matcher_count": 55
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Bilibili.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/Bilibili.list",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8452034ad371e75d13fd3ff2a17eff92f1149727/rules/releases/v6.5.9/Bilibili.list",
+      "commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
+      "path": "rules/releases/v6.5.9/Bilibili.list",
       "policy": "Bilibili",
       "tag": "Our-Bilibili",
       "enabled": "true",
-      "sha256": "db005848d8a8cd0cbfd8cbe50d8ac72c5394ced69ed4edb88a5ca20ea60f5454",
-      "matcher_count": 128
+      "sha256": "bcc9b0d31945813c3e11b07c2d936278eecc22f9557b80cf5663a78b87aec7c7",
+      "matcher_count": 120
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/AnimeCrazy.list",
@@ -326,24 +316,24 @@
       "matcher_count": 681
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Microsoft.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/Microsoft.list",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8452034ad371e75d13fd3ff2a17eff92f1149727/rules/releases/v6.5.9/Microsoft.list",
+      "commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
+      "path": "rules/releases/v6.5.9/Microsoft.list",
       "policy": "Microsoft",
       "tag": "Our-Microsoft",
       "enabled": "true",
-      "sha256": "ef5a0fa175434ae15068a5924c01d38d76e8df00d14ff9e84387adbfb26c0c0d",
+      "sha256": "0ddfe51a68c7da4def4cf0599d666d0725299c807988e65cd912be1070ab339c",
       "matcher_count": 645
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Apple.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/Apple.list",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8452034ad371e75d13fd3ff2a17eff92f1149727/rules/releases/v6.5.9/Apple.list",
+      "commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
+      "path": "rules/releases/v6.5.9/Apple.list",
       "policy": "Apple",
       "tag": "Our-Apple",
       "enabled": "true",
-      "sha256": "684cd0617593374de94edd3a361f9c6a271c6b5e773568ad694f3128e62447c9",
-      "matcher_count": 1574
+      "sha256": "aed19bd3798bf72196c33bc08b008f817ead1f1ce15888458a48a624d1c0071e",
+      "matcher_count": 1561
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8f144d9d74dfae4e5064e4c1eeed23addd62199d/rules/releases/v6.5.7/Steam.list",
@@ -356,13 +346,13 @@
       "matcher_count": 58
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Paypal.list",
-      "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-      "path": "rules/releases/v6.5.8/Paypal.list",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8452034ad371e75d13fd3ff2a17eff92f1149727/rules/releases/v6.5.9/Paypal.list",
+      "commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
+      "path": "rules/releases/v6.5.9/Paypal.list",
       "policy": "Paypal",
       "tag": "Our-Paypal",
       "enabled": "true",
-      "sha256": "c51e8d033c6f181da5b8008256f7af4fba3407ab9cd2e9f11fa158c3f18131d3",
+      "sha256": "d6136e2ba0e223ecafda8ddb24ca84ad2743cf66986eb25eec4cce4c311f3f2e",
       "matcher_count": 246
     },
     {
@@ -376,10 +366,10 @@
       "matcher_count": 114709
     }
   ],
-  "runtime_rule_count": 37,
-  "remote_subscription_count": 37,
-  "remote_rule_count": 199060,
-  "runtime_rule_matcher_count": 199060,
+  "runtime_rule_count": 36,
+  "remote_subscription_count": 36,
+  "remote_rule_count": 196486,
+  "runtime_rule_matcher_count": 196486,
   "source_group_tags": {
     "AdBlock": [
       "Beta-AdBlock-Balanced"
@@ -502,7 +492,7 @@
     "Disney": 185,
     "PrimeVideo": 30,
     "TikTok": 55,
-    "Bilibili": 128,
+    "Bilibili": 120,
     "動畫瘋": 6,
     "Dazn": 18,
     "Telegram": 43,
@@ -514,7 +504,7 @@
     "HBO": 88,
     "Google": 681,
     "Microsoft": 645,
-    "Apple": 1574,
+    "Apple": 1561,
     "Paypal": 246,
     "ChinaDirect": 114709
   },
@@ -710,37 +700,12 @@
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
   "reviewed_recipe": "rules/reviewed/v6.5.8/decisions.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-  "maintainer_approval": "OWNER_REQUESTED_PUBLICATION_2026_10_25",
-  "device_test": "NOT_RECORDED",
+  "maintainer_approval": "USER_REQUESTED_NONGEOIP_COMPOSITE_PRODUCTION_MERGE_2026_10_25",
+  "device_test": "UNVERIFIED_LIVE_MATCH_AND_DNS",
   "publication": {
-    "status": "VERIFIED_ON_MAIN",
-    "rollback_main_commit_sha": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
-    "published_main_commit_sha": "3366ee77d3e1ee44788e60ba1381e976406f4596",
-    "release_pull_request": "https://github.com/YohakuSama/loonkit/pull/132",
-    "reviewed_pr_head_sha": "74db9fad4e8bc05ee1641684e2005ec26b7ea166",
-    "pr_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157234552",
-    "main_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157438384",
-    "raw_profile_sha256": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715",
-    "beta_sync_pull_request": "https://github.com/YohakuSama/loonkit/pull/131",
-    "beta_sync_commit_sha": "55a5e8fdf69b07dd934eae44e25014e9e320abb0",
-    "beta_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157430514",
-    "upstream_review_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737181",
-    "upstream_review_stage_conclusion": "success",
-    "upstream_review_result": "SOURCE_INTEGRITY_COMPLETE_NO_ROUTINE_ADDITIONS",
-    "publisher_integration_status": "VERIFIED_BRANCH_AND_EXACT_HEAD_CI",
-    "scheduled_workflow_conclusion": "success",
-    "publisher_review_mode": "MANUAL_PR",
-    "automatic_pr_creation_allowed": false,
-    "publisher_integration_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737181",
-    "publisher_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159746722",
-    "publisher_verified_head_sha": "2de48f1bf180363c49d83eb23789a9eb8ff0ecf4",
-    "publisher_check_branch_removed": true,
-    "maintenance_pull_request": "https://github.com/YohakuSama/loonkit/pull/135",
-    "maintenance_main_commit_sha": "6eef8e7c218330d5f62a63d3ce155395b566d2db",
-    "maintenance_main_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737209",
-    "maintenance_beta_pull_request": "https://github.com/YohakuSama/loonkit/pull/134",
-    "maintenance_beta_commit_sha": "2fb00a529d14f0063a7a8c59e8e681521b2a95ff",
-    "maintenance_beta_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159725019"
+    "status": "PR_PENDING_INTEGRITY_CI_AND_ON_DEVICE_VERIFICATION",
+    "rollback_sha256": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715",
+    "warning": "CN-versus-overseas same-domain decision no longer preserved. DNS leakage unresolved."
   },
   "service_roots": {
     "Spotify": [
@@ -838,18 +803,21 @@
   "source_snapshot_commit": "d405e4be28c447b6e57a4790e965c89f342d6dd6",
   "upstream_historical_lineage": "UNRECOVERABLE",
   "legacy_compiler_rule_count": 26,
-  "stage": "VERIFIED_PUBLISHED",
+  "stage": "CANDIDATE_USER_REQUESTED",
   "old_main_rollback_commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
-  "device_test_evidence": "docs/DEVICE_TEST_STATUS.md",
+  "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
   "approved_runtime_directives_sha256": "40b2e553ca2b45f495ab05a270b35b1a0c075cc1be91971fc8a42af9dd8e725b",
   "previous_release": {
-    "version": "v6.5.7",
-    "profile_sha256": "9dbcb5bff0cae6be233053e13b464176a0af4ad714efd27b3fa290f3c86ee84b",
-    "commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953"
+    "version": "v6.5.8",
+    "profile_sha256": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715",
+    "commit": "bcacd0c7f00fbbf7e5af71aa23f16c76db5df6e1"
   },
   "runtime_change": {
-    "routing": "GEOIP_SCOPED_CN_AND_SERVICE_OVERSEAS",
-    "removed_user_agent_rules": 50,
-    "dns_bootstrap": "ALIDNS_HOST_MAPPING"
+    "routing": "NATIVE_DOMAIN_ONLY_NO_LOGIC_GEOIP",
+    "removed_composite_geoip_rules": 5228,
+    "removed_redundant_regionalcn_remote": true,
+    "geoip_fallback_preserved": true,
+    "cn_overseas_service_split_regression": "NOT_EQUIVALENT",
+    "dns_leak_fix": "NOT_INCLUDED"
   }
 }
