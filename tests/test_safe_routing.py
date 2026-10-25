@@ -88,7 +88,7 @@ class TestSafeRouting(unittest.TestCase):
             self.assertEqual(len(remote_entries(profile)), 34)
             removed = set(original_entries) - set(expected)
             self.assertEqual(
-                directives("\\n".join(line for line in self.original.splitlines()
+                directives("\n".join(line for line in self.original.splitlines()
                                       if line not in removed)),
                 directives(profile),
             )
