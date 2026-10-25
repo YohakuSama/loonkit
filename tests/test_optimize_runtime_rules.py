@@ -49,6 +49,19 @@ class OptimizationTests(unittest.TestCase):
         self.assertEqual(report["totals"]["before"], manifest["runtime_rule_matcher_count"])
         self.assertEqual(report["sources"], len(manifest["runtime_resources"]))
 
+    def test_write_dir_cannot_overwrite_published_assets(self):
+        import tempfile
+        from optimize_runtime_rules import safe_candidate_output
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for forbidden in ("rules/releases/v7.0.3", "../other",
+                              "build/rule_candidates/../../rules", "/tmp"):
+                with self.subTest(path=forbidden):
+                    with self.assertRaises(ValueError):
+                        safe_candidate_output(root, forbidden, "Apple.lsr")
+            allowed = safe_candidate_output(root, "build/rule_candidates/v7.0.5", "Apple.lsr")
+            self.assertEqual(allowed, root / "build/rule_candidates/v7.0.5/Apple.lsr")
+
     def test_global_dominance_only_when_prior_policy_matches(self):
         from optimize_runtime_rules import PriorPolicyIndex, prune_against_prior
         prior = PriorPolicyIndex()

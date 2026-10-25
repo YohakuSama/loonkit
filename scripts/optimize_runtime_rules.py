@@ -166,6 +166,22 @@ def prune_against_prior(raw: bytes, prior: PriorPolicyIndex) -> tuple[bytes, lis
     return "".join(line for i, line in enumerate(lines) if i not in omitted).encode("utf-8"), removed
 
 
+def safe_candidate_output(root: Path, directory: str, filename: str) -> Path:
+    relative = Path(directory)
+    if (relative.is_absolute() or ".." in relative.parts or
+            relative.parts[:2] != ("build", "rule_candidates") or len(relative.parts) < 3):
+        raise ValueError("optimization output must live under build/rule_candidates/<version>")
+    target = root / relative / filename
+    current = target
+    while current != root and current.is_relative_to(root):
+        if current.is_symlink():
+            raise ValueError("candidate output must not follow symlinks")
+        current = current.parent
+    if not target.resolve().is_relative_to((root / "build" / "rule_candidates").resolve()):
+        raise ValueError("candidate output escaped its private directory")
+    return target
+
+
 def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
     manifest = json.loads((root / "build/release_manifest.json").read_text(encoding="utf-8"))
     records = manifest["runtime_resources"]
@@ -219,12 +235,16 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
                                   Counter(r["reason"] for r in more_removed))
         removed += more_removed
         if summary["removed"] and write_dir:
-            target = root / write_dir / path.name
+            target = safe_candidate_output(root, write_dir, path.name)
             target.parent.mkdir(parents=True, exist_ok=True)
+            if target.is_file() and target.read_bytes() != dest:
+                raise ValueError("existing candidate output differs; choose a new version directory")
             target.write_bytes(dest)
         elif write_dir:
-            target = root / write_dir / path.name
+            target = safe_candidate_output(root, write_dir, path.name)
             target.parent.mkdir(parents=True, exist_ok=True)
+            if target.is_file() and target.read_bytes() != source:
+                raise ValueError("existing candidate output differs; choose a new version directory")
             target.write_bytes(source)
         result[row["tag"]] = {"source": row["path"], "policy": row["policy"], **summary}
         samples[row["tag"]] = removed[:3]
