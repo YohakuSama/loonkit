@@ -1,5 +1,14 @@
 # 更新记录
 
+## v7.0.3 · 2026-10-25
+
+- 新增 GitHub、ChatGPT、Gemini、Claude、Speedtest、Cloudflare 六个服务策略组；保留 Proxy、Auto、Fallback 和原有全部策略，不增加地区节点组。
+- 原有规则改用 43 份固定提交的 `.lsr` 订阅，按服务归属拆分 AI、完善 Gemini WebChannel、Cohere、国内 AI 直连及海外电商边界。Copilot、GitHub Models、Perplexity、Grok 等仍归统一 AI。
+- GitHub Copilot 由 AI 处理，YouTube 优先于通用 Google，Cloudflare 仅处理自有服务而非共享 CDN。
+- 策略组 PNG 图标统一至 `icons/`，原有与新增图片共 40 张；移除版本化的 PNG 子目录，保留可编辑 SVG 源稿。
+- 保留全部原有 DNS/TUN 设置、广告拦截资产、诊断插件和 `GEOIP,CN,DIRECT,no-resolve`，保存 v7.0.0 的完整回滚基线及 SHA256 校验。
+- 分流参考 [o-ocn/loon-rules](https://github.com/o-ocn/loon-rules)、[luestr/ProxyResource](https://github.com/luestr/ProxyResource)、[luestr/ShuntRules](https://github.com/luestr/ShuntRules)，并采用固定上游版本与可核查来源记录。
+
 ## v7.0.0 · 2026-10-25
 
 - 发布 7.0.0 正式版，清理正式订阅的历史 Beta 展示标签；无策略路由或匹配规则变更。
