@@ -1,10 +1,16 @@
-name: Manual Reviewed Release Verification (read only)
+name: Publish Verified Stable Release
 on:
+  workflow_run:
+    workflows: ["LoonKit Production CI"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
+
 jobs:
-  candidate:
+  manual-verification:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -13,30 +19,73 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - name: Verify current reviewed release and immutable resources
+      - name: Verify reproducible formal release
         run: |
           python3 scripts/verify_release.py --check --remote
           python3 scripts/reviewed_release.py --check
           python3 scripts/license_audit.py --check
-      - name: Package verified entry and exact manifest without publishing
-        run: |
-          python3 - <<'PY'
-          import json, os, shutil
-          from pathlib import Path
-          spec=json.loads(Path('build/release_spec.json').read_text())
-          version=spec['stable_release_version']
-          output=Path(os.environ['RUNNER_TEMP'])/'verified-release'
-          names=['LoonKit.lcf','build/release_manifest.json','build/release_spec.json',
-                 'rules/reviewed/'+version+'/decisions.json','release/SHA256SUMS.'+version,
-                 'docs/RELEASE_CHECKSUM_'+version+'.md']
-          for name in names:
-              dest=output/name
-              dest.parent.mkdir(parents=True,exist_ok=True)
-              shutil.copy2(name,dest)
-          PY
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: verified-current-release
-          path: ${{ runner.temp }}/verified-release/
+          name: verified-stable-release
+          path: |
+            LoonKit.lcf
+            build/release_manifest.json
+            build/release_spec.json
+            release/SHA256SUMS.v7.0.0
+            docs/RELEASE_CHECKSUM_v7.0.0.md
           retention-days: 30
           if-no-files-found: error
+
+  publish:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: loonkit-stable-publication
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Gate on current exact main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test "$(gh api repos/${{ github.repository }}/branches/main --jq .commit.sha)" = "$EXPECTED_SHA"
+          test "$(python3 -c "import json;print(json.load(open('build/release_spec.json'))['stable_release_version'])")" = 'v7.0.0'
+          test "$(head -n 1 LoonKit.lcf)" = '# LoonKit v7.0.0'
+      - name: Validate publishable bytes and pinned resources
+        run: |
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/reviewed_release.py --check
+          python3 scripts/license_audit.py --check
+          sha256sum -c release/SHA256SUMS.v7.0.0
+      - name: Create immutable version tag and published release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if gh release view v7.0.0 >/dev/null 2>&1; then
+            test "$(gh api repos/${{ github.repository }}/git/ref/tags/v7.0.0 --jq .object.sha)" = "$EXPECTED_SHA"
+            exit 0
+          fi
+          if gh api repos/${{ github.repository }}/git/ref/tags/v7.0.0 >/dev/null 2>&1; then
+            echo 'v7.0.0 tag already exists without a published release; refusing to overwrite.'
+            exit 1
+          fi
+          gh release create v7.0.0 \
+            LoonKit.lcf \
+            release/SHA256SUMS.v7.0.0 \
+            build/release_manifest.json \
+            build/release_spec.json \
+            --target "$EXPECTED_SHA" \
+            --title 'LoonKit v7.0.0' \
+            --notes-file docs/RELEASE_NOTES_v7.0.0.md \
+            --latest

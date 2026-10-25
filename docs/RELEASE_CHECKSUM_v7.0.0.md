@@ -1,0 +1,5 @@
+# LoonKit v7.0.0 SHA-256
+
+```text
+a5c0fb40987bf8079ed84167702593d5dd8ce631a03e3df704be09e3578d87b0  LoonKit.lcf
+```

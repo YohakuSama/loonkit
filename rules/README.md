@@ -1,6 +1,6 @@
 # 分流规则
 
-现役版本：**v6.5.9**。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
+现役版本：**v7.0.0**。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
 
 ## 规则顺序
 
@@ -19,7 +19,7 @@
 | sources.json | 登记上游来源。 |
 | inputs/ | 冻结的来源输入。 |
 | reviewed/v6.5.8/decisions.json | 当前版本的变更配方。 |
-| releases/v6.5.9/ | 现役的五份普通域名规则。 |
+| releases/v6.5.9/ | 固定版本的五份普通域名规则。 |
 | releases/v6.5.8/ | 历史冻结规则，供审计与回滚。 |
 | beta/upstream/ | 测试渠道的累计精确域名增量。 |
 
