@@ -65,3 +65,18 @@ CI 执行 `python3 scripts/routing_candidate_audit.py --check`，读取 36 份�
 5. 生成前后进行逐条路由效果差异审计，保持历史回滚快照；正式版入口独立于候选。
 
 不编造复合 GEOIP 写法、不按想象增加地区判定。任何后续规则变化仅采用 Loon 官方支持的语法，且不得把域名和 IP 匹配优先级简单视为等价。
+
+## v7.0.2 的分流策略与统一资源候选
+
+- 新增六个独立服务策略：GitHub、ChatGPT、Gemini、Claude、Speedtest、Cloudflare。
+- 现有 `AI` 策略继续管理 Copilot、GitHub Copilot、GitHub Models、Perplexity、Grok、Antigravity，以及经过域名来源核对的其他 AI 提供商。
+- 旧 AI 99 条规则重新分配至 ChatGPT、Gemini、Claude 和 AI，各原规则保留且只属于其中一个列表；其他非 AI 服务规则的正文不变。
+- 候选 42 份远程规则统一使用 `.lsr` 文件名，并固定引用单一发布提交；.lsr 是统一命名，不是不同于 Loon .list 的新语法。
+- 39 个策略组的 PNG 图标统一位于 `icons/`，不增加地区节点组。
+- Cloudflare 只包含其自有服务域名，不包含 CDN、Workers、Pages、IP-CIDR 等会影响其他网站的宽泛范围；Speedtest 对测速域名优先匹配。
+- `LoonKit.lcf` 正式版维持 v7.0.0，便于与候选进行严格差异审核。
+
+复核命令：`python3 scripts/audit_v702.py --check`。官方语法依据：https://nsloon.app/docs/Rule/ 和 https://nsloon.app/docs/Rule/sub_rule/ 。
+
+注意：`https://kelee.one/Tool/Loon/Lsr/AI.lsr` 与 `https://rule.kelee.one/Loon/115.lsr` 本次无法直接读取正文，因而没有复制这些第三方资源；参照了其公开命名方式，规则内容来源为冻结基线、可核查的 Blackmatrix7 开源列表和相关提供商网站。不得将文件名转换声称为官方要求或完成真机验证。
+

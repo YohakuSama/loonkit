@@ -6,12 +6,12 @@ import struct
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-ICONS = ROOT / "icons/v20261025r1"
+ICONS = ROOT / "icons"
 SIX = {"GitHub", "ChatGPT", "Gemini", "Claude", "Speedtest", "Cloudflare"}
 
 class AppStoreIconTests(unittest.TestCase):
     def test_six_normalized_icons_and_provenance(self):
-        manifest = json.loads((ICONS / "sources.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ICONS / "appstore_sources.json").read_text(encoding="utf-8"))
         self.assertEqual(set(manifest["icons"]), SIX)
         for group, detail in manifest["icons"].items():
             with self.subTest(group=group):

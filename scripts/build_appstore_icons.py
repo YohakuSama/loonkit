@@ -14,7 +14,7 @@ import urllib.request
 from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "icons" / "v20261025r1"
+OUTPUT = ROOT / "icons"
 APPS = {
     "GitHub": (1477376905, "github"),
     "ChatGPT": (6448311069, "openai"),
@@ -113,11 +113,11 @@ def build() -> dict:
             "sha256": hashlib.sha256(result).hexdigest(),
             **details,
         }
-    (OUTPUT/"sources.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    (OUTPUT/"appstore_sources.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return manifest
 
 def check() -> None:
-    record = json.loads((OUTPUT/"sources.json").read_text(encoding="utf-8"))
+    record = json.loads((OUTPUT/"appstore_sources.json").read_text(encoding="utf-8"))
     if set(record["icons"]) != set(APPS):
         raise ValueError("wrong icon set")
     for name, data in record["icons"].items():

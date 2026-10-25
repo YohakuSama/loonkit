@@ -125,7 +125,7 @@ def check() -> dict:
             raise ValueError("icon must be 512x512: "+img["path"])
     for group in group_names:
         line=next(x for x in gs if x.split("=",1)[0].strip()==group)
-        expected=URL+meta["asset_commit"]+"/icons/"+group+".png"
+        expected=URL+meta["asset_commit"]+"/icons/"+({"動畫瘋":"AnimeCrazy"}.get(group,group))+".png"
         if expected not in line:
             raise ValueError("policy icon not pinned in unified directory: "+group)
     local = [x.strip() for x in section(new,"Rule").splitlines() if x.strip() and not x.lstrip().startswith("#")]
