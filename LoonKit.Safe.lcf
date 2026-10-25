@@ -1,6 +1,6 @@
-# LoonKit v6.5.8 - Safe Routing (official GeoIP-first fallback)
-# Disable six composite rule subscriptions without adding any DIRECT exceptions.
-# CN requests not captured by preceding domain rules use GEOIP,CN,DIRECT. Other unmatched requests use FINAL.
+# LoonKit v6.5.8 - strict A/B diagnostic (six subscriptions removed)
+# Only six remote rule entries differ from the published profile.
+# Keep General, GEOIP,CN,DIRECT,no-resolve, DNS, TUN and plugins unchanged.
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -111,7 +111,7 @@ DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy
 DOMAIN,gemini.google.com,AI
 DOMAIN,aistudio.google.com,AI
 DOMAIN,copilot.microsoft.com,AI
-GEOIP,CN,DIRECT
+GEOIP,CN,DIRECT,no-resolve
 FINAL,Final
 
 [Plugin]
