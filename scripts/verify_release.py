@@ -78,6 +78,9 @@ def check_public_checksums(root: Path, release: dict, spec: dict) -> str:
 def verify(remote=False):
     current = json.loads((ROOT/"build/release_spec.json").read_text())
     if current.get('schema_version') == 2:
+        if current.get('stable_release_version') == 'v6.5.9':
+            from release_v659 import verify as verify_v659
+            return verify_v659(remote=remote)
         from reviewed_release import verify as verify_reviewed
         return verify_reviewed(remote=remote)
     if current["stable_release_version"] == "v6.5.6":
