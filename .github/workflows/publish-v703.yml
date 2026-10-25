@@ -1,0 +1,44 @@
+name: Publish audited LoonKit v7.0.3 GitHub Release
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v703.yml
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Confirm exact reviewed merge is this publication parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "3977e04ecd354f30e34732a5055c76b8c27a81e3"
+          test "$(git show -s --format=%H HEAD^)" = "3977e04ecd354f30e34732a5055c76b8c27a81e3"
+          test "$(head -n 1 LoonKit.lcf)" = "# LoonKit v7.0.3"
+          sha256sum -c release/SHA256SUMS.v7.0.3
+          python3 scripts/verify_release.py --check --remote
+      - name: Publish tagged config and checksums
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v7.0.3 >/dev/null 2>&1; then
+            echo "v7.0.3 already published; refusing duplicate release."
+            exit 0
+          fi
+          gh release create v7.0.3 LoonKit.lcf release/SHA256SUMS.v7.0.3 \
+            --target 3977e04ecd354f30e34732a5055c76b8c27a81e3 \
+            --title "LoonKit v7.0.3" \
+            --notes-file docs/RELEASE_NOTES_v7.0.3.md \
+            --latest
