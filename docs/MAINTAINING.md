@@ -26,13 +26,13 @@ node --test tests/diagnostics.test.cjs
 
 ## 新版本：一次命令创建基线
 
-先确保当前仓库可重现且工作树干净，接着运行：
+程序会检查 Git 工作树是否干净，并先完整预检再写入。普通文件写入异常时会回滚，但**多文件修改并非断电级原子操作**，因此始终通过经 CI 验证的 Git commit 发布。运行：
 
 ```bash
 python3 scripts/release_engine.py --start-next v7.0.5
 ```
 
-该命令保留前一正式版本的固定基线于 `build/baselines/previous/LoonKit.lcf`，
+该命令按版本保留前一正式版基线于 `build/baselines/generated/<旧版本>/LoonKit.lcf`，
 更新 `release_spec.json` 中唯一的版本号、历史 SHA256、README、配方和当前校验文件。
 **不触动现有规则 URL、DNS/TUN、插件及策略组。** Git tag 保留更早版本的回滚记录。
 
