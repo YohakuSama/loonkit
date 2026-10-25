@@ -36,7 +36,8 @@ function run(kind, handler, options = {}) {
   const sandbox = {
     $argument: options.argument || {target_policy:'Node-A'},
     $environment: {params: options.params || {node: 'Node-A'}},
-    $script: {name: options.automatic ? '网络切换异常监测' : '手动检测'},
+    $script: {name: '手动检测'},
+    $config: options.config,
     $httpClient: {
       get(request, callback) {return http('GET', request, callback);},
       post(request, callback) {return http('POST', request, callback);}
@@ -50,7 +51,7 @@ function run(kind, handler, options = {}) {
     $notification: {post(...args) {alerts.push(args);}},
     setTimeout(fn, delay) {timers.push({fn, delay}); return timers.length;}
   };
-  const src = fs.readFileSync(path.join(ROOT, 'scripts/v20261022r11', SCRIPTS[kind]), 'utf8');
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/v20261025r1', SCRIPTS[kind]), 'utf8');
   vm.runInNewContext(src, sandbox, {timeout:3000, filename:SCRIPTS[kind]});
   return {requests, completed, timers, alerts, writes};
 }
@@ -109,7 +110,8 @@ test('node: malformed primary and backup never become successful measurements', 
 function networkReply(request, status) {
   assert.equal(request['auto-redirect'], false);
   assert.equal(request['auto-cookie'], false);
-  assert.equal(request.url, 'https://www.gstatic.com/generate_204');
+  assert.equal(request.url, request.node === 'DIRECT' ?
+    'http://wifi.vivo.com.cn/generate_204' : 'https://www.gstatic.com/generate_204');
   return {status};
 }
 test('network: HTTP 204 plus native DoH produces a successful manual summary', () => {
@@ -135,7 +137,8 @@ test('network: timeout and malformed DNS evidence fail without false DoH claims'
   const session = run('network', ({index}) =>
     index === 0 ? {error:new Error('timeout')} : {status:204},
     {dns:{reply:{protocol:'doh', answers:[{type:'CNAME', value:'invalid'}]}}});
-  assert.match(output(session), /部分失败/);
+  assert.match(output(session), /结论：节点连接正常/);
+  assert.match(output(session), /直连：失败/);
   assert.match(output(session), /超时/);
   assert.match(output(session), /没有获得有效的解析地址/);
   assert.doesNotMatch(output(session), /解析成功 · DoH/);
@@ -146,30 +149,31 @@ test('network: DNS exception and unsupported native API cannot be misreported as
   assert.match(output(thrown), /DNS API 调用异常/);
   const missing = run('network', () => ({status:204}), {dns:null});
   assert.match(output(missing), /不支持 DNS 检测/);
-  assert.match(output(missing), /部分待确认/);
+  assert.match(output(missing), /结论：节点连接正常/);
 });
 
-test('network: automatic probe only sends a notification after two actual failures', () => {
-  const session = run('network', () => ({error:new Error('timeout')}), {automatic:true});
-  assert.equal(session.requests.length, 0);
-  const first = session.timers.find(t => t.delay === 1600);
-  assert.ok(first);
-  first.fn();
-  assert.equal(session.requests.length, 1);
+test('network: manual detection makes no automatic requests or notifications', () => {
+  const session = run('network', ({request}) => networkReply(request, 204));
   assert.equal(session.alerts.length, 0);
-  const second = session.timers.find(t => t.delay === 2200);
-  assert.ok(second);
-  second.fn();
+  assert.equal(session.writes.length, 0);
   assert.equal(session.requests.length, 2);
-  assert.equal(session.alerts.length, 1);
-  assert.equal(session.completed.length, 1);
+  assert.ok(session.requests.every(call => call.request.node === 'DIRECT' || call.request.node === 'Node-A'));
 });
+
+test('network: failed DIRECT and DNS do not imply the selected node failed', () => {
+  const session = run('network', ({request}) =>
+    request.node === 'DIRECT' ? {error: new Error('timeout')} : {status:204},
+    {dns:{error:new Error('dns timeout')}});
+  assert.match(output(session), /直连：失败/);
+  assert.match(output(session), /DNS：失败/);
+  assert.match(output(session), /结论：节点连接正常/);
+});
+
 
 function mediaResponse({method, request}) {
   const url = new URL(request.url);
   if (url.hostname === 'startup.core.indazn.com') return {status:200, body:JSON.stringify({GeolocatedCountry:'US'})};
   if (url.hostname === 'us1-prod-direct.discoveryplus.com' && url.pathname === '/token') return {status:200, body:JSON.stringify({data:{attributes:{token:'fake-test-token'}}})};
-  if (url.hostname === 'us1-prod-direct.discoveryplus.com' && url.pathname === '/users/me') return {status:200, body:JSON.stringify({data:{attributes:{currentLocationTerritory:'us'}}})};
   if (url.hostname === 'www.paramountplus.com') return {status:200, body:'Paramount+'};
   if (url.hostname === 'disney.api.edge.bamgrid.com') return {status:200, body:JSON.stringify({extensions:{sdk:{session:{inSupportedLocation:true,location:{countryCode:'US'}}}}})};
   if (url.hostname === 'www.netflix.com' && url.pathname.startsWith('/title/')) return {status:200, body:'Netflix /title/81280792'};
@@ -185,11 +189,14 @@ test('media: seven mocked supported responses produce seven distinct verdicts', 
   for (const name of ['DAZN','Discovery+','Paramount+','Disney+','Netflix','ChatGPT','YouTube Premium']) {
     assert.ok(out.includes(name + '：'), 'missing service result: ' + name);
   }
-  assert.match(out, /Netflix：完整解锁/);
-  assert.match(out, /YouTube Premium：已解锁/);
-  assert.equal((out.match(/已解锁/g)||[]).length, 6);
+  assert.match(out, /Netflix：片源页面可访问/);
+  assert.match(out, /Discovery\+：接口可访问/);
+  assert.match(out, /YouTube Premium：区域可用/);
+  assert.equal((out.match(/区域可用/g)||[]).length, 5);
+  assert.doesNotMatch(out, /会员|已订阅|完整解锁/);
   assert.ok(session.requests.every(r => r.request.node === 'Node-A'));
-  assert.ok(session.requests.length >= 9);
+  assert.ok(session.requests.length >= 8);
+  assert.ok(session.requests.every(r => !r.request.url.includes('/users/me')));
   assert.ok(session.requests.filter(r => r.method === 'POST').length >= 2);
 });
 
@@ -202,9 +209,9 @@ test('media: redirect-based block and Netflix 404 remain conservative', () => {
       return {status:302, headers:{Location:'https://auth.openai.com/login'}};
     return mediaResponse(call);
   });
-  assert.match(output(session), /Paramount\+：未解锁/);
-  assert.match(output(session), /Netflix：仅自制剧/);
-  assert.match(output(session), /ChatGPT：已解锁/);
+  assert.match(output(session), /Paramount\+：地区受限/);
+  assert.match(output(session), /Netflix：待确认/);
+  assert.match(output(session), /ChatGPT：区域可用/);
 });
 
 test('media: malformed platform JSON and thrown requests cannot create supported verdicts', () => {
@@ -215,6 +222,41 @@ test('media: malformed platform JSON and thrown requests cannot create supported
   });
   assert.match(output(session), /DAZN：检测失败/);
   assert.match(output(session), /Disney\+：检测失败/);
+});
+
+test('media: node context overrides a different configured fallback', () => {
+  const session = run('media', mediaResponse,
+    {params:{node:'Node-Menu'}, argument:{target_policy:'Node-Other'}});
+  assert.ok(session.requests.every(x => x.request.node === 'Node-Menu'));
+});
+
+test('media: no concrete node means no service requests', () => {
+  const session = run('media', mediaResponse,
+    {params:{}, argument:{target_policy:'Proxy'}});
+  assert.equal(session.requests.length, 0);
+  assert.match(output(session), /指定具体节点/);
+});
+
+test('media: selected policy groups must resolve to a concrete node', () => {
+  const session = run('media', mediaResponse, {
+    params:{}, argument:{target_policy:'Proxy'},
+    config:{
+      getConfig(){return JSON.stringify({all_policy_groups:['Proxy','Auto']});},
+      getSelectedPolicy(name){return {Proxy:'Auto',Auto:'Node-C'}[name]||'';}
+    }
+  });
+  assert.ok(session.requests.length > 0);
+  assert.ok(session.requests.every(r => r.request.node === 'Node-C'));
+});
+
+test('media: challenge pages never claim service access', () => {
+  const session = run('media', call => {
+    if (new URL(call.request.url).hostname === 'www.youtube.com') {
+      return {status:200,body:'verify you are human'};
+    }
+    return mediaResponse(call);
+  });
+  assert.match(output(session), /YouTube Premium：检测失败/);
 });
 
 test('media: a delayed request reaches the existing 22-second watchdog exactly once', () => {
