@@ -11,7 +11,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import beta_upstream_delivery as delivery
-from beta_github import GitHub
+from beta_github import GitHub, GitHubError
 
 
 class FakeGitHub:
@@ -23,9 +23,11 @@ class FakeGitHub:
         self.writes = []
         self.refs = {}
         self.existing_pr = []
+        self.ref_files = {}
+        self.pr_status = None
 
     def file(self, path, ref):
-        return self.files[path]
+        return self.ref_files[(path,ref)] if (path,ref) in self.ref_files else self.files[path]
 
     def get(self, path):
         if path == "/git/ref/heads/beta":
@@ -41,6 +43,7 @@ class FakeGitHub:
     def post(self, path, payload):
         self.writes.append((path, copy.deepcopy(payload)))
         if path == "/pulls":
+            if self.pr_status:raise GitHubError(self.pr_status,'POST','/pulls')
             return {"html_url":"https://github.com/YohakuSama/loonkit/pull/999"}
         if path == "/git/refs":
             self.refs["/git/ref/heads/" + payload["ref"].removeprefix("refs/heads/")] = {"object":{"sha":payload["sha"]}}
@@ -115,7 +118,40 @@ class BetaUpstreamDeliveryTests(unittest.TestCase):
         api.existing_pr = [{"html_url":first["pull_request"]}]
         writes = len(api.writes)
         self.assertEqual(delivery.publish(plan, api)["status"], "EXISTING_PR_UNMODIFIED")
-        self.assertEqual(len(api.writes), writes)
+        self.assertEqual(api.writes[writes:],[('/actions/workflows/beta-ci.yml/dispatches',{'ref':first['branch']})])
+
+    def test_pr_forbidden_keeps_pinned_candidate_dispatches_ci_and_resumes(self):
+        plan,api=self.fixture();api.pr_status=403
+        first=delivery.publish(plan,api)
+        self.assertEqual(first['status'],'BETA_REVIEW_BRANCH_CREATED')
+        self.assertEqual(first['review_mode'],'MANUAL_PR')
+        self.assertIsNone(first['pull_request'])
+        self.assertIn(first['branch'],first['compare_url'])
+        self.assertIn(('/actions/workflows/beta-ci.yml/dispatches',{'ref':first['branch']}),api.writes)
+        for path,body in api.writes:
+            if path=='/git/trees':
+                for row in body['tree']:
+                    api.ref_files[(row['path'],first['head_sha'])]=row['content'].encode()
+        before=len(api.writes)
+        resumed=delivery.publish(plan,api)
+        self.assertEqual(resumed['status'],'EXISTING_REVIEW_BRANCH_UNMODIFIED')
+        self.assertEqual(resumed['head_sha'],first['head_sha'])
+        self.assertFalse(any(path in ('/git/trees','/git/commits','/git/refs') for path,_ in api.writes[before:]))
+        key=('build/beta_manifest.json',first['head_sha'])
+        saved=api.ref_files[key]
+        meta=json.loads(saved);meta['upstream_update']['base_commit']='f'*40
+        api.ref_files[key]=delivery.encoded(meta)
+        before=len(api.writes)
+        with self.assertRaisesRegex(ValueError,'differs'):delivery.publish(plan,api)
+        self.assertEqual(len(api.writes),before)
+        api.ref_files[key]=saved;api.pr_status=None
+        self.assertEqual(delivery.publish(plan,api)['status'],'DRAFT_BETA_PR_CREATED')
+
+    def test_unexpected_pr_failure_is_reported_and_retains_candidate(self):
+        plan,api=self.fixture();api.pr_status=500
+        with self.assertRaisesRegex(GitHubError,'500'):delivery.publish(plan,api)
+        self.assertEqual(len(api.refs),1)
+        self.assertFalse(any(path.endswith('/dispatches') for path,_ in api.writes))
 
     def test_existing_runtime_overlay_is_retained_and_hash_checked(self):
         plan, api = self.fixture()

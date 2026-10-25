@@ -10,6 +10,12 @@ import urllib.request
 REPOSITORY = "YohakuSama/loonkit"
 
 
+class GitHubError(RuntimeError):
+    def __init__(self, status_code, method, path):
+        self.status_code=status_code
+        super().__init__('GitHub ' + method + ' ' + path.split('?')[0] + ' failed with HTTP ' + str(status_code))
+
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
@@ -39,7 +45,7 @@ class GitHub:
         except urllib.error.HTTPError as error:
             if error.code == 404 and method == "GET":
                 return None
-            raise RuntimeError("GitHub " + method + " " + path.split("?")[0] + " failed with HTTP " + str(error.code)) from None
+            raise GitHubError(error.code,method,path) from None
         if len(raw) > 4 * 1024 * 1024:
             raise ValueError("GitHub response too large")
         return json.loads(raw) if raw else None
