@@ -103,6 +103,53 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertEqual(self.general["domain-reject-mode"],"DNS")
         self.assertEqual(self.general["dns-reject-mode"],"LOOPBACKIP")
 
+    def test_public_template_preserves_bing_and_independent_direct_probe(self):
+        bing = "http://www.bing.com"
+        self.assertEqual(self.general["proxy-test-url"], bing)
+        for group in ("Auto", "Fallback"):
+            self.assertIn("url = " + bing, self.groups[group])
+            self.assertNotIn("generate_204", self.groups[group])
+        self.assertEqual(self.general["internet-test-url"],
+                         "http://wifi.vivo.com.cn/generate_204")
+        self.assertNotEqual(self.general["internet-test-url"], bing)
+
+    def test_dns_transport_contract_requires_explicit_review(self):
+        expected = {
+            "dns-server": "223.5.5.5,223.6.6.6",
+            "doh-server": "https://dns.alidns.com/dns-query",
+            "hijack-dns": "*:53",
+            "ip-mode": "dual",
+            "ipv6-vif": "auto",
+            "disable-stun": "true",
+            "udp-fallback-mode": "REJECT",
+            "allow-wifi-access": "false",
+        }
+        for key, value in expected.items():
+            with self.subTest(key=key):
+                self.assertEqual(self.general.get(key), value)
+        hosts = settings(get_section(self.profile, "Host"))
+        self.assertEqual(hosts.get("dns.alidns.com"), "223.5.5.5")
+
+    def test_living_user_docs_track_current_app_behavior(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        nodes = (ROOT / "docs/NODE_SELECTION.md").read_text(encoding="utf-8")
+        dns = (ROOT / "docs/DNS_PRIVACY.md").read_text(encoding="utf-8")
+        app = (ROOT / "docs/LOON_APP_SETTINGS.md").read_text(encoding="utf-8")
+        plugin = get_section(self.profile, "Plugin")
+        self.assertNotIn("网络切换提醒", readme)
+        self.assertEqual(plugin.count(".plugin, enabled=true"), 1)
+        for field in ("ALL_Filter", "Auto_Filter", "Fallback_Filter"):
+            self.assertIn(field, nodes)
+        self.assertIn("http://www.bing.com", readme)
+        self.assertIn("http://www.bing.com", nodes)
+        self.assertIn("第一个可用节点", nodes)
+        self.assertIn("DNS 服务器", app)
+        self.assertIn("加密 DNS 失败回退到普通 DNS", dns)
+        self.assertIn("不能独立证明全设备无 DNS 泄漏", dns)
+        self.assertIn("Paypal 默认使用 \`Proxy\`", app)
+        self.assertIn("disable-stun = true", app)
+        self.assertIn("udp-fallback-mode = REJECT", app)
+
     def test_dns_routes_and_plugin_are_unchanged_in_scope(self):
         rules = get_section(self.profile, "Rule")
         self.assertIn("GEOIP,CN,DIRECT,no-resolve", rules)
