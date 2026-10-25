@@ -18,9 +18,11 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 ## VPN 反复断开 / 自动重连排查
 
-如果 Loon 导入本项目配置后出现 VPN 自动关闭并重新连接，可先使用 **[Safe Routing 配置](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** 进行稳定性对比测试（[查看文件](./LoonKit.Safe.lcf)）。此版本暂时**不加载** `Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal` 六个高密度复合规则集，**不新增任何直连规则**。未被其他域名规则命中的大陆 IP 由 `GEOIP,CN,DIRECT` 处理，其余走 `FINAL`；原始 v6.5.8 正式配置不变。
+在 v6.5.8 上已有用户实测：禁用 `Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal` 后 VPN 恢复稳定。具体出问题的单份规则或多份规则间的交互仍待定位。
 
-**注意**：这是待实机验证的排障配置，不保证重连一定由复合规则引起。六个服务原有专属分流在该配置中暂停，部分请求将改为 GeoIP 或 Final 策略。域名规则优先级高于 IP 规则，详情与 DNS 检查方法见 [适用范围与 A/B 测试](./docs/SAFE_ROUTING.md)。
+[**Safe 诊断配置**](./LoonKit.Safe.lcf) 仅移除六项订阅，其他正式配置包括 `GEOIP,CN,DIRECT,no-resolve`、DNS/TUN、策略组和插件完全不变；不额外添加直连规则。为进一步二分定位，还提供 [Group A](./diagnostics/v6.5.8/GroupA.lcf) 和 [Group B](./diagnostics/v6.5.8/GroupB.lcf) 两份测试配置，分别保留六项中的三项。
+
+这是排障测试，并非已完成的稳定性修复，暂停这些规则也会暂时失去原有的精细地区分流能力。参见 [测试步骤、官方原则和原定四项问题的状态](./docs/SAFE_ROUTING.md)。
 
 ## 快速开始
 
