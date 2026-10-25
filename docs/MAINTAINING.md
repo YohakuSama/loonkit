@@ -20,9 +20,15 @@ python3 scripts/source_lock.py --check
 python3 scripts/release_engine.py --check
 python3 scripts/verify_release.py --check --remote
 python3 scripts/license_audit.py --check
-python3 -m unittest discover -s tests -p 'test_*.py' -v
+python3 scripts/test_suites.py current
+# 历史与 Beta 的全套回归可手动运行
+python3 scripts/test_suites.py all
 node --test tests/diagnostics.test.cjs
 ```
+
+## 分层 CI
+
+正式 CI 每次检查源码锁、当前配置完整性、当前策略及许可证，并在隔离 Git 副本连续构建两次新版本。历史审计对涉及历史资源/共享模块的 PR、定期及手动操作执行，不再把旧版本脚本与所有普通修改绑定。Beta CI 仍保留个人测试回归。首次发布新版本仍复核远端固定资源，已有 Release 不会重复下载。
 
 ## 新版本：一次命令创建基线
 

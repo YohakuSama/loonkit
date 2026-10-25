@@ -1,0 +1,72 @@
+name: LoonKit Historical Integrity CI
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 3 * * 1'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'rules/releases/**'
+      - 'rules/inputs/**'
+      - 'build/baselines/**'
+      - 'build/candidates/**'
+      - 'scripts/release_v*.py'
+      - 'scripts/prepare_release_v*.py'
+      - 'scripts/verify_release*.py'
+      - 'scripts/reviewed_release.py'
+      - 'scripts/loon_resources.py'
+      - 'scripts/release_engine.py'
+      - 'scripts/beta_*.py'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/release.yml'
+      - '.github/workflows/historical-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'rules/releases/**'
+      - 'rules/inputs/**'
+      - 'build/baselines/**'
+      - 'build/candidates/**'
+      - 'scripts/release_v*.py'
+      - 'scripts/prepare_release_v*.py'
+      - 'scripts/verify_release*.py'
+      - 'scripts/reviewed_release.py'
+      - 'scripts/loon_resources.py'
+      - 'scripts/release_engine.py'
+      - 'scripts/beta_*.py'
+      - '.github/workflows/historical-audit.yml'
+permissions:
+  contents: read
+jobs:
+  historical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify frozen sources and full checksum archive
+        run: |
+          python3 scripts/source_lock.py --check
+          python3 scripts/verify_release.py --check
+          python3 scripts/beta_cleanup.py --verify-archives
+          python3 scripts/prepare_promoted_release.py --check
+          python3 scripts/prepare_release_v656.py --check
+          python3 scripts/release_promotion_gate.py --assert-template-blocked
+      - name: Verify legacy audits and evidence
+        run: |
+          python3 scripts/audit_upstream_703.py
+          python3 scripts/audit_v702.py --check
+          python3 scripts/routing_candidate_audit.py --check
+          python3 scripts/license_evidence.py --check
+      - name: Full production beta and historical regression suite
+        run: python3 scripts/test_suites.py all
+      - name: Inspect pinned GitHub Raw bytes
+        run: python3 scripts/verify_release.py --check --remote
+      - name: Ensure validators never rewrite released files
+        run: |
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
