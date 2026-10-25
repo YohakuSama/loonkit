@@ -105,7 +105,9 @@ class RegionalRouteTests(unittest.TestCase):
                 self.assertTrue(self.router.match(host,country=country)['predicted_policy'].startswith('Final'))
 
     def test_review_baseline_is_native_only_with_beta_still_historical(self):
-        formal=upstream_review.runtime_baseline(ROOT)
+        formal=upstream_review.runtime_baseline(
+            ROOT,profile_path='build/baselines/v7.0.0/LoonKit.lcf',
+            manifest_path='build/baselines/v7.0.0/release_manifest.json')
         beta=upstream_review.runtime_baseline(
             ROOT,profile_path='beta/LoonKit.lcf',manifest_path='build/beta_manifest.json')
         self.assertEqual(len(formal),33)

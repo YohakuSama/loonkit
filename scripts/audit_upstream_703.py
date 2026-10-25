@@ -21,7 +21,7 @@ BOUNDARIES={
 "models.github.ai":"AI","grok.com":"AI","x.ai":"AI",
 "www.youtube.com":"YouTube","googlevideo.com":"YouTube",
 "docs.google.com":"Google","drive.google.com":"Google",
-"aliexpress.com":"DIRECT","tiktok.com":"TikTok","douyin.com":"DIRECT",
+"aliexpress.com":"Proxy","lazada.com":"Proxy","daraz.com":"Proxy","tiktok.com":"TikTok","douyin.com":"DIRECT",
 "github.com":"GitHub","raw.githubusercontent.com":"Proxy",
 "speed.cloudflare.com":"Speedtest","cloudflare.com":"Cloudflare",
 "onedrive.com":"Microsoft","sharepoint.com":"Microsoft",
@@ -63,6 +63,6 @@ def scan(path:Path):
 
 if __name__=="__main__":
     p=argparse.ArgumentParser()
-    p.add_argument("--candidate",default="build/candidates/v7.0.2")
+    p.add_argument("--candidate",default="build/candidates/v7.0.3")
     a=p.parse_args()
     print(json.dumps(scan(ROOT/a.candidate),indent=2,ensure_ascii=False))
