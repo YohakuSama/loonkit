@@ -111,6 +111,7 @@ class RecipeTests(unittest.TestCase):
         path.parent.mkdir(parents=True)
         path.write_bytes(b"wrong snapshot")
         (self.root / "LoonKit.lcf").write_bytes(self.raw)
+        (self.root / "build" / "release_spec.json").write_text(json.dumps({"stable_release_version":"v1.0.0", "release_engine":"generic"}))
         with patch.object(release_engine, "check", return_value={}):
             with self.assertRaisesRegex(ValueError, "historical snapshot differs"):
                 release_engine.start_next(self.root, "v1.0.1", require_clean=False)
