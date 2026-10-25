@@ -54,11 +54,11 @@ class PolicySelectionTests(unittest.TestCase):
             self.assertIn("ALL_Filter", self.groups[name], name)
 
     def test_native_probe_address_is_consistent(self):
-        probe = "http://cp.cloudflare.com/generate_204"
+        probe = "http://www.bing.com"
         self.assertEqual(self.general["proxy-test-url"], probe)
         for name in ("Auto", "Fallback"):
             self.assertIn("url = " + probe, self.groups[name])
-            self.assertNotIn("http://bing.com/", self.groups[name])
+            self.assertNotIn("generate_204", self.groups[name])
         self.assertEqual(self.general["internet-test-url"],
                          "http://wifi.vivo.com.cn/generate_204")
         self.assertEqual(self.general["test-timeout"], "5")
@@ -77,7 +77,7 @@ class PolicySelectionTests(unittest.TestCase):
                 pattern = self.filters[name].split('FilterKey = "', 1)[1].rstrip('"')
                 matched = [node for node in nodes if re.search(pattern, node)]
                 self.assertEqual(matched, nodes, (size, name))
-        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v6.5.9")
+        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v6.5.10")
 
     def test_auto_prioritizes_latency_and_fallback_uses_order(self):
         # Confirm group strategy semantics; Loon makes actual runtime decisions.
