@@ -37,6 +37,6 @@ AliDNS 是目前配置的解析服务；DoH 使用 `dns.alidns.com` 的 HTTPS �
 | App 内置 DoH/DoT | 确认是否走 Loon 的 DNS 处理路径，不能把 `hijack-dns` 当作万能拦截。 |
 | IPv4 / IPv6 | 分别检查 A/AAAA 与实际连接，不能用 IPv4 结果代表 IPv6。 |
 
-诊断插件只能报告 Loon DNS API 返回的测试结果，**不能单独证明整个设备无 DNS 泄漏**。
+诊断插件只能报告 Loon DNS API 返回的测试结果，**不能独立证明全设备无 DNS 泄漏**。
 
 [返回首页](../README.md) · [App 设置与更新策略](./LOON_APP_SETTINGS.md) · [官方 DNS 说明](https://nsloon.app/docs/DNS/)
