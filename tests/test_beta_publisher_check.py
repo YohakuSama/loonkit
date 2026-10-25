@@ -6,12 +6,12 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from beta_publisher_check import check
-from beta_github import GitHub
+from beta_github import GitHub, GitHubError
 
 
 class API:
-    def __init__(self,fail_pr=False,conclusion='success',move=False):
-        self.calls=[];self.ref=None;self.fail_pr=fail_pr;self.conclusion=conclusion;self.move=move
+    def __init__(self,fail_pr=False,conclusion='success',move=False,pr_error=403):
+        self.calls=[];self.ref=None;self.fail_pr=fail_pr;self.conclusion=conclusion;self.move=move;self.pr_error=pr_error
     def file(self,path,ref):return b'# LoonKit check profile\n'
     def get(self,path):
         if path=='/git/ref/heads/beta':return {'object':{'sha':'a'*40}}
@@ -25,7 +25,7 @@ class API:
         self.calls.append((path,copy.deepcopy(body)))
         if path=='/git/refs':self.ref=body['sha']
         if path=='/pulls':
-            if self.fail_pr:raise RuntimeError('HTTP 403')
+            if self.fail_pr:raise GitHubError(self.pr_error,'POST','/pulls')
             return {'number':123,'html_url':'https://github.com/YohakuSama/loonkit/pull/123'}
         return {'sha':'c'*40}
     def close_check_pr(self,number):self.calls.append(('close',number))
@@ -42,11 +42,20 @@ class PublisherCheckTests(unittest.TestCase):
         self.assertIn(('/actions/workflows/beta-ci.yml/dispatches',{'ref':'automation/publisher-check-123-1'}),api.calls)
         self.assertIsNone(api.ref)
 
-    def test_pr_permission_failure_removes_only_the_temporary_branch(self):
+    def test_pr_permission_failure_still_verifies_real_branch_ci_and_cleanup(self):
         api=API(fail_pr=True)
-        with self.assertRaisesRegex(RuntimeError,'403'):check(api,'123','1',sleep=lambda _:None)
+        result=check(api,'123','1',sleep=lambda _:None)
+        self.assertEqual(result['status'],'REAL_BRANCH_AND_EXACT_HEAD_CI_VERIFIED')
+        self.assertEqual(result['review_mode'],'MANUAL_PR')
+        self.assertFalse(result['automatic_pr_creation'])
+        self.assertTrue(result['check_branch_removed'])
         self.assertIsNone(api.ref)
         self.assertFalse(any(path=='close' for path,_ in api.calls))
+
+    def test_unexpected_pr_server_failure_is_not_treated_as_permission_mode(self):
+        api=API(fail_pr=True,pr_error=500)
+        with self.assertRaisesRegex(GitHubError,'500'):check(api,'123','1',sleep=lambda _:None)
+        self.assertIsNone(api.ref)
 
     def test_failed_ci_closes_pr_and_removes_branch(self):
         api=API(conclusion='failure')
