@@ -14,6 +14,7 @@ FILES = ROOT / "diagnostics/v6.5.8-geoip-six"
 SUSPECTS = ("RegionalCN", "AppleOTA", "Bilibili",
             "Microsoft", "Apple", "Paypal")
 GROUPS = {
+    "None": (),
     "GroupA": SUSPECTS[:3],
     "GroupB": SUSPECTS[3:],
     **{"Only" + item: (item,) for item in SUSPECTS},
