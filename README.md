@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="./docs/CHANGELOG.md"><img src="https://img.shields.io/badge/version-v7.0.8-515D6E?style=flat-square" alt="v7.0.8" /></a>
+  <a href="./docs/CHANGELOG.md"><img src="https://img.shields.io/badge/version-v7.0.9-515D6E?style=flat-square" alt="v7.0.9" /></a>
   <a href="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml"><img src="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0--only-515D6E?style=flat-square" alt="GPL-2.0-only" /></a>
 </p>
@@ -29,7 +29,7 @@
 
 ---
 
-当前版本：**v7.0.8**。
+当前版本：**v7.0.9**。
 
 LoonKit 是面向 [Loon](https://nsloon.app/) 的完整分流配置。它将国内服务、AI、开发工具、流媒体与社交平台的规则分开管理，并集成网络检测插件。**项目不提供代理节点或订阅**，你可以使用已有节点并决定每项服务如何选路。
 
@@ -150,7 +150,7 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
 | [首次导入、更新与推荐设置](./docs/LOON_APP_SETTINGS.md) | [Loon 官方使用手册](https://nsloon.app/docs/) |
 | [节点池与自动切换](./docs/NODE_SELECTION.md) | [规则说明](./rules/README.md) |
 | [网络诊断插件](./docs/NETWORK_DIAGNOSTICS.md) | [更新记录](./docs/CHANGELOG.md) |
-| [分流排查](./docs/ROUTE_DIAGNOSTICS.md) | [v7.0.8 校验](./docs/RELEASE_CHECKSUM_v7.0.8.md) |
+| [分流排查](./docs/ROUTE_DIAGNOSTICS.md) | [v7.0.9 校验](./docs/RELEASE_CHECKSUM_v7.0.9.md) |
 | [维护与发布](./docs/MAINTAINING.md) | [依赖清单](./docs/DEPENDENCIES.md) |
 
 <details>
@@ -167,7 +167,7 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
 <details>
 <summary><strong>参考资料与说明</strong></summary>
 
-本文以仓库当前 `v7.0.8` 正式配置为准，并对照 [Loon 官方 URL Scheme](https://nsloon.app/docs/Scheme/)、[官方 DNS 文档](https://nsloon.app/docs/DNS/)、[官方通用参数](https://nsloon.app/docs/General/) 及 [Loon 使用指北](https://wiki.repcz.link/loon/profile/)。部分历史知识库资料较旧，涉及界面名称、设置入口时以 App 当前版本为准。
+本文以仓库当前 `v7.0.9` 正式配置为准，并对照 [Loon 官方 URL Scheme](https://nsloon.app/docs/Scheme/)、[官方 DNS 文档](https://nsloon.app/docs/DNS/)、[官方通用参数](https://nsloon.app/docs/General/) 及 [Loon 使用指北](https://wiki.repcz.link/loon/profile/)。部分历史知识库资料较旧，涉及界面名称、设置入口时以 App 当前版本为准。
 
 </details>
 

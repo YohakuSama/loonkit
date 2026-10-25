@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "target_version": "v7.0.8",
+  "target_version": "v7.0.9",
   "base": {
-    "path": "build/baselines/generated/v7.0.7/LoonKit.lcf",
-    "sha256": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0"
+    "path": "build/baselines/generated/v7.0.8/LoonKit.lcf",
+    "sha256": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3"
   },
   "changes": [
     {
-      "find": "https://raw.githubusercontent.com/YohakuSama/loonkit/83ca3cbec66d263f4153464be7439b704d0a65b3/release/Network_Diagnostics.plugin",
-      "replace": "https://raw.githubusercontent.com/YohakuSama/loonkit/bb3796caaaffb4b01cea113071abed7dc82e17c2/release/Network_Diagnostics.plugin"
+      "find": "https://raw.githubusercontent.com/YohakuSama/loonkit/bb3796caaaffb4b01cea113071abed7dc82e17c2/release/Network_Diagnostics.plugin",
+      "replace": "https://raw.githubusercontent.com/YohakuSama/loonkit/7cd8f285f85ed8e540ab0b0a5b6edc27811fac70/release/v7.0.9/Network_Diagnostics.plugin"
     }
   ]
 }

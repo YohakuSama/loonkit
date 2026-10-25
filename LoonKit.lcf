@@ -1,4 +1,4 @@
-# LoonKit v7.0.8
+# LoonKit v7.0.9
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -138,4 +138,4 @@ GEOIP,CN,DIRECT,no-resolve
 FINAL,Final
 
 [Plugin]
-https://raw.githubusercontent.com/YohakuSama/loonkit/bb3796caaaffb4b01cea113071abed7dc82e17c2/release/Network_Diagnostics.plugin, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/7cd8f285f85ed8e540ab0b0a5b6edc27811fac70/release/v7.0.9/Network_Diagnostics.plugin, enabled=true

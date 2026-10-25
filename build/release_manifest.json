@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "label": "v7.0.8",
+  "label": "v7.0.9",
   "profile_sha256": {
-    "LoonKit.lcf": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3"
+    "LoonKit.lcf": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee"
   },
   "runtime_resources": [
     {
@@ -795,8 +795,8 @@
     }
   },
   "legacy_compiler_matcher_count": 197765,
-  "plugin_path": "release/Network_Diagnostics.plugin",
-  "plugin_sha256": "15feaad5b9cad20c0610934a231d3b906b1a3cb72a5c14cb74f060caa461e437",
+  "plugin_path": "release/v7.0.9/Network_Diagnostics.plugin",
+  "plugin_sha256": "0f00f7a6a3f9995af2fafb01d10f09885ae9be14cbd5ea68c7ee66ab4d9a68f4",
   "promoted_beta_config_sha256": "fd1a01c6f8363a5dffaa1db9dbf044014c711fa48ea46e34a7c107180acbe0b7",
   "promoted_beta_commit_sha": "adc567168eed8e21dc8d80aebc40b85f35fc1a1b",
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
@@ -909,11 +909,11 @@
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
   "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
-    "version": "v7.0.7",
-    "profile_sha256": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0"
+    "version": "v7.0.8",
+    "profile_sha256": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3"
   },
   "runtime_change": {
-    "version": "v7.0.8",
+    "version": "v7.0.9",
     "runtime_semantics": "EXPLICIT_DECLARATIVE_RECIPE",
     "recipe_change_count": 1
   }
