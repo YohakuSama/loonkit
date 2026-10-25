@@ -124,6 +124,9 @@ def check(root: Path = ROOT, *, remote: bool = False) -> dict:
         raise ValueError("runtime rule counts or owners differ")
     if len(set(row["tag"] for row in entries)) != len(entries):
         raise ValueError("duplicate remote rule tag")
+    known_policies = set(names) | {"DIRECT", "REJECT"}
+    if any(row["policy"] not in known_policies for row in entries):
+        raise ValueError("subscription refers to an undeclared policy group")
     plugin = path_under(root, manifest["plugin_path"]).read_bytes()
     if sha256(plugin) != manifest["plugin_sha256"]:
         raise ValueError("plugin checksum differs")
