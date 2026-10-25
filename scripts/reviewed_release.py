@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 from concurrent.futures import ThreadPoolExecutor
 from urllib.request import urlopen
-from beta_channel import ROOT, URI, remote_entries, content_rules, section
+from loon_resources import ROOT, URI, remote_entries, content_rules, section
 
 RECIPE = 'rules/reviewed/v6.5.7/decisions.json'
 
