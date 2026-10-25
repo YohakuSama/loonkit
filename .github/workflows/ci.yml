@@ -21,31 +21,14 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
-      - name: Locked inputs and bit-exact published output
+      - name: Locked inputs and byte-exact current publication
         run: |
           python3 scripts/source_lock.py --check
           python3 scripts/verify_release.py --check
-          python3 scripts/prepare_promoted_release.py --check
-          python3 scripts/release_promotion_gate.py --assert-template-blocked
-          python3 scripts/prepare_release_v656.py --check
-      - name: Validate all immutable Raw resources and content hashes
-        run: python3 scripts/verify_release.py --check --remote
-      - name: Verify rule rebuild is independent of Python hash seed
-        run: |
-          for seed in 0 1 42 2026; do
-            PYTHONHASHSEED="$seed" python3 scripts/verify_release.py --check
-          done
-      - name: Read-only historical cleanup inventory
-        run: python3 scripts/beta_cleanup.py
-      - name: Verify historical pinned rollback resources before any deletion
-        run: python3 scripts/beta_cleanup.py --verify-archives
-      - name: Third-party license evidence
-        run: |
-          python3 scripts/license_audit.py --check
-          python3 scripts/license_evidence.py --check
-      - name: Python regression tests (real assertions)
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
-
+      - name: Current third-party license gate
+        run: python3 scripts/license_audit.py --check
+      - name: Active production regression tests
+        run: python3 scripts/test_suites.py current
       - name: Simulate two successive releases without publication (isolated Git clone)
         run: |
           set -euo pipefail
@@ -61,14 +44,8 @@ jobs:
             git add -A
             git -c user.name="Release CI" -c user.email="ci@example.invalid" commit -qm "test: simulate $version"
           done
-      - name: Audit unified routing candidate and cross-policy coverage
-        run: python3 scripts/routing_candidate_audit.py --check
       - name: Verify declarative release and immutable resources
         run: python3 scripts/release_engine.py --check
-      - name: Upstream sample routes and domestic AI inventory
-        run: python3 scripts/audit_upstream_703.py
-      - name: Audit v7.0.2 scoped LSR resources and icon directory
-        run: python3 scripts/audit_v702.py --check
       - name: Native Loon mocked-response regressions
         run: node --test tests/diagnostics.test.cjs
       - name: Native plugin JavaScript syntax

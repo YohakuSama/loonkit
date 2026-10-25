@@ -62,7 +62,21 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test "$(gh api repos/${{ github.repository }}/branches/main --jq .commit.sha)" = "$EXPECTED_SHA"
+      - name: Decide whether version is already published
+        id: publish_state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="$(python3 -c "import json; print(json.load(open('build/release_spec.json'))['stable_release_version'])")"
+          if gh release view "$version" >/dev/null 2>&1; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "$version exists; skip network verification and avoid rewriting its immutable release."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Validate publishable bytes
+        if: steps.publish_state.outputs.ready == 'true'
         run: |
           set -euo pipefail
           python3 scripts/verify_release.py --check --remote
@@ -71,6 +85,7 @@ jobs:
           test "$(head -n 1 LoonKit.lcf)" = "# LoonKit $version"
           sha256sum -c "release/SHA256SUMS.$version"
       - name: Publish immutable version release
+        if: steps.publish_state.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
