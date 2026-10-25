@@ -1,6 +1,6 @@
 # 分流规则
 
-现役版本：**v7.0.0**。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
+现役版本：**v7.0.3**。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
 
 ## 规则顺序
 

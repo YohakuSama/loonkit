@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "version": "v7.0.3",
+  "decision": "OWNER_REQUESTED_FORMAL_PUBLICATION",
+  "asset_commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+  "release_profile_sha256": "bf68380929f713989251e68a8f82f9a256486e89aae31882405f000bb1ce3616",
+  "former_version": "v7.0.0",
+  "former_profile_sha256": "a5c0fb40987bf8079ed84167702593d5dd8ce631a03e3df704be09e3578d87b0",
+  "real_device_test": "NOT_ATTESTED",
+  "ruleset_count": 43,
+  "strategy_group_count": 39,
+  "source_coverage": "pinned LoonKit, o-ocn/loon-rules GPL-2.0 and blackmatrix7"
+}
