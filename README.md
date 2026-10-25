@@ -14,7 +14,7 @@
 
 LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦截与网络诊断。
 
-当前版本：**v7.0.7**。
+当前版本：**v7.0.8**。
 
 ## 快速开始
 
@@ -64,7 +64,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 [更新记录](./docs/CHANGELOG.md) · [规则说明](./rules/README.md) · [反馈问题](https://github.com/YohakuSama/loonkit/issues)
 
-[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.7.md) · [安全报告](./SECURITY.md)
+[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.8.md) · [安全报告](./SECURITY.md)
 
 ## 开源许可
 
