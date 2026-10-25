@@ -67,7 +67,15 @@ class AuditFixTests(unittest.TestCase):
         new = (ROOT/'LoonKit.lcf').read_text()
         for name in ['General','Rule','Plugin','Remote Filter']:
             clean=lambda text:[x for x in beta_channel.section(text,name).splitlines() if x.strip() and not x.lstrip().startswith('#')]
-            self.assertEqual(clean(old),clean(new),name)
+            old_lines, new_lines = clean(old), clean(new)
+            if name == 'General':
+                # v6.5.10 intentionally changes only node latency probe URL.
+                # Keep all other DNS, TUN and connectivity directives identical.
+                self.assertEqual([l for l in old_lines if not l.startswith('proxy-test-url = ')],
+                                 [l for l in new_lines if not l.startswith('proxy-test-url = ')])
+                self.assertIn('proxy-test-url = http://www.bing.com', new_lines)
+            else:
+                self.assertEqual(old_lines, new_lines, name)
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)
         self.assertIn('dns-reject-mode = LOOPBACKIP',new)
 

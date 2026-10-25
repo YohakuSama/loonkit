@@ -1,5 +1,13 @@
 # 更新记录
 
+## v6.5.10 · 2026-10-25（测速地址候选，需真机验收）
+
+- 按维护者要求，`proxy-test-url`、Auto `url`、Fallback `url` 统一改用 `http://www.bing.com`，不再使用 `generate_204` 路径进行节点延迟测试。
+- `internet-test-url = http://wifi.vivo.com.cn/generate_204` 继续用于直连互联网连接测试，未改动 DNS/DoH、TUN、远程规则、插件或内部 Beta。
+- v6.5.9 的正式配置、元数据与校验和归档不改；本版新增 SHA256 校验及精确差异的回归测试。
+- 注意：HTTP Bing 仍可能遭遇重定向或干预，测速延迟不保证等于真实物理落地 RTT；v6.5.9 的 DNS 泄漏问题及实机稳定性仍需设备验收。
+
+
 ## v6.5.9 · 2026-10-25
 
 - 应用户要求，将命中后引发 Loon VPN 异常的 `AND+GEOIP` 复合逻辑改为普通 Loon 域名规则，五份服务规则不含嵌套 `AND`、`OR`、`NOT`。
