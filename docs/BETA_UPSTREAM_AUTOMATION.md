@@ -1,54 +1,27 @@
-# 测试版自动上游更新
+# 上游更新
 
-## v6.5.7 发布后的当前链路
+默认分支每周一 02:40 UTC 检查上游；也可手动运行 Scheduled Beta Upstream Draft。
 
-发展中的 v6.5.8-beta.1 从独立 v6.5.7 foundation 生成，保留 LOOPBACKIP 与全部现役审核修正；原 beta.4 存放在历史批准基线，不再与工作树 beta 强行比较。合法 routine overlay 更新后，正式版验证仍应通过，回归测试覆盖三轮连续更新。
+## 更新流程
 
-共享基础设施允许名单在受信任发布器中统一维护，triage 复用同一表，避免新草稿把 Azure、IVS、OneTrust 等重新分给单一业务。默认分支调度继续拉取 87 条来源、比较全部 33 组；无合格新增不创建空 PR，实际写入/dispatch 以真实运行结果为准。
+1. 验证当前 beta 配置和不可变资源。
+2. 获取登记来源，与现役来源组比较，保存完整差异、原始快照和哈希。
+3. 筛选数量受限、来源明确、无归属冲突的精确域名新增。
+4. 先提交资源，再生成固定 SHA 的 beta 配置和草稿 PR。
+5. 显式运行准确 head 的 Beta CI，随后由维护者审阅合并。
 
-本次正式合并后的 [实际运行](https://github.com/YohakuSama/loonkit/actions/runs/40113944082) 已成功：stage checkout `a0898bd422b7335cc705932c0ab36f7375a53562`，验证 v6.5.8-beta.1 和 36 个不可变资源，来源完整、比较 33 组，输出 `NO_ROUTINE_ADDITIONS`。本轮没有合格新增，写入 job 跳过，未生成真实自动 PR；首次合格增量仍需核实实际创建权限和 CI dispatch。完整审阅与发布计划保存在该运行 artifacts 中。
+没有合格新增时保留当前版本；来源失败时停止发布。广告、地区条件、直连、AI、支付、共享设施、宽后缀、IP/ASN 及删除操作进入人工审阅。
 
-下方首次运行、beta.4 与旧版本说明均为历史记录。
+## 发布器集成检查
 
-## 实际链路
+基础设施更新后，verify-publisher 使用实际 Actions 凭据创建临时文档分支和草稿 PR，显式 dispatch Beta CI，核对准确提交成功，再关闭 PR、删除临时分支。运行配置保持原内容。
 
-.github/workflows/beta-upstream-update.yml 必须安装到默认分支 main，才能按周一 02:40 UTC（台北 10:40）定时运行。也支持选择 main 手动运行；仅在 beta 中存在的 YAML 不会形成独立的 GitHub 定时任务。
+该检查独立于上游是否出现新增，结果保存在 publisher-integration artifact。手动运行可通过 verify_publisher 参数控制。
 
-已通过 [PR #116](https://github.com/YohakuSama/loonkit/pull/116) 安装到 main。[2026-10-24 首次线上运行](https://github.com/YohakuSama/loonkit/actions/runs/40093458478)成功：来源完整，已比较 33 个实际 beta 服务组，本轮没有合格新增，未创建空 PR。首轮写入 job 被跳过，真实自动 PR 权限与 CI dispatch 仍需在首次合格增量出现时核实；事务和连续更新测试均通过，不冒充真实写入结果。
+## 权限
 
-1. 只读 job checkout 精确 beta 版本，验证资源与回归。
-2. 复用 upstream_review 解析器拉取现有 87 条来源，和当前 beta 的 33 个来源组比较；保留快照、UTC、HTTP ETag/Last-Modified、哈希、完整差异与风险报告。
-3. 对来源完整、该组无损解析、无移除/共享设施/跨归属冲突、数量受限的精确 DOMAIN 新增做候选筛选。无关广告来源的已记录正则排除不会永久冻结一个无损的视频服务来源。
-4. 与当前有效规则再比对：同组已有覆盖不重复添加，其他组已经拥有的主机隔离审阅。
-5. 独立写 job 只运行 main 受信任代码，将实际新增编成累计的服务 overlay：先创建资源提交，再创建引用该 SHA 的配置、manifest、验收模板提交。
-6. 创建唯一、可重复运行的 automation/beta-upstream-* 草稿 PR，目标 beta；不覆盖人工分支、不强推、不自动合并。
-7. 显式 dispatch beta-ci.yml 检查该分支。GITHUB_TOKEN 创建的 PR 不会自然触发 pull_request Actions，不能省略这一步。
-8. 维护者审查并合并 beta 后再观察；正式入口不自动跟随。
+来源审阅 job 只读。草稿发布与集成检查 job 使用 contents、pull-requests、actions 写权限，执行 main 上的代码。仓库需允许 Actions 创建 PR。
 
-每轮生成结果保留已有服务的不可变引用，按确定次序插入累计 overlay，并同步下一轮审阅的来源组标签/数量。可复现生成器已覆盖连续三轮跨服务及同服务累计更新，避免“草稿已创建，但配置重建清空规则或回退版本”的死路。
+计划绑定 beta 提交、配置 hash 和 24 小时有效期；beta 移动后重新生成计划。正常更新不会自动合并 beta 或发布正式版。
 
-没有合格新增时不创建空 PR。来源不完整会保留现役资源、上传证据并报告失败。广告、直连、AI、Apple、Microsoft、支付、宽后缀/IP/ASN、删除、异常数量与来源翻译不确定性继续需要审核。
-
-## 权限和部署
-
-默认分支的基础设施安装包括调度工作流、受信任的 beta_upstream_delivery.py / beta_github.py、其 REST 事务测试，以及供显式 dispatch 识别的 beta-ci.yml；不改变正式版的 .lcf、DNS、规则或图标。
-
-只读 job 不携带写权限。写 job 具有 contents、pull-requests、actions 写权限，用途限定为测试版草稿 PR 和明确的 CI dispatch。仓库还必须允许 GitHub Actions 创建 PR；若 GitHub 返回权限错误，工作流明确失败，不能宣称已经完成自动 PR。
-
-现有正式版周一只读审计保持独立。Beta 上的 beta-upstream-candidate.yml 继续提供手动/代码变更时的审阅产物，不负责默认分支调度，也不代替真正的草稿 PR 更新流程。
-
-## 运行边界
-
-- 运行版本不直接引用上游可变地址。
-- 计划绑定准确 beta SHA、当前配置哈希、来源目录和 24 小时有效窗口；beta 已移动就拒绝发布。
-- 不自动应用来源移除，也不重新引入已排除的 .cn、UA、证书误杀或 AI 共享接口。
-- 正式发布仍受设备和观察门禁约束。
-- CI 事务测试使用虚构主机，无测试规则会被推入真实运行配置。
-
-## 本轮发布准备与下一轮 beta
-
-正式发布 PR #119 没有修改或重新生成已验收的 beta 运行配置。独立冻结 v6.5.4 模板使得根目录正式入口升级之后，当前 beta 仍可确定性重建。发布后继续将正式维护基础设施同步到 beta；第二次默认分支定时审阅运行以真实 Actions 记录为准，不能用此前运行充数。下一次出现合格上游增量时仍必须验证资源先提交、配置后 pin 与准确 CI；此前首次实际运行没有触发写入 job。
-
-## v6.5.6 正式版与 beta 的关系
-
-正式版本 v6.5.6 的唯一新增运行时差异为 DNS 拦截返回 LoopbackIP。beta.4 保留 NOANSWER 及其原始 SHA256，发布基础设施通过 [PR #125](https://github.com/YohakuSama/loonkit/pull/125) 同步至 beta，不会自动生成新 beta 或继承原设备反馈。现有来源锁、33 个组、87 条来源与高风险人工审核规则未作变动。
+[Actions](https://github.com/YohakuSama/loonkit/actions/workflows/beta-upstream-update.yml) · [维护流程](./MAINTAINING.md)

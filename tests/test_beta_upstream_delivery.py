@@ -129,6 +129,15 @@ class BetaUpstreamDeliveryTests(unittest.TestCase):
         self.assertIn("DOMAIN,prior-video.test", tree["tree"][0]["content"])
         self.assertIn("DOMAIN,video-reviewed-example.test", tree["tree"][0]["content"])
 
+    def test_trusted_publisher_rejects_existing_and_regional_owners(self):
+        for host in ('www.microsoft.com','servicewechat.com'):
+            plan,api=self.fixture()
+            rule='DOMAIN,'+host
+            plan['groups']['YouTube']={'rules':[rule],'provenance':{rule:['video-source']}}
+            with self.assertRaisesRegex(ValueError,'already covered'):
+                delivery.publish(plan,api)
+            self.assertEqual(api.writes,[])
+
     def test_github_client_handles_dispatch_204_without_json_or_token_logging(self):
         class Response:
             def __enter__(self): return self

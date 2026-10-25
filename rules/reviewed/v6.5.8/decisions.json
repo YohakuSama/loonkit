@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "version": "v6.5.8",
+  "base_profile_path": "build/baselines/v6.5.7/LoonKit.lcf",
+  "base_profile_sha256": "9dbcb5bff0cae6be233053e13b464176a0af4ad714efd27b3fa290f3c86ee84b",
+  "rules": [
+    {
+      "tag": "Our-DomesticCore",
+      "owner": "DIRECT",
+      "source_path": "rules/releases/vNext-RC2/DomesticCore.list",
+      "source_sha256": "2b706f4dc440bb88105bd275ec1e9339d7a39b865839a96b080feba61e8e2ae0",
+      "output_path": "rules/releases/v6.5.8/DomesticCore.list",
+      "remove_exact": [
+        "DOMAIN-SUFFIX,autonavi.com"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-AppleOTA",
+      "owner": "Apple",
+      "source_path": "rules/releases/vNext-RC2/AppleOTA.list",
+      "source_sha256": "cf8957d42168ae3331a99ff3d608f27dfef0563d0d983aed0feb894a175fa48c",
+      "output_path": "rules/releases/v6.5.8/AppleOTA.list",
+      "remove_exact": [],
+      "regional": true
+    },
+    {
+      "tag": "Our-YouTube",
+      "owner": "YouTube",
+      "source_path": "rules/releases/vNext-RC2/YouTube.list",
+      "source_sha256": "4443fd6a2ff8fe8f7974b7871d95552a640bb8ce3ae54b74b22b25e3fa89e2b7",
+      "output_path": "rules/releases/v6.5.8/YouTube.list",
+      "remove_exact": [
+        "USER-AGENT,*YouTubeMusic*",
+        "USER-AGENT,*com.google.ios.youtubemusic*",
+        "USER-AGENT,*youtube*",
+        "USER-AGENT,YouTube*",
+        "USER-AGENT,YouTubeMusic*",
+        "USER-AGENT,com.google.ios.youtube*",
+        "USER-AGENT,com.google.ios.youtubemusic*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Netflix",
+      "owner": "Netflix",
+      "source_path": "rules/releases/v6.5.7/Netflix.list",
+      "source_sha256": "35127df8dc79a6133b6a8ebdf72cebabc86238face51718623fd57e35385d47d",
+      "output_path": "rules/releases/v6.5.8/Netflix.list",
+      "remove_exact": [
+        "USER-AGENT,Argo*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Disney",
+      "owner": "Disney",
+      "source_path": "rules/releases/vNext-RC2/Disney.list",
+      "source_sha256": "3fc62bd1f2d845809c1a26e7cfc6229608775e40c6934a1e496a719eecb73864",
+      "output_path": "rules/releases/v6.5.8/Disney.list",
+      "remove_exact": [
+        "USER-AGENT,Disney+*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-PrimeVideo",
+      "owner": "PrimeVideo",
+      "source_path": "rules/releases/v6.5.7/PrimeVideo.list",
+      "source_sha256": "7c903d863d720e394b0cb7260f09ba82fd312713e25b2ccd2713c74c01555810",
+      "output_path": "rules/releases/v6.5.8/PrimeVideo.list",
+      "remove_exact": [
+        "USER-AGENT,InstantVideo.US*",
+        "USER-AGENT,Prime%20Video*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-TikTok",
+      "owner": "TikTok",
+      "source_path": "rules/releases/v6.5.7/TikTok.list",
+      "source_sha256": "66121cec32241c4a65236c3e30be7740a87461c1922341eed81ca3837cd05199",
+      "output_path": "rules/releases/v6.5.8/TikTok.list",
+      "remove_exact": [
+        "USER-AGENT,TikTok*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Bilibili",
+      "owner": "Bilibili",
+      "source_path": "rules/releases/vNext-RC2/Bilibili.list",
+      "source_sha256": "8ab1dbad3da66b2a51bc3629c5fc5b13af7ce3dafb0e62fc84c7879bf3440bd8",
+      "output_path": "rules/releases/v6.5.8/Bilibili.list",
+      "remove_exact": [
+        "USER-AGENT,*bili*",
+        "USER-AGENT,Bilibili*",
+        "USER-AGENT,bili*",
+        "USER-AGENT,bili-inter*"
+      ],
+      "regional": true
+    },
+    {
+      "tag": "Our-AnimeCrazy",
+      "owner": "動畫瘋",
+      "source_path": "rules/releases/vNext-RC2/AnimeCrazy.list",
+      "source_sha256": "fae58081052728ae9b1ab19bf77de04788c9c2eac2a0a837a1c1b2a91a46e53b",
+      "output_path": "rules/releases/v6.5.8/AnimeCrazy.list",
+      "remove_exact": [
+        "USER-AGENT,Anime*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Dazn",
+      "owner": "Dazn",
+      "source_path": "rules/releases/v6.5.7/Dazn.list",
+      "source_sha256": "c08d00c98dffff3fb40345b9447928530a2b5ad783f9dd1d7cfa2c6cab124f30",
+      "output_path": "rules/releases/v6.5.8/Dazn.list",
+      "remove_exact": [
+        "USER-AGENT,DAZN*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-HBO",
+      "owner": "HBO",
+      "source_path": "rules/releases/vNext-RC2/HBO.list",
+      "source_sha256": "47897db3c9bfe3fa3c2d29fbcd61213b65ece73dc27f93c351024e644cfa45a3",
+      "output_path": "rules/releases/v6.5.8/HBO.list",
+      "remove_exact": [
+        "USER-AGENT,HBO%20NOW*",
+        "USER-AGENT,HBOMAX*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Google",
+      "owner": "Google",
+      "source_path": "rules/releases/vNext-RC2/Google.list",
+      "source_sha256": "d3ac51a3db77df0b6f4cbd64100b7279d813745b347770f4c2f95dbfb0b6ba81",
+      "output_path": "rules/releases/v6.5.8/Google.list",
+      "remove_exact": [
+        "USER-AGENT,%E4%BA%91%E7%AB%AF%E7%A1%AC%E7%9B%98*",
+        "USER-AGENT,*com.google.Drive*",
+        "USER-AGENT,Google.Drive*"
+      ],
+      "regional": false
+    },
+    {
+      "tag": "Our-Microsoft",
+      "owner": "Microsoft",
+      "source_path": "rules/releases/v6.5.7/Microsoft.list",
+      "source_sha256": "c18b9e9c06235513d0dc5eba4c3365672bf32cadef5aa9f1a1bea0bc0bbfcf87",
+      "output_path": "rules/releases/v6.5.8/Microsoft.list",
+      "remove_exact": [
+        "USER-AGENT,Microsoft*",
+        "USER-AGENT,OneDrive*",
+        "USER-AGENT,OneDriveiOSApp*"
+      ],
+      "regional": true
+    },
+    {
+      "tag": "Our-Apple",
+      "owner": "Apple",
+      "source_path": "rules/releases/v6.5.7/Apple.list",
+      "source_sha256": "6b77ab6df8a791d07d67d57f6f3b461b93f458efa63024bf264687b9ac7076be",
+      "output_path": "rules/releases/v6.5.8/Apple.list",
+      "remove_exact": [
+        "USER-AGENT,*FindMyiPhone?",
+        "USER-AGENT,*Music?",
+        "USER-AGENT,*WeatherFoundation*",
+        "USER-AGENT,*com.apple.Maps?",
+        "USER-AGENT,*com.apple.mobileme.fmip1",
+        "USER-AGENT,AppleNews*",
+        "USER-AGENT,AppleTV*",
+        "USER-AGENT,FMDClient*",
+        "USER-AGENT,FMFD*",
+        "USER-AGENT,FindMyFriends*",
+        "USER-AGENT,FindMyiPhone*",
+        "USER-AGENT,Maps*",
+        "USER-AGENT,Music*",
+        "USER-AGENT,Wallet*",
+        "USER-AGENT,com.apple.Maps",
+        "USER-AGENT,com.apple.appstored*",
+        "USER-AGENT,com.apple.news*",
+        "USER-AGENT,com.apple.trustd*",
+        "USER-AGENT,com.apple.tv*",
+        "USER-AGENT,fmflocatord*",
+        "USER-AGENT,geod*",
+        "USER-AGENT,locationd*",
+        "USER-AGENT,passd*"
+      ],
+      "regional": true
+    },
+    {
+      "tag": "Our-Paypal",
+      "owner": "Paypal",
+      "source_path": "rules/releases/vNext-RC2/Paypal.list",
+      "source_sha256": "16a2cd853182bb7e7cd8a5c58a901390f533c51a3c639b7a7311f12f8087fa66",
+      "output_path": "rules/releases/v6.5.8/Paypal.list",
+      "remove_exact": [
+        "USER-AGENT,PayPal*"
+      ],
+      "regional": true
+    },
+    {
+      "tag": "Beta-ChinaDirect-Scoped",
+      "owner": "DIRECT",
+      "source_path": "rules/beta/v6.5.5-beta.4/ChinaDirect.list",
+      "source_sha256": "cec1d0c4b49ea6c4a08dd61a91dcf9d382e7f91dcc608409334e409a6f3e3619",
+      "output_path": "rules/releases/v6.5.8/ChinaDirect.list",
+      "remove_exact": [
+        "DOMAIN,cn.windowssearch.com",
+        "DOMAIN,developer.microsoft.com",
+        "DOMAIN,ntservicepack.microsoft.com",
+        "DOMAIN,storeedgefd.dsx.mp.microsoft.com",
+        "DOMAIN-SUFFIX,00cdn.com",
+        "DOMAIN-SUFFIX,azuremigrate.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,azuremigratetest.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,azurestackhub.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,azurestackhubuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,bj1.api.bing.com",
+        "DOMAIN-SUFFIX,cbdstest.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,cdn20.com",
+        "DOMAIN-SUFFIX,cn.bing.com",
+        "DOMAIN-SUFFIX,cn.bing.net",
+        "DOMAIN-SUFFIX,cn.mm.bing.net",
+        "DOMAIN-SUFFIX,cncc.bingj.com",
+        "DOMAIN-SUFFIX,collaborate.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,collaborateppe.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,dcg.microsoft.com",
+        "DOMAIN-SUFFIX,ditu.live.com",
+        "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com",
+        "DOMAIN-SUFFIX,download.microsoft.com",
+        "DOMAIN-SUFFIX,download.visualstudio.microsoft.com",
+        "DOMAIN-SUFFIX,dreamspark.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,dreamsparkuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,itacademy.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,itacademyuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,ksyungslb.com",
+        "DOMAIN-SUFFIX,kunlunhuf.com",
+        "DOMAIN-SUFFIX,kunlunpi.com",
+        "DOMAIN-SUFFIX,lex.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,lexuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,mbs.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,mpnbenefits.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,mpnbenefitsrtl.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,mpnbenefitsrtluat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,msdn.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,msdprod-ad.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,msproduct.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,mwcloudcdn.com",
+        "DOMAIN-SUFFIX,mwcname.com",
+        "DOMAIN-SUFFIX,myvs.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,oemsoc.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,oemsocuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,officemkt.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,officemktuat.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,osrelease.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,ourdvsss.com",
+        "DOMAIN-SUFFIX,r.bing.com",
+        "DOMAIN-SUFFIX,rsm.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,sdx.microsoft.com",
+        "DOMAIN-SUFFIX,software.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,storecorefulfillment.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,storeedge.microsoft.com",
+        "DOMAIN-SUFFIX,surface.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,surface.downloads.prss.microsoft.com",
+        "DOMAIN-SUFFIX,th.bing.com",
+        "DOMAIN-SUFFIX,update.microsoft.com",
+        "DOMAIN-SUFFIX,vlportal.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,volic.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,vscode.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,vz.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,windbg.download.prss.microsoft.com",
+        "DOMAIN-SUFFIX,windowsupdate.microsoft.com",
+        "DOMAIN-SUFFIX,yfcdn.net",
+        "DOMAIN-SUFFIX,servicewechat.com"
+      ],
+      "regional": false
+    }
+  ],
+  "regional_owners": [
+    "Apple",
+    "Bilibili",
+    "Microsoft",
+    "Paypal"
+  ],
+  "regional_cn_path": "rules/releases/v6.5.8/RegionalCN.list",
+  "shared_cn_roots": [
+    "00cdn.com",
+    "cdn20.com",
+    "ksyungslb.com",
+    "kunlunhuf.com",
+    "kunlunpi.com"
+  ],
+  "doh_servers": [
+    "https://dns.alidns.com/dns-query"
+  ],
+  "references": [
+    "https://nsloon.app/docs/Rule/logic_rule/",
+    "https://nsloon.app/docs/DNS/",
+    "https://nsloon.app/docs/General/"
+  ],
+  "dns_bootstrap_host": "dns.alidns.com",
+  "dns_bootstrap_ip": "223.5.5.5"
+}

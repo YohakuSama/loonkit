@@ -23,7 +23,9 @@ class GitHub:
         self._opener = urllib.request.build_opener(NoRedirect())
 
     def request(self, method, path, payload=None):
-        if method not in {"GET", "POST"} or not path.startswith("/") or ".." in path.split("/"):
+        cleanup = ((method == 'PATCH' and re.fullmatch(r'/pulls/[1-9][0-9]*',path)) or
+                   (method == 'DELETE' and re.fullmatch(r'/git/refs/heads/automation/publisher-check-[0-9]+-[0-9]+',path)))
+        if (method not in {"GET", "POST"} and not cleanup) or not path.startswith("/") or ".." in path.split("/"):
             raise ValueError("unsupported GitHub operation")
         url = "https://api.github.com/repos/" + REPOSITORY + path
         request = urllib.request.Request(url, method=method,
@@ -47,6 +49,16 @@ class GitHub:
 
     def post(self, path, payload):
         return self.request("POST", path, payload)
+
+    def close_check_pr(self, number):
+        if not isinstance(number,int) or number <= 0:
+            raise ValueError('invalid check PR number')
+        return self.request('PATCH','/pulls/' + str(number),{'state':'closed'})
+
+    def delete_check_branch(self, branch):
+        if not re.fullmatch(r'automation/publisher-check-[0-9]+-[0-9]+',branch):
+            raise ValueError('only isolated publisher check branches can be deleted')
+        return self.request('DELETE','/git/refs/heads/' + branch)
 
     def file(self, path: str, ref: str) -> bytes:
         if not re.fullmatch(r"[a-f0-9]{40}", ref) or path.startswith("/") or ".." in path.split("/"):

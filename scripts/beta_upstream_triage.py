@@ -14,9 +14,9 @@ import re
 from beta_upstream_delivery import DOMAIN, SHARED
 
 DIRECT = {"ChinaDirect", "DomesticCore", "SteamCN", "AppleOTA"}
-RESTRICTED = DIRECT | {"AdBlock", "AI", "Apple", "Microsoft", "Paypal"}
+RESTRICTED = DIRECT | {"AdBlock", "AI", "Apple", "Microsoft", "Paypal", "Bilibili"}
 LOW_RISK_OWNERS = {"YouTube", "Netflix", "Disney", "PrimeVideo", "TikTok",
-                   "Bilibili", "Telegram", "Whatsapp", "Instagram", "Facebook",
+                   "Telegram", "Whatsapp", "Instagram", "Facebook",
                    "Twitter", "Discord", "Google", "Steam", "HBO", "Dazn", "動畫瘋",
                    "Spotify", "Twitch", "Abema", "BBC", "Line", "Reddit", "Linkedin"}
 SHA = re.compile(r"[a-f0-9]{64}\Z")

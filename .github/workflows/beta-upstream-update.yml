@@ -3,18 +3,51 @@ on:
   schedule:
     - cron: '40 2 * * 1'
   workflow_dispatch:
+    inputs:
+      verify_publisher:
+        description: Verify real draft-PR permissions and CI dispatch
+        type: boolean
+        default: true
   push:
     branches: [main]
     paths:
       - .github/workflows/beta-upstream-update.yml
       - scripts/beta_upstream_delivery.py
       - scripts/beta_github.py
+      - scripts/beta_publisher_check.py
 permissions:
   contents: read
 concurrency:
   group: beta-upstream-draft-publication
   cancel-in-progress: false
 jobs:
+  verify-publisher:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.verify_publisher)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify draft PR, explicit exact-head CI, and cleanup
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/beta_publisher_check.py --output "$RUNNER_TEMP/publisher-integration.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: publisher-integration
+          path: ${{ runner.temp }}/publisher-integration.json
+          retention-days: 30
+          if-no-files-found: warn
   stage:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

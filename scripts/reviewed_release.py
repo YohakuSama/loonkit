@@ -121,19 +121,22 @@ def render_beta(meta, root=ROOT):
     return profile, updated
 
 
-def verify(root=ROOT, remote=False):
-    spec = read_json(root, 'build/release_spec.json')
-    meta = read_json(root, 'build/release_manifest.json')
+def verify_v657(root=ROOT, remote=False):
+    current_spec = read_json(root, 'build/release_spec.json')
+    archived = current_spec['stable_release_version'] != 'v6.5.7'
+    prefix = 'build/baselines/v6.5.7/' if archived else 'build/'
+    spec = read_json(root, prefix + 'release_spec.json')
+    meta = read_json(root, prefix + 'release_manifest.json')
     decision = read_json(root, spec['release_gate_file'])
     if spec['stable_release_version'] != meta['label'] or meta['label'] != 'v6.5.7':
         raise ValueError('reviewed version identity differs')
-    profile = (root / 'LoonKit.lcf').read_bytes()
+    profile = (root / ('build/baselines/v6.5.7/LoonKit.lcf' if archived else 'LoonKit.lcf')).read_bytes()
     if render(spec['reviewed_assets_commit'], root) != profile:
         raise ValueError('formal profile is not the reviewed deterministic build')
     if decision['release_profile_sha256'] != sha(profile) or decision['version'] != meta['label'] or decision['decision'] != 'OWNER_REQUESTED_AUDIT_FIXES_AND_PUBLICATION':
         raise ValueError('owner scope does not identify this exact release')
     from verify_release import check_public_checksums, check_lock, LINK
-    check_public_checksums(root, meta, spec)
+    check_public_checksums(root, read_json(root,'build/release_manifest.json'), current_spec)
     check_lock(root)
     for path, raw in render_rules(root).items():
         if (root / path).read_bytes() != raw:
@@ -168,6 +171,16 @@ def verify(root=ROOT, remote=False):
         if not (root / path).is_file():
             raise ValueError('missing published auxiliary asset: ' + path)
     return {'release':meta['label'],'resources':len(resources),'matchers':meta['remote_rule_count'], 'sha256':sha(profile),'remote_checked':remote}
+
+
+def verify(root=ROOT, remote=False):
+    version = read_json(root, 'build/release_spec.json')['stable_release_version']
+    if version == 'v6.5.7':
+        return verify_v657(root, remote)
+    if version == 'v6.5.8':
+        from release_v658 import verify as verify_current
+        return verify_current(root, remote)
+    raise ValueError('unsupported reviewed release version')
 
 
 if __name__ == '__main__':

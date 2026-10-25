@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import re
 import beta_channel
+from regional_rules import condition, permits, source_matcher
 
 ROOT = Path(__file__).resolve().parents[1]
 URI = re.compile(
@@ -84,10 +85,10 @@ EXPECTED = {
     "unknown-unlisted-tld-proof.cn": ("Final", "Final"),
     "unknown-unlisted-overseas.example": ("Final", "Final"),
 }
-PENDING = {
-    "configuration.apple.com": "Follows Apple selector; actual client system behavior still needs targeted verification.",
-    "servicewechat.com": "Service ownership and region do not follow from a domain name.",
-}
+PENDING = {}
+REGIONAL = {'www.apple.com':'Apple','configuration.apple.com':'Apple',
+            'download.microsoft.com':'Microsoft','www.paypal.com':'Paypal',
+            'www.bilibili.com':'Bilibili','servicewechat.com':'Final'}
 
 
 def section(data: str, label: str) -> str:
@@ -100,7 +101,7 @@ def section(data: str, label: str) -> str:
 
 
 def domain_rule(line: str) -> tuple[str, str] | None:
-    columns = [x.strip() for x in line.split(",")]
+    columns = [x.strip() for x in source_matcher(line).split(",")]
     if len(columns) < 2 or columns[0] not in DOMAIN_KINDS:
         return None
     return columns[0], columns[1].lower()
@@ -108,7 +109,7 @@ def domain_rule(line: str) -> tuple[str, str] | None:
 
 def naive_domain_match(host: str, matcher: str) -> bool:
     """Plain baseline oracle for cross-checking the indexed implementation."""
-    pair = domain_rule(matcher)
+    pair = domain_rule(matcher) if permits(matcher,None) else None
     if pair is None:
         return False
     kind, value = pair
@@ -137,17 +138,17 @@ class DomainIndex:
             else:
                 self.keywords.append((value, row))
 
-    def match(self, host: str):
+    def match(self, host: str, country: str | None = None):
         host = host.lower().rstrip(".")
-        if host in self.exact:
+        if host in self.exact and permits(self.exact[host], country):
             return self.exact[host]
         labels = host.split(".")
         for at in range(len(labels)):
             name = ".".join(labels[at:])
-            if name in self.suffix:
+            if name in self.suffix and permits(self.suffix[name], country):
                 return self.suffix[name]
         for keyword, rule in self.keywords:
-            if keyword in host:
+            if keyword in host and permits(rule, country):
                 return rule
         return None
 
@@ -225,7 +226,7 @@ def build(root: Path = ROOT):
     return meta, local, remotes
 
 
-def trace(host: str, local, remotes, disable_ads=False):
+def trace(host: str, local, remotes, disable_ads=False, *, country=None):
     host = host.lower().rstrip(".")
     if not re.fullmatch(r"[a-z0-9.-]+", host) or not host or "." not in host:
         raise ValueError("host must be a plain non-private test hostname")
@@ -237,10 +238,11 @@ def trace(host: str, local, remotes, disable_ads=False):
     for item in remotes:
         if disable_ads and item["policy"] == "AdBlock":
             continue
-        matched = item["index"].match(host)
+        matched = item["index"].match(host, country)
         if matched:
             return {"policy": item["policy"], "source": "remote",
-                    "tag": item["tag"], "rule": matched}
+                    "tag": item["tag"], "rule": matched,
+                    'needs_geoip': country is None and condition(matched) is not None}
     # This is a domain-only prediction. Pure IPv4/IPv6 literal targets, SNI,
     # GEOIP,no-resolve and DNS are explicitly not included in this trace.
     return {"policy": "Final", "source": "fallback", "rule": "FINAL,Final"}
@@ -261,6 +263,14 @@ def report(root: Path = ROOT):
         "actual_offline": trace(host, local, remotes),
         "review_reason": reason, "device_verification": "NOT_TESTED"
     } for host, reason in PENDING.items()}
+    regional = {}
+    for host,owner in REGIONAL.items():
+        regional[host] = {}
+        for country,expected in [('CN','DIRECT'),('US',owner)]:
+            actual=trace(host,local,remotes,country=country)
+            if actual['policy'] != expected:
+                raise ValueError('regional route regression: ' + host + ' ' + country)
+            regional[host][country]=actual
     return {
         "schema_version": 1, "status": "DOMAIN_ONLY_STATIC_ANALYSIS_NOT_DEVICE_OBSERVATION",
         "candidate": meta["version"],
@@ -269,6 +279,7 @@ def report(root: Path = ROOT):
         "plugin_rules": 0,
         "adblock_disabled_means": "Beta-AdBlock-Balanced remote resource toggled off",
         "verified_synthetic_routes": verified,
+        "regional_cases": regional,
         "open_scope_review": pending,
         "limitations": [
             "Rules in user's separately installed plugins, overrides or DNS filters are not included.",

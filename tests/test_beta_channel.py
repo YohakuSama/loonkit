@@ -21,6 +21,11 @@ def section(data: str, label: str) -> str:
 
 
 def match(host: str, text: str) -> bool:
+    if text.startswith('AND,'):
+        hit=re.fullmatch(r'AND,\(\((DOMAIN(?:-SUFFIX)?),([^()]+)\),\(NOT,\(\(GEOIP,CN\)\)\)\)',text)
+        if not hit:
+            return False
+        text=hit[1]+','+hit[2]
     parts = text.split(",")
     if len(parts) < 2:
         return False
@@ -71,7 +76,7 @@ class BetaChannelTests(unittest.TestCase):
                 continue
             # Loon local-first, remote rules in listed order; no plugin block rules.
             for line in path.read_text(encoding="utf-8").splitlines():
-                if line.startswith(("DOMAIN,", "DOMAIN-SUFFIX,", "DOMAIN-KEYWORD,")) and match(host, line):
+                if match(host, line):
                     return props["policy"]
         return "Final"  # Tests only domain inputs; GEOIP/no-resolve requires device/IP path.
 
@@ -142,8 +147,11 @@ class BetaChannelTests(unittest.TestCase):
         exclusions = [s for s in original if s in {"DOMAIN-SUFFIX,cn", "DOMAIN-SUFFIX,wechat.com", "DOMAIN-SUFFIX,wechatapp.com"} or s.startswith("USER-AGENT,")]
         self.assertEqual(len(original), 114837)
         self.assertEqual(len(exclusions), 62)
-        self.assertEqual(len(candidate), 114775)
-        self.assertEqual(candidate, [s for s in original if s not in exclusions])
+        reviewed=json.loads((ROOT/'rules/reviewed/v6.5.8/decisions.json').read_text())
+        row=next(r for r in reviewed['rules'] if r['tag']=='Beta-ChinaDirect-Scoped')
+        self.assertEqual(len(candidate), 114709)
+        self.assertEqual(len(row['remove_exact']),66)
+        self.assertEqual(candidate, [s for s in original if s not in exclusions and s not in row['remove_exact']])
         self.assertFalse(any(s == "DOMAIN-SUFFIX,cn" or s.startswith("USER-AGENT,")
                              for s in candidate))
         self.assertEqual(hashlib.sha256(scoped.read_bytes()).hexdigest(),

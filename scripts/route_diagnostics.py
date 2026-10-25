@@ -16,8 +16,9 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 from beta_channel import URI
+from regional_rules import condition, source_matcher
 VALID_HOST = re.compile(r"^(?=.{1,253}$)[a-z0-9-]+(?:\.[a-z0-9-]+)+$", re.I)
-KINDS = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "IP-CIDR", "IP-CIDR6"}
+KINDS = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "IP-CIDR", "IP-CIDR6", "IP-ASN", "GEOIP"}
 SERVICE_GROUPS = ("Spotify", "Twitch", "Abema", "BBC", "Line", "Reddit", "Linkedin")
 MAX_LOG_SIZE = 10 * 1024 * 1024
 MAX_LOG_ENTRIES = 10000
@@ -41,6 +42,10 @@ def matcher(raw: str):
     if len(fields) < 2 or fields[0].upper() not in KINDS:
         return None
     kind, value = fields[0].upper(), fields[1].lower()
+    if kind == 'GEOIP':
+        return (kind,value.upper()) if re.fullmatch('[a-z]{2}',value) else None
+    if kind == 'IP-ASN':
+        return (kind, value) if value.isdigit() and 0 < int(value) < 2**32 else None
     if kind in ("IP-CIDR", "IP-CIDR6"):
         try:
             network = ipaddress.ip_network(value, strict=False)
@@ -57,11 +62,7 @@ def matcher(raw: str):
 
 
 def known_services(root=ROOT):
-    """Classify all published service domains, including v6.1.0 additions.
-
-    Root domains are frozen in the engine manifest, while curated v6.1.0
-    additions are tracked separately from the immutable rule inputs.
-    """
+    """Read the active service registry, or its historical schema."""
     root = Path(root)
     release = json.loads((root / 'build/release_manifest.json').read_text())
     if release.get('schema_version') == 2:
@@ -103,6 +104,9 @@ class Router:
         self.suffix = defaultdict(list)
         self.keyword = []
         self.ips = []
+        self.asns = []
+        self.geoip = []
+        self.regional = {}
         self.subscriptions = []
         self.count = 0
         release = json.loads((self.root / 'build/release_manifest.json').read_text())
@@ -112,7 +116,7 @@ class Router:
         for line in self.sections["Rule"]:
             cols = [x.strip() for x in line.split(",")]
             if len(cols) >= 3:
-                self._add(",".join(cols[:2]), cols[2], "本地规则")
+                self._add(",".join(cols[:2]+cols[3:]), cols[2], "本地规则")
         for entry in self.sections["Remote Rule"]:
             parts = [x.strip() for x in entry.split(",")]
             hit = URI.fullmatch(parts[0])
@@ -132,22 +136,33 @@ class Router:
                 self._add(raw, policy, rel)
 
     def _add(self, line: str, policy: str, origin: str):
-        parsed = matcher(line)
+        regional = condition(line)
+        parsed = matcher(source_matcher(line))
         if not parsed:
             return
         kind, value = parsed
         self.count += 1
-        item = (self.count, policy, origin, kind + "," + value)
+        item = (self.count, policy, origin, line if regional else kind + "," + value)
+        if regional:
+            self.regional[self.count] = regional[1]
         if kind == "DOMAIN":
             self.exact[value].append(item)
         elif kind == "DOMAIN-SUFFIX":
             self.suffix[value].append(item)
         elif kind == "DOMAIN-KEYWORD":
             self.keyword.append((value, item))
+        elif kind == 'IP-ASN':
+            self.asns.append((int(value), item))
+        elif kind == 'GEOIP':
+            self.geoip.append((value, 'no-resolve' in line.split(',')[2:], item))
         else:
             self.ips.append((ipaddress.ip_network(value), item))
 
-    def match(self, value: str) -> dict:
+    def match(self, value: str, *, country: str | None = None, asn: int | None = None) -> dict:
+        if country is not None and not re.fullmatch('[A-Z]{2}', country):
+            raise ValueError('country must be an observed two-letter GeoIP code')
+        if asn is not None and not (isinstance(asn,int) and 0 < asn < 2**32):
+            raise ValueError('invalid observed ASN')
         target = value.lower().rstrip(".")
         if target.startswith(("http://", "https://")):
             raise ValueError("enter a hostname or IP only; URLs might contain private tokens")
@@ -156,10 +171,15 @@ class Router:
         except ValueError:
             ip = None
         hits = []
+        if country is not None:
+            hits.extend(item for code,no_resolve,item in self.geoip
+                        if code == country and (ip is not None or not no_resolve))
         if ip is not None:
             for network, item in self.ips:
                 if ip.version == network.version and ip in network:
                     hits.append(item)
+            if asn is not None:
+                hits.extend(item for number,item in self.asns if number == asn)
         else:
             if not VALID_HOST.fullmatch(target):
                 raise ValueError("expected a valid public-style hostname or IP address")
@@ -170,16 +190,21 @@ class Router:
             for keyword, item in self.keyword:
                 if keyword in target:
                     hits.append(item)
+        pending = [item for item in hits if item[0] in self.regional]
+        hits = [item for item in hits if item[0] not in self.regional or self.regional[item[0]] == (country == 'CN')]
         hits.sort(key=lambda item: item[0])
         chosen = hits[0] if hits else None
+        unresolved = country is None and any(chosen is None or item[0] <= chosen[0] for item in pending)
         return {
             "target": target,
             "predicted_policy": chosen[1] if chosen else "Final (subject to GEOIP/ASN/runtime)",
             "first_match": ({"rule":chosen[3], "source":chosen[2]} if chosen else None),
             "other_match_count": max(0, len(hits)-1),
             "other_policies": sorted({item[1] for item in hits[1:]}),
-            "warning": ("离线规则推演；无法确认真机实际命中、GEOIP、IP-ASN、"
-                        "DNS 解析、插件插入规则及节点实际可用性。"),
+            "prediction_status": 'NEEDS_GEOIP' if unresolved else 'MATCHED' if chosen else 'FALLBACK',
+            "country": country,
+            "regional_options": ({'CN':'DIRECT','otherwise':chosen[1] if chosen else 'Final'} if unresolved else None),
+            "warning": "离线推演；实际策略以 Loon 请求记录为准。",
         }
 
 
@@ -195,7 +220,7 @@ def coverage(router: Router) -> dict:
         groups.append({"service": group, "declared_root_count": len(roots),
                        "reviewed_roots_match": all(x["pass"] for x in checks),
                        "roots": checks})
-    return {"summary": "检查已登记的服务主域名与 v6.1.0 精选域名；不代表 App 登录/API/CDN 已完整覆盖。",
+    return {"summary": "检查当前登记的服务域名覆盖。",
             "all_reviewed_roots_match": all(g["reviewed_roots_match"] for g in groups),
             "services": groups}
 
@@ -356,7 +381,8 @@ def private_triage(data: bytes, roots: dict, router: Router, *, text_mode=False)
             continue
         processed += 1
         group = service_for(host, roots)
-        predicted = router.match(host)["predicted_policy"]
+        prediction = router.match(host)
+        predicted = prediction["predicted_policy"]
         if predicted.startswith("Final"):
             predicted = "Final"
         if predicted not in allowed:
@@ -369,6 +395,8 @@ def private_triage(data: bytes, roots: dict, router: Router, *, text_mode=False)
         status_range = str(code // 100) + "xx" if 100 <= code <= 599 else "未知"
         if predicted == "AdBlock":
             signal = "命中 AdBlock 策略（是否拦截取决于用户选择）"
+        elif prediction.get('prediction_status') == 'NEEDS_GEOIP':
+            signal = '需结合 GeoIP 确认国内直连或海外服务策略'
         elif group != "其他站点" and predicted == "Final":
             signal = "已识别服务使用 Final 兜底，需核对规则覆盖"
         elif group != "其他站点" and predicted not in (group, "其他策略"):
@@ -408,6 +436,8 @@ def main():
         subparser.add_argument("--json", action="store_true")
         if name == "match":
             subparser.add_argument("hostname_or_ip")
+            subparser.add_argument('--country', help='observed GeoIP country code, e.g. CN or US')
+            subparser.add_argument('--asn', type=int, help='observed ASN for literal IP targets')
         if name in ("logs", "triage"):
             subparser.add_argument("file", type=Path)
             subparser.add_argument("--text", action="store_true",
@@ -425,7 +455,7 @@ def main():
             router = Router()
             result = (coverage(router) if args.command == "coverage" else
                       candidate_coverage_audit(router) if args.command == "audit" else
-                      router.match(args.hostname_or_ip))
+                      router.match(args.hostname_or_ip, country=args.country, asn=args.asn))
         print(json.dumps(result, ensure_ascii=False, indent=2))
     except OSError:
         parser.exit(2, "无法读取输入文件；请检查路径、权限和文件大小。\n")
