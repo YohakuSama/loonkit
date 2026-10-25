@@ -53,7 +53,12 @@ class RuleOwnerCleanupTests(unittest.TestCase):
                             ("minimax.io","AI"),("z.ai","AI")):
             self.assertEqual(owner(host,remote,rows,local),policy,host)
         old=(ROOT/"build/baselines/generated/v7.0.4/LoonKit.lcf").read_text()
-        actual=self.profile.replace("# LoonKit v7.0.5\n","# LoonKit v7.0.4\n",1)
+        version=self.new["label"]
+        actual=self.profile.replace("# LoonKit "+version+"\n","# LoonKit v7.0.4\n",1)
+        current_plugin=self.profile.split("[Plugin]\n",1)[1].split("\n[",1)[0]
+        previous_plugin=old.split("[Plugin]\n",1)[1].split("\n[",1)[0]
+        actual=actual.replace("[Plugin]\n"+current_plugin,
+                              "[Plugin]\n"+previous_plugin,1)
         old_rows={r["tag"]:r for r in self.old["runtime_resources"]}
         for row in rows:
             actual=actual.replace(row["uri"],old_rows[row["tag"]]["uri"])

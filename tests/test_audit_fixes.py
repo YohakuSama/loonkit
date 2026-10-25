@@ -91,6 +91,12 @@ class AuditFixTests(unittest.TestCase):
                     name)
                 self.assertEqual(sum(x == 'GEOIP,CN,DIRECT,no-resolve' for x in new_lines),1)
                 self.assertEqual(new_lines[-1], 'FINAL,Final')
+            elif name == 'Plugin':
+                spec=json.loads((ROOT/'build/release_spec.json').read_text())
+                expected=('https://raw.githubusercontent.com/YohakuSama/loonkit/'
+                          +spec['plugin_assets_commit']+'/release/Network_Diagnostics.plugin, enabled=true')
+                self.assertEqual(new_lines,[expected])
+                self.assertEqual(len(old_lines),1)
             else:
                 self.assertEqual(old_lines, new_lines, name)
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)

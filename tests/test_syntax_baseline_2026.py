@@ -88,7 +88,8 @@ class OfficialSyntax2026Contracts(unittest.TestCase):
     def test_existing_diagnostics_plugin_already_uses_expression_scripts(self):
         self.assertIn("#!loon_version = 3.5.1(983)", self.plugin)
         self.assertIn("generic then script(", self.plugin)
-        self.assertIn("network-changed then script(", self.plugin)
+        self.assertNotIn("network-changed then script(", self.plugin)
+        self.assertNotIn("auto_check", self.plugin)
         self.assertNotIn("skip-server-cert-verify = true", self.plugin)
 
     def test_source_compiler_intentionally_rejects_unknown_new_types(self):
