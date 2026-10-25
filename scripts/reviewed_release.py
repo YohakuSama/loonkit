@@ -46,9 +46,13 @@ def render_rules(root=ROOT):
 
 
 def records(profile, root=ROOT):
-    return [{**row, 'sha256':sha((root / row['path']).read_bytes()),
-             'matcher_count':len(content_rules((root / row['path']).read_bytes()))}
-            for row in remote_entries(profile.decode())]
+    # Read each immutable resource once, then derive both digest and count.
+    result = []
+    for row in remote_entries(profile.decode()):
+        raw = (root / row['path']).read_bytes()
+        result.append({**row, 'sha256': sha(raw),
+                       'matcher_count': len(content_rules(raw))})
+    return result
 
 
 def validate_records(profile, expected, root=ROOT, remote=False):
