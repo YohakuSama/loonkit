@@ -7,7 +7,7 @@
       "app_store_url": "https://apps.apple.com/us/app/github/id1477376905?uo=4",
       "publisher": "GitHub",
       "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d2/27/2d/d2272d28-81e2-f24d-d767-2e158eca3694/AppIcon-0-0-1x_U007epad-0-1-P3-85-220.png/512x512bb.jpg",
-      "sha256": "6f48e52a3c69e65f24d97e7815f2374175e4e2430a75b9a96e2a9f123401bc8d",
+      "sha256": "d0f43696caeb9d6c52fd339de45c7f6d682143be7a346b0ccd9c86810ca9c68d",
       "original_dimensions": [
         512,
         512
@@ -18,6 +18,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 25,
       "output_dimensions": [
         512,
         512
@@ -29,7 +30,7 @@
       "app_store_url": "https://apps.apple.com/us/app/chatgpt/id6448311069?uo=4",
       "publisher": "OpenAI OpCo, LLC",
       "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/42/3b/1d/423b1d61-1b55-0bca-d3b9-1ce597c7b4b0/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/512x512bb.jpg",
-      "sha256": "7380aca0664e22519f4514faabb7e9df7c29c36e2157398169240c7cfa9c2449",
+      "sha256": "677c1bb2dc0ff2eff9518604c530345d24a0389b9b9bf1e9f1ab0286525728d2",
       "original_dimensions": [
         512,
         512
@@ -40,6 +41,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 25,
       "output_dimensions": [
         512,
         512
@@ -51,7 +53,7 @@
       "app_store_url": "https://apps.apple.com/us/app/google-gemini/id6477489729?uo=4",
       "publisher": "Google",
       "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/30/06/62/300662ce-cd91-f109-8ca9-ca1517193f61/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220.png/512x512bb.jpg",
-      "sha256": "f66c6b859318a14c47d3bd9c855c952aee3485277fdf5c533b8183eb8b3e8fdc",
+      "sha256": "cdcf860bd0fe7f1a4664615e1805ab01a7eb7b798ac9fb226a7321a1720fc820",
       "original_dimensions": [
         512,
         512
@@ -62,6 +64,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 20,
       "output_dimensions": [
         512,
         512
@@ -84,6 +87,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 0,
       "output_dimensions": [
         512,
         512
@@ -106,6 +110,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 0,
       "output_dimensions": [
         512,
         512
@@ -128,6 +133,7 @@
         512,
         512
       ],
+      "glass_edge_trim_pixels": 0,
       "output_dimensions": [
         512,
         512
