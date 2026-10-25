@@ -284,7 +284,7 @@ class OfflineDiagnosticsTests(unittest.TestCase):
 
 class WorkingTreeCleanupTests(unittest.TestCase):
     def test_live_upstream_audit_ignores_newer_owners_but_reports_them(self):
-        from scripts import upstream_review as review
+        review = upstream_review
         root = Path(__file__).resolve().parents[1]
         legacy = json.loads((root / "build/engine_manifest.json").read_text())
         current = json.loads((root / "build/release_manifest.json").read_text())
