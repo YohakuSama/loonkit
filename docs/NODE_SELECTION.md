@@ -1,6 +1,6 @@
 # 节点选择与自动故障切换
 
-LoonKit 使用原有的 `Proxy`、`Auto` 和 `Fallback` 三个策略组。用户可以在不修改分流规则的情况下，按照自己的订阅规模调整候选节点。
+通过 `Proxy`、`Auto` 和 `Fallback` 选择线路，使用筛选器调整候选节点。
 
 ## 策略组逻辑
 
@@ -10,19 +10,15 @@ LoonKit 使用原有的 `Proxy`、`Auto` 和 `Fallback` 三个策略组。用户
 | `Auto` | `url-test`，定期在候选节点中选延迟最低者 | 日常自动选路 |
 | `Fallback` | `fallback`，按候选列表顺序取首个可用节点 | 主线路与备用线路有明确优先级 |
 
-`Fallback` 是按可用性、**不是按延迟排名**选择节点。若要自动选择低延迟节点，请在 `Proxy` 中使用 `Auto`。
-
 ## 多订阅节点池
 
-配置包含三个节点筛选器，而没有增加任何策略组，少量节点用户可保持默认设置：
+三个筛选器默认包含全部节点：
 
 - `ALL_Filter`：完整节点列表，用于手动选择。
 - `Auto_Filter`：`Auto` 自动测速候选列表。
 - `Fallback_Filter`：`Fallback` 有序主备候选列表。
 
-三个筛选器默认匹配全部节点，确保导入任何机场订阅后不会因为未知命名规则而丢失节点。**默认状态不会自动剔除慢节点，也不会减少首次扫描数量。** 对于每个订阅含数十个节点的用户，可在 Loon「配置 → 筛选节点」中调整 `Auto_Filter` 和 `Fallback_Filter`，保留适合自己网络的节点；`ALL_Filter` 仍可用于访问完整列表。官方提供 `NodeSelect` 手动筛选、`NameKeyword` 和 `NameRegex` 等方式。
-
-建议让 `Auto` 候选集合覆盖不同线路提供商和地区，避免只剩一条故障域；`Fallback` 则选择少量具有明确优先顺序的可靠主备线路。实际筛选应依据节点的真机稳定性及服务可用性，不应根据未知机场通用地排除特定名称。
+在 Loon「配置 → 筛选节点」中，通过 `NodeSelect`、`NameKeyword` 或 `NameRegex` 调整列表。`Auto_Filter` 可保留常用线路，`Fallback_Filter` 按主备优先级排列。
 
 ## 测速参数
 
@@ -36,8 +32,6 @@ LoonKit 使用原有的 `Proxy`、`Auto` 和 `Fallback` 三个策略组。用户
 | `Fallback max-timeout` | 2200 毫秒 | 对抖动保留余量，同时减少高延迟节点被判为可用 |
 | `test-timeout` | 5 秒 | 原生测速超时上限 |
 
-测速 URL 使用 [Loon 官方配置文档](https://nsloon.app/docs/General/)中的例子。该地址的实际响应仍可能因用户所在网络和节点出口不同而变化；延迟数据不能直接代表视频播放速度或所有网站的连接质量。切换测速地址之前，建议对同一节点、同一网络重复测量并比较结果。
-
-**重要：** Auto 每 600 秒、Fallback 每 900 秒执行周期性检测。这些都是调度间隔，不代表单次请求耗时。对少量节点保留 Auto 原有刷新频率；对于超过百个节点的订阅，每轮仍可能检测候选池中的所有节点，建议按实际需求收窄自动筛选范围。故障切换时效、并发测试峰值与测试地址在不同网络中的表现尚需 Loon 真机确认。
+节点较多时，收窄自动策略的候选列表可减少每轮探测数量。
 
 参考：[Loon 节点筛选](https://nsloon.app/docs/Node/nodefilter/) · [Loon 策略组](https://nsloon.app/docs/Policy/policygroup/) · [维护指南](./MAINTAINING.md)

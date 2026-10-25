@@ -18,6 +18,8 @@
 
 该检查独立于上游是否出现新增，结果保存在 publisher-integration artifact，记录实际使用的审阅模式。手动运行可通过 verify_publisher 参数控制。
 
+2026-10-25 [线上验证](https://github.com/YohakuSama/loonkit/actions/runs/40159737181)通过：候选分支创建、[对应提交的 Beta CI](https://github.com/YohakuSama/loonkit/actions/runs/40159746722)与清理均成功，使用人工 PR 模式。同次来源检查完整，本轮没有合格新增。
+
 ## 权限
 
 来源审阅 job 只读。草稿发布与集成检查 job 使用 contents、pull-requests、actions 写权限，执行 main 上的代码。仓库关闭 Actions 自动创建 PR 时，更新器保留候选分支、运行 CI，并提供人工创建 PR 的比较入口。
