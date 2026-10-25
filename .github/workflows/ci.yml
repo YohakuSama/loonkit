@@ -47,6 +47,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: Audit unified routing candidate and cross-policy coverage
         run: python3 scripts/routing_candidate_audit.py --check
+      - name: Upstream sample routes and domestic AI inventory
+        run: python3 scripts/audit_upstream_703.py
       - name: Audit v7.0.2 scoped LSR resources and icon directory
         run: python3 scripts/audit_v702.py --check
       - name: Native Loon mocked-response regressions
