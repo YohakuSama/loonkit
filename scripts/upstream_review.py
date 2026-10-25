@@ -436,6 +436,19 @@ def _domain_risk(rule: str, group: str, protected: tuple[str, ...]) -> list[str]
     return tags
 
 
+def runtime_baseline(root=ROOT, *, profile_path='LoonKit.lcf', manifest_path='build/release_manifest.json'):
+    from beta_channel import content_rules
+    from reviewed_release import validate_records
+    from regional_rules import source_matcher
+    root=Path(root)
+    meta=json.loads((root/manifest_path).read_text())
+    rows=validate_records((root/profile_path).read_bytes(),meta['runtime_resources'],root)
+    by_tag={r['tag']:r for r in rows}
+    return {group:{canonical(source_matcher(rule)) for tag in tags
+                   for rule in content_rules((root/by_tag[tag]['path']).read_bytes())}
+            for group,tags in meta['source_group_tags'].items()}
+
+
 def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tuple[dict, dict[str, bytes], dict]:
     """Return report, exact fetched snapshots, and full change record (no writes)."""
     root = Path(root)
@@ -444,6 +457,9 @@ def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tup
     active = manifest["active_groups"]
     if len(sources) != 87 or len(active) != 26:
         raise ValueError("source catalog or active policy set unexpectedly changed")
+    release_path=root/'build/release_manifest.json'
+    if baseline_rules is None and release_path.is_file() and json.loads(release_path.read_text()).get('schema_version') == 2:
+        baseline_rules=runtime_baseline(root)
     if baseline_rules is not None:
         allowed = set(active) | set(manifest["inactive_groups"])
         if not isinstance(baseline_rules, dict) or not baseline_rules or set(baseline_rules) - allowed:

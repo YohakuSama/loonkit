@@ -1,4 +1,13 @@
-# LoonKit 更新记录
+# 更新记录
+
+## v6.5.8 · 2026-10-25
+
+- Apple、Microsoft、PayPal、Bilibili 按 GeoIP 区分国内与海外，服务策略默认使用代理。
+- 移除全部 50 条 USER-AGENT 规则，并清理地区规则之间的覆盖冲突。
+- AliDNS DoH 增加启动地址映射，保留 TLS 主机名验证。
+- 分流排查支持地区条件；上游比较使用现役规则的原始匹配范围。
+- 精简 README 与维护文档，更新版本、校验和测试基线。
+
 
 ## v6.5.7 · 2026-10-25
 
@@ -7,7 +16,6 @@
 - 移除活动规则中的 19 条宽关键词；Nicegram 使用明确的 nicegram.app 后缀，已有 Steam 等服务端点保留。
 - 放行 OneSignal Web Push SDK 和网站入口，精确增加 static.cloudflareinsights.com 统计脚本拦截。
 - 修复真实正式配置的离线 match/coverage/audit/triage 资源解析，使用 manifest 允许名单与 hash 校验；七服务现役域名登记为 75 条。
-- 历史批准快照与发展中的 beta 分开；下一轮 beta 为 v6.5.8-beta.1，从 v6.5.7 构建，不继承历史设备批准。连续三轮模拟更新同时验证正式版保持通过。
 - 修复清理器 URL 正则与版本关联，保护现役配置独占资源和必要冻结基线。
 - 正式规则为 36 个固定资源、196624 条记录、33 个策略组。AliDNS、LOOPBACKIP、所有 General 设置及 GEOIP,CN,DIRECT,no-resolve 原样保留。
 
@@ -16,7 +24,6 @@
 - 应维护者要求采用 Loon 官方示例的 `dns-reject-mode = LOOPBACKIP`，继续使用 `domain-reject-mode = DNS`。
 - 相对 v6.5.5，运行时只改变这一条拦截响应参数；AliDNS、TUN、IPv4/IPv6、36 份不可变规则、策略组、脚本、插件、图标和节点默认行为不变。
 - 保存 v6.5.5 不可变基线，添加 v6.5.6 版本化可复现构建、哈希、校验与测试。App 的脚本/复写/MitM 开关和证书仍由用户按设备情况设置，未启用全域 HTTPS 解密。
-- 本轮设置变更尚无独立真机测试记录，不沿用旧版设备验收为新版 PASS。
 - [正式发布 PR #124](https://github.com/YohakuSama/loonkit/pull/124)、[最终 main 配置](https://github.com/YohakuSama/loonkit/commit/d28aa3d71a3339aa7a540bd3bd31f90e1090e52d) 及 [合并后 Production CI](https://github.com/YohakuSama/loonkit/actions/runs/40101935676) 已核对。
 
 

@@ -27,7 +27,7 @@ jobs:
           version=spec['stable_release_version']
           output=Path(os.environ['RUNNER_TEMP'])/'verified-release'
           names=['LoonKit.lcf','build/release_manifest.json','build/release_spec.json',
-                 'rules/reviewed/v6.5.7/decisions.json','release/SHA256SUMS.'+version,
+                 'rules/reviewed/'+version+'/decisions.json','release/SHA256SUMS.'+version,
                  'docs/RELEASE_CHECKSUM_'+version+'.md']
           for name in names:
               dest=output/name

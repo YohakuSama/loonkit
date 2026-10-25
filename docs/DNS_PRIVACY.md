@@ -1,33 +1,30 @@
-# DNS 设置与检查（v6.5.7）
+# DNS 设置
 
-v6.5.7 沿用 v6.5.6 的 AliDNS、LOOPBACKIP 与全部 General 设置，保留 GEOIP,CN,DIRECT,no-resolve；不远程更改 App 回退开关，不宣称零 DNS 泄漏。
+默认解析器为 AliDNS。DoH 使用域名验证 TLS 证书，Host 映射提供启动地址。
 
-当前配置及 DNS 设置详见 [LoonKit.lcf](../LoonKit.lcf)。
+```ini
+[General]
+doh-server = https://dns.alidns.com/dns-query
+hijack-dns = *:53
 
-| 项目 | 现有配置 |
+[Host]
+dns.alidns.com = 223.5.5.5
+```
+
+在 Loon 的 DNS 服务器页面关闭 **「加密 DNS 失败回退到普通 DNS」**。关闭后，加密解析失败应停止解析，直到 DoH 恢复。
+
+普通 DNS 地址保留为 AliDNS；是否启用故障回退由上述 App 开关控制。配置文件没有对应的远程开关。
+
+## 检查方法
+
+| 场景 | 检查内容 |
 | --- | --- |
-| 普通 DNS | `223.5.5.5,223.6.6.6` |
-| DoH | `https://dns.alidns.com/dns-query` |
-| DNS 劫持 | `hijack-dns = *:53` |
-| IP 模式 | `ip-mode = dual` |
-| IPv6 虚拟接口 | `ipv6-vif = auto` |
-| DNS 拦截行为 | `domain-reject-mode = DNS` |
-| DNS 拦截返回 | `dns-reject-mode = LOOPBACKIP` |
+| 正常访问 | DNS 日志使用配置中的 DoH；抓包没有对应的公网明文 DNS 查询。 |
+| DoH 故障 | DoH 不可达时解析失败，没有转为 UDP/TCP 53。 |
+| 网络切换 | Wi-Fi 与蜂窝切换后继续使用 DoH。 |
+| 节点域名 | 节点启动解析路径与全局设置一致；单独配置 server-dns 时检查该项。 |
+| 应用自带 DNS | 单独核对应用发起的 DoH/DoT 请求及其路由。 |
 
-`interface-mode`、`skip-proxy`、`bypass-tun` 与 `real-ip` 的具体内容以正式配置为准。
+DNS 泄漏网站显示的解析器地区不能单独说明是否使用明文传输。AliDNS 是本配置指定的解析服务。
 
-在 Loon 中导入完整配置后添加自己的节点订阅，并确保策略组已选中可用节点。若需要避免加密 DNS 故障时回退到普通 UDP DNS，可在 Loon 的 DNS 设置中关闭「加密 DNS 失败回退到普通 DNS」；此操作可能导致 DoH 不可达时无法解析。
-
-按照 [Loon DNS 文档](https://nsloon.app/docs/DNS/)，同时配置普通 DNS 与 DoH 时可能发生并行查询或故障回退。需要限制明文回退时，可在 Loon 中关闭「加密 DNS 失败回退到普通 DNS」并结合应用日志核对实际解析结果。
-
-公网出口 IP、DNS 解析器与具体 DNS 请求的传输方式是不同的指标。对于应用内置的 DoH/DoT 请求，可结合 Loon DNS 日志、请求策略及[网络辅助](./NETWORK_DIAGNOSTICS.md)进一步排查。
-
-参考：[Loon DNS 文档](https://nsloon.app/docs/DNS/)。
-
-## v6.5.5 DNS 边界
-
-候选原样保留已验收 beta.4 中的 AliDNS 普通 DNS、DoH、UDP/53 劫持、IPv4/IPv6、TUN 绕过和应用设置控制的 DNS 回退。未提供设备抓包、DoH 故障回退或应用自带 DoH 的测试记录，因此不能作零 DNS 泄漏、零明文回退或所有 IPv6/旁路场景已验证的结论。
-
-## v6.5.6 DNS 拦截
-
-对于命中拒绝规则的域名，LOOPBACKIP 返回回环 IP（旧版 NOANSWER 返回空 DNS 应答），不会因此改变上游 DNS 服务器。DNS 泄漏风险依然与普通 DNS 回退、应用私有 DoH、IPv6 和旁路设置有关，不可据此宣称零泄漏。Loon App 端功能参阅 [设备设置指南](./LOON_APP_SETTINGS.md)。
+[配置](../LoonKit.lcf) · [Loon DNS 文档](https://nsloon.app/docs/DNS/) · [App 设置](./LOON_APP_SETTINGS.md)

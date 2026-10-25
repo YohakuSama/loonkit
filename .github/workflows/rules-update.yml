@@ -24,20 +24,23 @@ jobs:
       - name: Verify candidate preview remains exactly pinned and summarize risks
         run: |
           python3 - <<'PY'
-          import json, os
+          import json, os, sys
           from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from upstream_review import runtime_baseline
           base=Path.cwd()
           directory=Path(os.environ["RUNNER_TEMP"])/"upstream-review"
           report=json.loads((directory/"UPSTREAM_REVIEW.json").read_text())
           assert report["publication_allowed"] is False
           assert report["preview_sha256_unchanged"] is True
-          assert len(report["groups"]) == 26
+          baseline=runtime_baseline(base)
+          assert set(report["groups"]) == set(baseline)
           for group in report["groups"]:
               name="AnimeCrazy" if group=="動畫瘋" else group
               def rules(path):
                   return {line.strip() for line in path.read_text().splitlines()
                           if line.strip() and not line.lstrip().startswith(("#",";","//"))}
-              old=rules(base/"rules/releases/vNext-RC2"/(name+".list"))
+              old=baseline[group]
               preview=rules(directory/"candidate"/(name+".list"))
               assert old==preview, "unapproved changed preview: "+group
           additions=sum(g["added"] for g in report["groups"].values())
@@ -46,7 +49,7 @@ jobs:
               fd.write("## Upstream rule review (not publishable)\n")
               fd.write(f"Sources requiring review: {report['incomplete_sources']}\n")
               fd.write(f"Proposed additions: {additions}; proposed deletions: {deletions}\n")
-              fd.write("All 26 candidate previews match the immutable published baseline.\n")
+              fd.write(f"All {len(baseline)} candidate previews match the reviewed service scopes.\n")
           PY
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

@@ -40,7 +40,7 @@ class PublishedCandidateTests(unittest.TestCase):
                          sum(x["matcher_count"] for x in published["runtime_resources"]))
 
     def test_modified_directive_fails_exact_comparison(self):
-        source=(ROOT/"LoonKit.lcf").read_bytes()
+        source=(ROOT/"build/baselines/v6.5.5/LoonKit.lcf").read_bytes()
         candidate=(ROOT/"build/baselines/v6.5.5-beta.4/LoonKit.lcf").read_bytes()
         changed=source.replace(b"doh-server = https://dns.alidns.com/dns-query",
                                b"doh-server = https://different.invalid/dns-query")

@@ -21,7 +21,7 @@ HEX40 = re.compile(r"[a-f0-9]{40}\Z")
 HEX64 = re.compile(r"[a-f0-9]{64}\Z")
 VERSION = re.compile(r"(v[0-9]+\.[0-9]+\.[0-9]+-beta\.)([1-9][0-9]*)\Z")
 DOMAIN = re.compile(r"DOMAIN,(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z][a-z0-9-]{0,62}\Z")
-OWNERS = {"YouTube", "Netflix", "Disney", "PrimeVideo", "TikTok", "Bilibili", "Telegram",
+OWNERS = {"YouTube", "Netflix", "Disney", "PrimeVideo", "TikTok", "Telegram",
           "Whatsapp", "Instagram", "Facebook", "Twitter", "Discord", "Google", "Steam", "HBO",
           "Dazn", "動畫瘋", "Spotify", "Twitch", "Abema", "BBC", "Line", "Reddit", "Linkedin"}
 SHARED = ("googleapis.com", "apis.google.com", "appspot.com", "cloudfront.net", "akamaihd.net",
@@ -32,7 +32,8 @@ SHARED = ("googleapis.com", "apis.google.com", "appspot.com", "cloudfront.net", 
           "azurefd.net", "azurefd.us", "azureedge.net", "cloudapp.net", "trafficmanager.net",
           "azurecontainer.io", "azure-apim.net", "azurecosmos.net", "azurecosmosdb.com",
           "azurecosmosdb.net", "azurecosmosdb.info", "azuredatabricks.net", "azure-devices.net",
-          "akamaiedge.net", "msecnd.net", "live-video.net", "onetrust.com", "cookielaw.org")
+          "akamaiedge.net", "msecnd.net", "live-video.net", "onetrust.com", "cookielaw.org",
+          "cdn20.com", "00cdn.com", "ksyungslb.com", "kunlunhuf.com", "kunlunpi.com")
 RAW = "https://raw.githubusercontent.com/" + REPOSITORY + "/"
 MAX_TOTAL = 30
 
@@ -50,6 +51,17 @@ def next_version(version):
     if not hit:
         raise ValueError("expected semantic beta version")
     return hit[1] + str(int(hit[2]) + 1)
+
+
+def effective_conflict(host, group, local, remotes):
+    from beta_effective_audit import trace
+    route=trace(host,local,remotes)
+    cn=trace(host,local,remotes,country='CN')
+    if cn['policy'] == 'DIRECT' and route['policy'] != 'DIRECT':
+        return 'REGIONAL_SCOPE_REVIEW'
+    if route['policy'] != 'Final':
+        return 'ALREADY_COVERED' if route['policy'] == group else 'ACTIVE_BETA_OWNER_CONFLICT'
+    return None
 
 
 def prepare(candidate: Path, root: Path = ROOT) -> dict:
@@ -75,11 +87,11 @@ def prepare(candidate: Path, root: Path = ROOT) -> dict:
         rows = []
         for rule in delta[group]["added"]:
             host = rule.split(",", 1)[1]
-            route = beta_effective_audit.trace(host, local, remotes)
-            if route["policy"] == "Final":
+            conflict=effective_conflict(host,group,local,remotes)
+            if conflict is None:
                 rows.append(rule)
             else:
-                skipped[rule] = "ALREADY_COVERED" if route["policy"] == group else "ACTIVE_BETA_OWNER_CONFLICT"
+                skipped[rule] = conflict
         if rows:
             selected[group] = {"rules": sorted(rows), "provenance": {
                 row["rule"]: row["source_ids"] for row in risks[group]["additions"] if row["rule"] in rows}}
@@ -94,6 +106,7 @@ def prepare(candidate: Path, root: Path = ROOT) -> dict:
 
 
 def validate_plan(plan, meta, profile, catalog):
+    from route_diagnostics import Router
     if plan.get("schema_version") != 1 or plan.get("repository") != REPOSITORY:
         raise ValueError("wrong publication plan schema/repository")
     if not HEX40.fullmatch(str(plan.get("base_commit", ""))):
@@ -121,6 +134,7 @@ def validate_plan(plan, meta, profile, catalog):
     groups = plan.get("groups")
     if not isinstance(groups, dict) or set(groups) - OWNERS:
         raise ValueError("direct, advertising, sensitive or unknown service owner cannot be automated")
+    trusted_router=Router(ROOT)
     total, all_rules = 0, set()
     for group, selection in groups.items():
         additions = selection.get("rules")
@@ -137,6 +151,8 @@ def validate_plan(plan, meta, profile, catalog):
             host = rule.split(",", 1)[1]
             if any(host == value or host.endswith("." + value) for value in SHARED):
                 raise ValueError("shared infrastructure needs manual review")
+            if any(not trusted_router.match(host,country=code)['predicted_policy'].startswith('Final') for code in ('CN','US')):
+                raise ValueError('candidate host already covered by current routing')
             evidence = selection["provenance"][rule]
             if not isinstance(evidence, list) or not evidence or any(s not in sources or sources[s]["group"] != group for s in evidence):
                 raise ValueError("rule source owner mismatch")

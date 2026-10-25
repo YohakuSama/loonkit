@@ -118,16 +118,8 @@ def run(version: str, destination: Path, root: Path = ROOT) -> dict:
     # service owners. Never reintroduce the old formal CN/UA/ad-filter policy.
     import beta_channel
     beta_channel.validate(root)
-    profile = (root / "beta/LoonKit.lcf").read_text()
     meta = json.loads((root / "build/beta_manifest.json").read_text())
-    by_tag = {row["tag"]: row for row in beta_channel.remote_entries(profile)}
-    baseline = {}
-    for group, tags in meta["source_group_tags"].items():
-        baseline[group] = set()
-        for tag in tags:
-            entry = by_tag[tag]
-            baseline[group].update(upstream_review.canonical(r) for r in
-                beta_channel.content_rules((root / entry["path"]).read_bytes()))
+    baseline = upstream_review.runtime_baseline(root,profile_path='beta/LoonKit.lcf',manifest_path='build/beta_manifest.json')
     # Generated routine overlays are members of source_group_tags and have
     # already been included once in their existing service baseline.
     report, snapshots, data = upstream_review.build_report(root=root, baseline_rules=baseline)
