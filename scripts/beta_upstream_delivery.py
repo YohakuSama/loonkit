@@ -21,7 +21,7 @@ HEX40 = re.compile(r"[a-f0-9]{40}\Z")
 HEX64 = re.compile(r"[a-f0-9]{64}\Z")
 VERSION = re.compile(r"(v[0-9]+\.[0-9]+\.[0-9]+-beta\.)([1-9][0-9]*)\Z")
 DOMAIN = re.compile(r"DOMAIN,(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z][a-z0-9-]{0,62}\Z")
-OWNERS = {"YouTube", "Netflix", "Disney", "PrimeVideo", "TikTok", "Bilibili", "Telegram",
+OWNERS = {"YouTube", "Netflix", "Disney", "PrimeVideo", "TikTok", "Telegram",
           "Whatsapp", "Instagram", "Facebook", "Twitter", "Discord", "Google", "Steam", "HBO",
           "Dazn", "動畫瘋", "Spotify", "Twitch", "Abema", "BBC", "Line", "Reddit", "Linkedin"}
 SHARED = ("googleapis.com", "apis.google.com", "appspot.com", "cloudfront.net", "akamaihd.net",

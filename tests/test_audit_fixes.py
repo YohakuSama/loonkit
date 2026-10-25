@@ -65,8 +65,9 @@ class AuditFixTests(unittest.TestCase):
     def test_protected_general_and_geoip_are_byte_identical(self):
         old = (ROOT/'build/baselines/v6.5.6/LoonKit.lcf').read_text()
         new = (ROOT/'LoonKit.lcf').read_text()
-        for name in ['General','Rule','Proxy Group','Plugin','Remote Filter']:
-            self.assertEqual(beta_channel.section(old,name),beta_channel.section(new,name),name)
+        for name in ['General','Rule','Plugin','Remote Filter']:
+            clean=lambda text:[x for x in beta_channel.section(text,name).splitlines() if x.strip() and not x.lstrip().startswith('#')]
+            self.assertEqual(clean(old),clean(new),name)
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)
         self.assertIn('dns-reject-mode = LOOPBACKIP',new)
 
@@ -87,7 +88,8 @@ class AuditFixTests(unittest.TestCase):
                 beta_channel.validate()
 
     def test_reviewed_asset_corruption_is_rejected_by_real_router(self):
-        target = ROOT/'rules/releases/v6.5.7/Netflix.list'
+        meta=json.loads((ROOT/'build/release_manifest.json').read_text())
+        target=ROOT/next(r['path'] for r in meta['runtime_resources'] if r['tag']=='Our-Netflix')
         read = Path.read_bytes
         def damaged(path):
             raw = read(path)

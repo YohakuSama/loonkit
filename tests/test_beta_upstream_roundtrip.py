@@ -27,6 +27,7 @@ class BetaUpstreamRoundtripTests(unittest.TestCase):
             for folder in ("rules", "build", "beta", "docs", "release", "icons", "scripts"):
                 shutil.copytree(ROOT / folder, root / folder)
             shutil.copy2(ROOT / "LoonKit.lcf", root / "LoonKit.lcf")
+            shutil.copy2(ROOT / "README.md", root / "README.md")
             stable = (root / "LoonKit.lcf").read_bytes()
             for index, group in enumerate(("YouTube", "Netflix", "YouTube"), 1):
                 with self.subTest(update=index, group=group):
@@ -63,7 +64,7 @@ class BetaUpstreamRoundtripTests(unittest.TestCase):
                     updated = json.loads((root / "build/beta_manifest.json").read_text())
                     beta_channel.validate(root)
                     from reviewed_release import verify as verify_formal
-                    self.assertEqual(verify_formal(root=root)["release"], "v6.5.7")
+                    self.assertEqual(verify_formal(root=root)["release"], "v6.5.8")
                     rendered, rebuilt = beta_profile.render(meta["immutable_overlay_commit"], root)
                     self.assertEqual(rendered, (root / "beta/LoonKit.lcf").read_bytes())
                     self.assertEqual(rebuilt, updated)

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "status": "TEMPLATE_NOT_EVIDENCE",
-  "version": "v6.5.8-beta.1",
-  "configuration_sha256": "0e2f6e7dabadd71e4277ef25d9abc733537f77712754d69e11a64d6a9e03aba2",
+  "version": "v6.5.9-beta.1",
+  "configuration_sha256": "81fd3bd0bb9aa0b414588afd0ce0d0211537063e0adeddde77b965bd2a6692da",
   "commit_sha": null,
-  "rollback_commit_sha": "425433e0c4e7d3e5d8c5494d8767fa9560883479",
+  "rollback_commit_sha": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
   "observation_started_utc": null,
   "observation_finished_utc": null,
   "ci": {

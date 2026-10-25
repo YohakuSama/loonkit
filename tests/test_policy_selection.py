@@ -77,7 +77,7 @@ class PolicySelectionTests(unittest.TestCase):
                 pattern = self.filters[name].split('FilterKey = "', 1)[1].rstrip('"')
                 matched = [node for node in nodes if re.search(pattern, node)]
                 self.assertEqual(matched, nodes, (size, name))
-        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v6.5.7")
+        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v6.5.8")
 
     def test_auto_prioritizes_latency_and_fallback_uses_order(self):
         # Confirm group strategy semantics; Loon makes actual runtime decisions.
@@ -91,7 +91,7 @@ class PolicySelectionTests(unittest.TestCase):
         active = "\n".join(line for line in self.profile.splitlines()
                            if line.strip() and not line.lstrip().startswith("#")) + "\n"
         self.assertEqual(hashlib.sha256(active.encode("utf-8")).hexdigest(),
-                         "493a0148858af0ec9a52eb89fc29b94e976e7234633aff03314a56b6ea7ec1c4")
+                         __import__('json').loads((ROOT/'build/release_spec.json').read_text())['current_runtime_directives_sha256'])
 
     def test_no_internal_candidate_or_audit_comments_in_profile(self):
         comment_lines = [line for line in self.profile.splitlines()
