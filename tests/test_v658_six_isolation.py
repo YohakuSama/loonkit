@@ -23,6 +23,7 @@ GROUPS = {
     "AppleOTA_Bilibili_Paypal_Microsoft_Apple": ("AppleOTA", "Bilibili", "Paypal", "Microsoft", "Apple"),
     "AppleOTA_Bilibili_Paypal_Apple": ("AppleOTA", "Bilibili", "Paypal", "Apple"),
     "AppleOTA_Bilibili_Paypal_Apple_RegionalCN": ("AppleOTA", "Bilibili", "Paypal", "Apple", "RegionalCN"),
+    "AppleOTA_Bilibili_Paypal_RegionalCN": ("AppleOTA", "Bilibili", "Paypal", "RegionalCN"),
     **{"Only" + item: (item,) for item in SUSPECTS},
 }
 
