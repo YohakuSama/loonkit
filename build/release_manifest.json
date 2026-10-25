@@ -802,7 +802,7 @@
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
   "reviewed_recipe": "build/release_recipe.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-  "maintainer_approval": "USER_REQUESTED_V704_ROUTING_FIXES_2026_10_25",
+  "maintainer_approval": "USER_REQUESTED_FOUR_RULE_OWNER_CONFLICT_FIXES_2026_10_25",
   "device_test": "NOT_CLAIMED",
   "publication": {
     "status": "VERSIONED_RELEASE",
@@ -905,7 +905,7 @@
   "upstream_historical_lineage": "UNRECOVERABLE",
   "legacy_compiler_rule_count": 26,
   "stage": "FORMAL_RELEASE",
-  "old_main_rollback_commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
+  "old_main_rollback_commit": "532f744640d2ce4c1e087cbbbafa794131e50114",
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
   "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
