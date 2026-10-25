@@ -66,7 +66,7 @@ class TestFormalNativeRelease(unittest.TestCase):
         meta = json.loads((ROOT / "build/release_manifest.json").read_text())
         self.assertEqual(meta["runtime_rule_count"], 43)
         self.assertEqual(meta["remote_rule_count"], sum(x["matcher_count"] for x in meta["runtime_resources"]))
-        self.assertEqual(meta["label"], "v7.0.4")
+        self.assertEqual(meta["label"], json.loads((ROOT / "build/release_spec.json").read_text())["stable_release_version"])
         self.assertNotIn("Our-RegionalCN",
                          {r["tag"] for r in meta["runtime_resources"]})
 

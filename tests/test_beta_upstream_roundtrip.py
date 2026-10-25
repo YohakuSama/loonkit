@@ -64,7 +64,7 @@ class BetaUpstreamRoundtripTests(unittest.TestCase):
                     updated = json.loads((root / "build/beta_manifest.json").read_text())
                     beta_channel.validate(root)
                     from release_engine import check as verify_formal
-                    self.assertEqual(verify_formal(root=root)["version"], "v7.0.4")
+                    self.assertEqual(verify_formal(root=root)["version"], json.loads((root / "build/release_spec.json").read_text())["stable_release_version"])
                     rendered, rebuilt = beta_profile.render(meta["immutable_overlay_commit"], root)
                     self.assertEqual(rendered, (root / "beta/LoonKit.lcf").read_bytes())
                     self.assertEqual(rebuilt, updated)
