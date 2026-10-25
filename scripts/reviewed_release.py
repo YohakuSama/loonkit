@@ -180,6 +180,9 @@ def verify(root=ROOT, remote=False):
     if version == 'v6.5.8':
         from release_v658 import verify as verify_current
         return verify_current(root, remote)
+    if version == 'v6.5.9':
+        from release_v659 import verify as verify_current
+        return verify_current(root, remote)
     raise ValueError('unsupported reviewed release version')
 
 
