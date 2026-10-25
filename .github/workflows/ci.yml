@@ -52,7 +52,7 @@ jobs:
         run: node --test tests/diagnostics.test.cjs
       - name: Native plugin JavaScript syntax
         run: |
-          node --check scripts/v20261025r2/node-intelligence.js
+          node --check scripts/v20261025r3/node-intelligence.js
           node --check scripts/v20261025r1/network-diagnostics.js
           node --check scripts/v20261025r2/media-unlock.js
       - name: Native results are concise and node-scoped
@@ -62,13 +62,15 @@ jobs:
           const assert = require('node:assert/strict');
           const read = p => fs.readFileSync(p, 'utf8');
           const media = read('scripts/v20261025r2/media-unlock.js');
-          const node = read('scripts/v20261025r2/node-intelligence.js');
+          const node = read('scripts/v20261025r3/node-intelligence.js');
           const network = read('scripts/v20261025r1/network-diagnostics.js');
           const plugin = read('release/Network_Diagnostics.plugin');
           assert(!media.includes('7 项平台检测'));
           for (const word of ['DAZN','Discovery+','Paramount+','Disney+','Netflix','ChatGPT','YouTube Premium']) assert(media.includes(word));
           assert(media.includes('test(it[0]') && media.includes('setTimeout(done,22000)'));
-          assert(node.includes('核验：') && node.includes('出口 IP：'));
+          assert(node.includes('出口 IP：') && node.includes('IP 网段：') && node.includes('反向 DNS：'));
+          assert(node.includes('机房 / 云：') && node.includes('VPN / 代理：'));
+          assert(node.includes('https://ipconfig.is/json'));
           assert(media.includes('✅') && media.includes('⛔') && media.includes('⚠️'));
           assert(!node.includes('风险评分'));
           assert(network.includes('连接状态') && network.includes('nativeDns('));
@@ -78,7 +80,8 @@ jobs:
           assert(!media.includes('/users/me'));
           assert(network.includes('DIRECT_URL,"DIRECT"'));
           assert(media.includes('resolveNode()'));
-          assert(node.includes('ipquery.io') && node.includes('ipwho.is'));
+          assert(!node.includes('ipquery.io') && !node.includes('ipwho.is'));
+          assert(node.includes('入口：') && node.includes('运营商：'));
 
           JS
       - name: No mutation of production content

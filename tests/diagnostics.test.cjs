@@ -51,79 +51,104 @@ function run(kind, handler, options = {}) {
     $notification: {post(...args) {alerts.push(args);}},
     setTimeout(fn, delay) {timers.push({fn, delay}); return timers.length;}
   };
-  const folder = kind === 'network' ? 'v20261025r1' : 'v20261025r2';
+  const folder = kind === 'network' ? 'v20261025r1' : kind === 'node' ? 'v20261025r3' : 'v20261025r2';
   const src = fs.readFileSync(path.join(ROOT, 'scripts', folder, SCRIPTS[kind]), 'utf8');
   vm.runInNewContext(src, sandbox, {timeout:3000, filename:SCRIPTS[kind]});
   return {requests, completed, timers, alerts, writes};
 }
 const output = session => String(session.completed[0] && session.completed[0].content || '');
 
-function nodeGoodResponse() {
+const SINGLE = 'https://ipconfig.is/json';
+function richNode(ip = '8.8.8.8') {
   return JSON.stringify({
-    ip:'8.8.8.8', location:{country:'United States',country_code:'US',city:'Mountain View',state:'CA'},
-    isp:{asn:15169,isp:'Google',org:'Google LLC'},
-    risk:{is_datacenter:true,is_mobile:false,is_vpn:false,is_proxy:false,is_tor:false,risk_score:7}
+    ip, city:'Mountain View',region:'California',country_name:'United States',
+    country_code:'US',org:'Google LLC',asn:'AS15169 Google LLC',asn_number:15169,
+    network:'8.8.8.0/24',ptr_record:'dns.google',timezone:'America/Los_Angeles',
+    latitude:37.423,longitude:-122.083,accuracy_radius:35,
+    is_hosting:true,is_mobile:false,is_vpn:false,is_tor:false
   });
 }
-function ipwhoResponse(ip = '8.8.8.8', region='US', asn=15169) {
-  return JSON.stringify({ip,country_code:region,region:'CA',city:'Mountain View',
-    connection:{asn,isp:'Google'}});
-}
-const nodeOK = ({request}) => request.url === 'https://api.ipquery.io/?format=json' ?
-  {status:200,body:nodeGoodResponse()} : {status:200,body:ipwhoResponse()};
-test('node: verified egress, ASN and region, no speculative reputation', () => {
-  const s=run('node',nodeOK);
-  assert.equal(s.requests.length,2);
-  assert.ok(s.requests.every(x=>x.request.node==='Node-A'));
+test('node: one source returns the full actual egress record, not a stripped display', () => {
+  const s=run('node',()=>({status:200,body:richNode()}));
+  assert.equal(s.requests.length,1);
+  assert.equal(s.requests[0].request.url,SINGLE);
+  assert.equal(s.requests[0].request.node,'Node-A');
+  assert.equal(s.requests[0].request['auto-redirect'],false);
+  assert.equal(s.requests[0].request['auto-cookie'],false);
+  const o=output(s);
+  for (const text of ['出口 IP：8.8.8.8','IP 版本：IPv4','United States (US)',
+    'California','Mountain View','运营商：Google LLC','ASN：AS15169 Google LLC',
+    'IP 网段：8.8.8.0/24','反向 DNS：dns.google','时区：America/Los_Angeles',
+    '估算坐标：37.4230, -122.0830','定位半径：35 km',
+    '机房 / 云：检出','移动网络：未检出','VPN / 代理：未检出',
+    'Tor：未检出','数据源：ipconfig.is'])assert.ok(o.includes(text),text);
+  assert.doesNotMatch(o,/风险评分|住宅 IP|家宽判定/);
+  assert.equal(s.completed.length,1);
+});
+test('node: native nodeInfo is labeled as entry, not inferred as egress',()=>{
+  const s=run('node',()=>({status:200,body:richNode()}),{
+    params:{node:'Old-Node',nodeInfo:{name:'Selected-Node',type:'hysteria2',
+      server:'entry.example.net',port:443}},
+    argument:{target_policy:'Proxy'}});
+  assert.equal(s.requests.length,1);
+  assert.equal(s.requests[0].request.node,'Selected-Node');
+  assert.match(output(s),/节点：Selected-Node/);
+  assert.match(output(s),/协议：hysteria2/);
+  assert.match(output(s),/入口：entry\.example\.net:443/);
   assert.match(output(s),/出口 IP：8\.8\.8\.8/);
-  assert.match(output(s),/核验：双源一致/);
-  assert.match(output(s),/地区：US/);
-  assert.match(output(s),/ASN：AS15169/);
-  assert.doesNotMatch(output(s),/风险评分|网络特征|机房/);
 });
-test('node: inconsistent IP, region or ASN is explicitly not verified', () => {
-  const s=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
-    {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('1.1.1.1','JP',13335)});
-  assert.match(output(s),/出口 IP：结果不一致/);
-  assert.match(output(s),/地区 \/ ASN：待核实/);
-  assert.doesNotMatch(output(s),/地区：US/);
-  const country=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
-    {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('8.8.8.8','JP',13335)});
-  assert.match(output(country),/地区：不一致/);
-  assert.match(output(country),/ASN：不一致/);
+test('node: missing third-party metadata remains unknown, not guessed',()=>{
+  const s=run('node',()=>({status:200,body:JSON.stringify({ip:'8.8.8.8'})}));
+  assert.match(output(s),/运营商：未知/);
+  assert.match(output(s),/ASN：未知/);
+  assert.match(output(s),/机房 \/ 云：未知/);
+  assert.equal(s.requests.length,1);
 });
-test('node: fallback still works, failures never invent egress', () => {
-  for(const err of [{status:302},{error:new Error('timeout')},{status:200,body:'{'},{throws:true}]){
-    const s=run('node',({request})=>{
-      if(request.url === 'https://api.ipquery.io/?format=json'){
-        if(err.throws)throw Error('TLS');
-        return err;
-      }
-      return {status:200,body:ipwhoResponse()};
+test('node: redirects, bad JSON, errors and rate limits are visible failures',()=>{
+  for(const value of [
+    {status:302},{status:429},{status:200,body:'{'},{error:new Error('timeout')},
+    {status:200,body:'{"ip":"not-an-ip"}'}, {throws:true}
+  ]){
+    const s=run('node',()=>{
+      if(value.throws)throw Error('request exception');
+      return value;
     });
-    assert.match(output(s),/核验：ipwho\.is（单源）/);
+    assert.equal(s.requests.length,1);
+    assert.match(output(s),/出口信息查询失败/);
+    assert.doesNotMatch(output(s),/出口 IP：8\.8\.8\.8/);
+    assert.equal(s.completed.length,1);
   }
-  const no=run('node',()=>({status:200,body:'{"ip":"invalid"}'}));
-  assert.match(output(no),/出口 IP：查询失败/);
 });
-test('node: nodeInfo takes precedence, groups without concrete node fail closed', () => {
-  const s=run('node',nodeOK,{params:{node:'Wrong',nodeInfo:{name:'Selected-Node'}},argument:{target_policy:'Proxy'}});
-  assert.ok(s.requests.every(x=>x.request.node==='Selected-Node'));
-  const bad=run('node',nodeOK,{params:{},argument:{target_policy:'Proxy'}});
-  assert.equal(bad.requests.length,0);
-  assert.match(output(bad),/指定具体节点/);
+test('node: policy group resolves to named node, unknown defaults make zero requests',()=>{
+  const s=run('node',()=>({status:200,body:richNode()}),{
+    params:{},argument:{target_policy:'Proxy'},
+    config:{getConfig(){return JSON.stringify({all_policy_groups:['Proxy']});},
+      getSelectedPolicy(p){return p==='Proxy'?'Node-C':'';}}
+  });
+  assert.equal(s.requests[0].request.node,'Node-C');
+  const fail=run('node',()=>({status:200,body:richNode()}),{params:{},argument:{target_policy:'Proxy'}});
+  assert.equal(fail.requests.length,0);
+  assert.match(output(fail),/无法确定选中节点/);
 });
-test('node: explicit direct comparison verifies both selected and direct paths', () => {
-  const s=run('node',({request})=>{
-    if(request.node==='DIRECT'){
-      if(request.url === 'https://api.ipquery.io/?format=json')return {status:200,body:JSON.stringify({ip:'1.1.1.1',location:{country_code:'AU'},isp:{asn:13335,isp:'Cloudflare'}})};
-      return {status:200,body:ipwhoResponse('1.1.1.1','AU',13335)};
-    }
-    return nodeOK({request});
-  },{argument:{target_policy:'Node-A',compare_direct:true}});
-  assert.equal(s.requests.length,4);
+test('node: optional DIRECT comparison uses same source but distinct policies',()=>{
+  const s=run('node',({request})=>({status:200,
+    body:richNode(request.node==='DIRECT'?'1.1.1.1':'8.8.8.8')}),
+    {argument:{target_policy:'Node-A',compare_direct:true}});
+  assert.equal(s.requests.length,2);
+  assert.ok(s.requests.every(x=>x.request.url===SINGLE));
+  assert.equal(s.requests[0].request.node,'Node-A');
+  assert.equal(s.requests[1].request.node,'DIRECT');
   assert.match(output(s),/直连出口：1\.1\.1\.1/);
-  assert.match(output(s),/出口对照：不同/);
+  assert.match(output(s),/与节点出口：不同/);
+});
+test('node: silent HTTP hangs produce a single timeout completion',()=>{
+  const s=run('node',()=>({hold:true}));
+  assert.equal(s.completed.length,0);
+  const timer=s.timers.find(t=>t.delay===29000);
+  assert.ok(timer);
+  timer.fn();
+  assert.equal(s.completed.length,1);
+  assert.match(output(s),/查询超时/);
 });
 
 function networkReply(request, status) {
