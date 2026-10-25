@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
-from beta_github import GitHub, REPOSITORY
+from beta_github import GitHub, GitHubError, REPOSITORY
 
 ROOT = Path(__file__).resolve().parents[1]
 HEX40 = re.compile(r"[a-f0-9]{40}\Z")
@@ -174,6 +174,26 @@ def validate_plan(plan, meta, profile, catalog):
     return total
 
 
+def create_review_pr(client, branch, base, assets, count, version):
+    try:
+        return client.post('/pulls',{'base':'beta','head':branch,'draft':True,
+            'title':'beta: upstream additions for ' + version,
+            'body':'Adds ' + str(count) + ' exact host rules.\n\nBase: ' + base + '\nAssets: ' + assets})
+    except GitHubError as error:
+        if error.status_code == 403:
+            return None
+        raise
+
+
+def review_result(branch, head, assets, count, pr, *, existing=False):
+    return {'status':('EXISTING_PR_UNMODIFIED' if pr else 'EXISTING_REVIEW_BRANCH_UNMODIFIED') if existing
+            else ('DRAFT_BETA_PR_CREATED' if pr else 'BETA_REVIEW_BRANCH_CREATED'),
+            'pull_request':pr['html_url'] if pr else None,
+            'compare_url':'https://github.com/' + REPOSITORY + '/compare/beta...' + branch + '?expand=1',
+            'branch':branch,'head_sha':head,'asset_commit':assets,'added_rules':count,
+            'exact_head_ci_dispatched':True,'review_mode':'DRAFT_PR' if pr else 'MANUAL_PR'}
+
+
 def publish(plan: dict, client) -> dict:
     head = client.get("/git/ref/heads/beta")
     if not head or head["object"]["sha"] != plan.get("base_commit"):
@@ -191,8 +211,24 @@ def publish(plan: dict, client) -> dict:
     if existing:
         prs = client.get("/pulls?state=all&head=YohakuSama:" + branch + "&base=beta&per_page=100") or []
         if len(prs) == 1:
-            return {"status":"EXISTING_PR_UNMODIFIED", "pull_request":prs[0]["html_url"], "branch":branch}
-        raise ValueError("existing automation branch has no unique PR; inspect without overwriting")
+            if prs[0].get('state','open') != 'open':
+                return {'status':'EXISTING_PR_UNMODIFIED','pull_request':prs[0]['html_url'],'branch':branch,'exact_head_ci_dispatched':False}
+            client.post('/actions/workflows/beta-ci.yml/dispatches',{'ref':branch})
+            return review_result(branch,existing['object']['sha'],None,count,prs[0],existing=True)
+        if prs:
+            raise ValueError('existing automation branch has no unique PR; inspect without overwriting')
+        current=existing['object']['sha']
+        candidate=json.loads(client.file('build/beta_manifest.json',current))
+        candidate_profile=client.file('beta/LoonKit.lcf',current)
+        update=candidate.get('upstream_update',{})
+        if (candidate.get('version') != plan['version'] or update.get('base_commit') != base
+                or update.get('selected_additions') != {g:s['rules'] for g,s in plan['groups'].items()}
+                or digest(candidate_profile) != candidate.get('configuration_sha256')):
+            raise ValueError('existing review branch differs from the prepared candidate')
+        assets=candidate['candidate_source_commit']
+        pr=create_review_pr(client,branch,base,assets,count,plan['version'])
+        client.post('/actions/workflows/beta-ci.yml/dispatches',{'ref':branch})
+        return review_result(branch,current,assets,count,pr,existing=pr is None)
     evidence = json.loads(client.file("docs/BETA_ACCEPTANCE_TEMPLATE.json", base))
     if evidence.get("status") != "TEMPLATE_NOT_EVIDENCE" or evidence.get("maintainer_approved") is not False:
         raise ValueError("public acceptance template must never be a release approval")
@@ -272,10 +308,8 @@ def publish(plan: dict, client) -> dict:
                 rows.append(record)
         next_meta['runtime_resources'] = rows
     evidence.update(version=plan["version"], configuration_sha256=digest(next_profile), commit_sha=None)
-    review = ("# " + plan["version"] + " upstream draft\n\nBase: " + base + "\n\n"
-              + "Exact additions: " + str(count) + ". Other source deltas remain manual review.\n"
-              + "Assets are frozen before profile pinning. No DNS changes, no stable publication, no automatic merge.\n"
-              + "Source hashes and accepted matchers are retained in build/beta_manifest.json.\n")
+    review = ('# ' + plan['version'] + ' upstream\n\nBase: ' + base + '\nAssets: ' + assets
+              + '\nExact additions: ' + str(count) + '\n\nSources: build/beta_manifest.json\n')
     changed = {"beta/LoonKit.lcf":next_profile, "build/beta_manifest.json":encoded(next_meta),
                "docs/BETA_ACCEPTANCE_TEMPLATE.json":encoded(evidence),
                "docs/beta-upstream/" + plan["version"] + ".md":review.encode()}
@@ -285,21 +319,11 @@ def publish(plan: dict, client) -> dict:
     if client.get("/git/ref/heads/beta")["object"]["sha"] != base:
         raise ValueError("beta moved during build; no branch or PR published")
     client.post("/git/refs", {"ref":"refs/heads/" + branch, "sha":final})
-    try:
-        pr = client.post("/pulls", {"base":"beta", "head":branch, "draft":True,
-            "title":"beta: bounded upstream additions for " + plan["version"],
-            "body":"Adds " + str(count) + " exact host rules with complete source provenance.\n\n"
-                    "This is an importable, commit-pinned beta candidate, not a stable release. "
-                    "All other deltas remain quarantined. CI and maintainer review are required before beta merge; "
-                    "device acceptance and observation gates remain required before main promotion.\n\n"
-                    "Base beta commit: " + base + "\nAsset commit: " + assets})
-    except RuntimeError as error:
-        raise RuntimeError("Beta branch created but draft PR creation was blocked. Inspect repository Actions PR permissions. " + str(error)) from None
+    pr=create_review_pr(client,branch,base,assets,count,plan['version'])
     # GITHUB_TOKEN-created PRs do not trigger normal pull_request workflows.
     # Explicit dispatch is required; beta-ci.yml must exist on default main.
     client.post("/actions/workflows/beta-ci.yml/dispatches", {"ref":branch})
-    return {"status":"DRAFT_BETA_PR_CREATED", "pull_request":pr["html_url"], "branch":branch, "head_sha":final,
-            "asset_commit":assets, "added_rules":count, "exact_head_ci_dispatched":True}
+    return review_result(branch,final,assets,count,pr)
 
 
 if __name__ == "__main__":
@@ -322,4 +346,8 @@ if __name__ == "__main__":
         if args.plan.stat().st_size > 512 * 1024:
             raise ValueError("publication plan too large")
         result = publish(json.loads(args.plan.read_text()), GitHub(os.environ.get("GITHUB_TOKEN", "")))
+        link=result.get('pull_request') or result.get('compare_url')
+        if link and os.environ.get('GITHUB_STEP_SUMMARY'):
+            with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:
+                summary.write('## Beta candidate\n\n[Review update](' + link + ')\n\nCommit: `' + result.get('head_sha','') + '`\n')
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))

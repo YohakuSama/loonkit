@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 import re
 import time
-from beta_github import GitHub
+from beta_github import GitHub, GitHubError
 
 
 def check(client, run_id: str, attempt: str, *, sleep=time.sleep, polls=90):
@@ -28,10 +28,16 @@ def check(client, run_id: str, attempt: str, *, sleep=time.sleep, polls=90):
     client.post('/git/refs',{'ref':'refs/heads/' + branch,'sha':head})
     pr = None
     try:
-        pr = client.post('/pulls',{'base':'beta','head':branch,'draft':True,
-            'title':'ci: beta publisher integration check',
-            'body':'Checks Actions draft-PR permissions and exact-head CI dispatch. This temporary branch changes only the check record; runtime files are identical to beta.'})
-        result.update(pull_request=pr['html_url'],head_sha=head)
+        try:
+            pr = client.post('/pulls',{'base':'beta','head':branch,'draft':True,
+                'title':'ci: beta publisher integration check',
+                'body':'Checks publisher permissions and exact-head CI dispatch. Only the check record changes.'})
+        except GitHubError as error:
+            if error.status_code != 403:raise
+            result['automatic_pr_creation']=False
+        else:
+            result.update(pull_request=pr['html_url'],automatic_pr_creation=True)
+        result.update(head_sha=head,review_mode='DRAFT_PR' if pr else 'MANUAL_PR')
         client.post('/actions/workflows/beta-ci.yml/dispatches',{'ref':branch})
         for _ in range(polls):
             data = client.get('/actions/workflows/beta-ci.yml/runs?event=workflow_dispatch&head_sha=' + head + '&per_page=10') or {}
@@ -42,7 +48,7 @@ def check(client, run_id: str, attempt: str, *, sleep=time.sleep, polls=90):
                 result.update(ci_run_url=run['html_url'],ci_conclusion=run['conclusion'])
                 if run['conclusion'] != 'success':
                     raise ValueError('publisher check CI failed: ' + run['html_url'])
-                result['status'] = 'REAL_PR_AND_EXACT_HEAD_CI_VERIFIED'
+                result['status'] = 'REAL_PR_AND_EXACT_HEAD_CI_VERIFIED' if pr else 'REAL_BRANCH_AND_EXACT_HEAD_CI_VERIFIED'
                 break
             sleep(8)
         else:
