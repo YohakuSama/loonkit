@@ -1,10 +1,10 @@
 # 分流规则
 
-现役版本：**v7.0.3**。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
+现役配置：**v7.0.4**。远程规则沿用固定版本 **v7.0.3**，内容未变。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
 
 ## 规则顺序
 
-- 明确的本地 AI 主机优先。
+- 明确的本地 AI 主机优先；TRAE API 的新加坡和美国端点统一归 AI 策略。
 - 广告资源处理拦截与隐私端点。
 - Apple、Microsoft、Paypal、Bilibili、AppleOTA 使用普通 DOMAIN / DOMAIN-SUFFIX 规则；按服务策略处理对应域名。
 - 国内 AI 站点保持 `DIRECT`，海外 AI 由 ChatGPT、Gemini、Claude 或通用 AI 策略接管。
