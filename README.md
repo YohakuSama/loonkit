@@ -4,7 +4,7 @@
 
 **为 Loon 打造的完整分流配置**
 
-精细分流 · 灵活选路 · 网络诊断
+原生规则分流 · 灵活选路 · 网络诊断
 
 [![Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml)
 
@@ -14,7 +14,7 @@
 
 LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦截与网络诊断。
 
-当前版本：**v6.5.8**。
+当前版本：**v6.5.9**（普通 Loon 服务域名规则，尚待 DNS 与地区路由实机复测）。
 
 ## 快速开始
 
@@ -23,7 +23,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 1. 在 Loon 中导入配置。
 2. 添加自己的节点或订阅，在 `Proxy` 中选择线路。
 3. 刷新远程规则和插件，按需调整各服务策略。
-4. 在 DNS 设置中关闭「加密 DNS 失败回退到普通 DNS」。
+4. 在 DNS 设置中关闭「加密 DNS 失败回退到普通 DNS」；本版仍未通过设备 DNS 防泄漏验收。
 
 [导入测试版](https://raw.githubusercontent.com/YohakuSama/loonkit/beta/beta/LoonKit.lcf) · [测试渠道](https://github.com/YohakuSama/loonkit/blob/beta/docs/BETA_CHANNEL.md)
 
@@ -32,7 +32,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 | 功能 | 说明 |
 | --- | --- |
 | 分流 | 国内常用服务直连，AI、流媒体和社交服务独立选路。 |
-| 地区判断 | Apple、Microsoft、PayPal、Bilibili 按解析 IP 区分国内和海外。 |
+| 分流策略 | Apple、Microsoft、PayPal、Bilibili 使用普通 Loon 域名规则；同域名按 CN／非 CN 自动选路暂时不可用。 |
 | 节点选择 | 支持手动选择、延迟测试和故障切换。 |
 | 广告拦截 | `AdBlock` 中选择 `REJECT` 拦截、`Proxy` 放行。 |
 | 网络辅助 | 查看节点出口、连接状态及流媒体和 AI 服务状态。 |

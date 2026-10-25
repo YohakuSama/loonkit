@@ -86,9 +86,12 @@ def directives(text):
 def verify(root=ROOT, remote=False):
     from reviewed_release import sha, validate_records, verify_v657
     from verify_release import check_public_checksums, check_lock
-    spec = json.loads((root / 'build/release_spec.json').read_text())
-    meta = json.loads((root / 'build/release_manifest.json').read_text())
-    profile = (root / 'LoonKit.lcf').read_bytes()
+    active_spec = json.loads((root / 'build/release_spec.json').read_text())
+    archived = active_spec['stable_release_version'] != 'v6.5.8'
+    prefix = 'build/baselines/v6.5.8/' if archived else 'build/'
+    spec = json.loads((root / (prefix + 'release_spec.json')).read_text())
+    meta = json.loads((root / (prefix + 'release_manifest.json')).read_text())
+    profile = (root / ('build/baselines/v6.5.8/LoonKit.lcf' if archived else 'LoonKit.lcf')).read_bytes()
     decision = json.loads((root / spec['release_gate_file']).read_text())
     if spec['stable_release_version'] != 'v6.5.8' or meta['label'] != 'v6.5.8':
         raise ValueError('v6.5.8 version identity mismatch')
@@ -96,7 +99,7 @@ def verify(root=ROOT, remote=False):
         raise ValueError('v6.5.8 profile differs from deterministic build')
     if decision['version'] != meta['label'] or decision['release_profile_sha256'] != sha(profile) or decision['decision'] != 'OWNER_REQUESTED_AUDIT_FIXES_AND_PUBLICATION':
         raise ValueError('release decision hash mismatch')
-    check_public_checksums(root, meta, spec)
+    check_public_checksums(root, json.loads((root / 'build/release_manifest.json').read_text()) if archived else meta, active_spec if archived else spec)
     check_lock(root)
     for path, raw in render_rules(root).items():
         if (root / path).read_bytes() != raw:
@@ -136,7 +139,7 @@ def verify(root=ROOT, remote=False):
     beta=json.loads((root/'build/beta_manifest.json').read_text())
     if beta['stable_release'] != meta['label'] or beta['foundation_profile_sha256'] != sha(profile):
         raise ValueError('beta stable foundation identity drifted')
-    if '**v6.5.8**' not in (root/'README.md').read_text():
+    if ('**' + active_spec['stable_release_version'] + '**') not in (root/'README.md').read_text():
         raise ValueError('README version differs from current release')
     for group,tags in meta['source_group_tags'].items():
         count = len(set().union(*(set(content_rules((root / by_tag[t]['path']).read_bytes())) for t in tags)))

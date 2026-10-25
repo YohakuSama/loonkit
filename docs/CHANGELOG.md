@@ -1,5 +1,14 @@
 # 更新记录
 
+## v6.5.9 · 2026-10-25
+
+- 应用户要求，将命中后引发 Loon VPN 异常的 `AND+GEOIP` 复合逻辑改为普通 Loon 域名规则，五份服务规则不含嵌套 `AND`、`OR`、`NOT`。
+- 移除冗余的 `Our-RegionalCN` 远程订阅；保留原末尾 `GEOIP,CN,DIRECT,no-resolve` 与 `FINAL,Final`，总远程订阅 37 → 36。
+- Bilibili 从 128 条复合规则变为 120 条普通域名规则，Apple 从 1574 条变为 1561 条；原先限定非 CN 的 21 条 IP 子规则不再无条件代理。
+- 原有 DNS/DoH、TUN、节点、策略组、其余 31 个订阅不变，所有历史 v6.5.8 发布资源和校验记录保留。
+- **重要行为变化**：同一服务域名不再按解析目标 IP 的 CN／非 CN 地区自动分流；国内的 Apple/Microsoft/Bilibili 域名也可能进入相应服务代理组。用户之前报告的 DNS 泄漏问题**没有在本版中修复**；真实命中时的 VPN 稳定性尚待实机验证。
+
+
 ## v6.5.8 · 2026-10-25
 
 - Apple、Microsoft、PayPal、Bilibili 按 GeoIP 区分国内与海外，服务策略默认使用代理。

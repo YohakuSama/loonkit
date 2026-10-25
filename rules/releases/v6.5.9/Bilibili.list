@@ -1,8 +1,6 @@
-# LoonKit v6.5.8 Bilibili native-matcher *experimental* runtime workaround.
-# NO AND/OR/NOT. Historical regional geoIP semantics are NOT preserved.
-# Plain service domain matchers route through existing service group even for CN-hosted endpoints.
-# The 8 composite IP expressions were discarded: they were bound to NOT(GEOIP,CN) and are not safe to blanket proxy.
-# All original v6.5.8 release assets remain untouched; not a final regional-splitting fix.
+# LoonKit v6.5.9 Bilibili Loon-native domain rules
+# Source: v6.5.8 reviewed rules, composite GeoIP conditions removed.
+# CN/overseas GeoIP dual-routing cannot be preserved using domain-only matchers.
 DOMAIN,0gr4uqmtt8y41hcjsgrzdrc31.ourdvsss.com
 DOMAIN,0gr4uqmtt8y41hcjsgrzdrc3s.ourdvsss.com
 DOMAIN,0gr4uqmtt8y41hcjsgrzdrc3z.ourdvsss.com

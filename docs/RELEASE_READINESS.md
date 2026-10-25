@@ -1,5 +1,13 @@
 # 发布记录
 
+## v6.5.9 · 普通 Loon 服务规则（实机待验收）
+
+- 用户确认命中 `AND+GEOIP` 复合规则会导致 Loon VPN 自动重启，要求合并新版本并清理冗余；已合并实现 PR #141，另按发布流程推动新版 `main/LoonKit.lcf`。
+- 五份服务规则改为普通 `DOMAIN` / `DOMAIN-SUFFIX`，且删除远程 `Our-RegionalCN` 的重复 GeoIP 条件；末尾 GeoIP/CN 及 FINAL 两条原封不动。
+- 旧版本 `build/baselines/v6.5.8/LoonKit.lcf` 与 v6.5.8 完整资源继续冻结；历史哈希与来源不被替换。
+- **未完成设备验收**：DNS 泄漏此前已被用户报告，当前修复仅移除复合 GeoIP；同一服务域名的国内外精确自动分流不再等价保留。不能仅凭 CI 声称 VPN 和 DNS 已完全修复。
+
+
 ## v6.5.8
 
 - 正式发布：[PR #132](https://github.com/YohakuSama/loonkit/pull/132)，运行时提交 `3366ee77d3e1ee44788e60ba1381e976406f4596`。

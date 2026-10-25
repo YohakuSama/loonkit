@@ -1,52 +1,36 @@
-# 2026-10-25 · 六份 GEOIP 复合列表的 Loon 原生规则替代实验
+# LoonKit v6.5.9：原生分流规则替代 GeoIP 嵌套规则
 
-**用户真机最新观察**：在 v6.5.8 中，请求**实际命中**原先六份列表中的 `AND + GEOIP` / `AND + NOT(GEOIP)` 逻辑规则时，VPN 会断开并反复重启。小规则组合仅在没有触发相关匹配时看似稳定。之前按规则数量或 OR 合并、给 GEOIP 加 no-resolve 的优化在实机均未解决重启。**该观察是因果线索，尚无 iOS Network Extension 退出日志来证明内部根因。**
+## 背景与修复
 
-## 目的
+用户在 iOS Loon 中确认：实际请求命中旧版六份 `AND,(...,(GEOIP,CN))` 或 `AND,(...,(NOT,((GEOIP,CN))))` 时，VPN 反复重启。减少复合规则数量、修改内部 `no-resolve` 均未消除故障。
 
-本实验不再尝试让同类复合表达式更短，也不只是关闭订阅，而是让**六份远程订阅全部启用，却没有一条可能命中的 AND/OR/NOT 逻辑表达式**。候选 [`LoonKit.NativeRulesTrial.lcf`](../LoonKit.NativeRulesTrial.lcf) 仅将正式 v6.5.8 的六份订阅 URL 改指向固定提交的实验列表。其余 31 份订阅、Proxy Group、DNS/DoH/TUN、插件、Host、General、`GEOIP,CN,DIRECT,no-resolve` 和 `FINAL,Final` 完全不改。发布版 `LoonKit.lcf` 及不可变 `rules/releases/v6.5.8/` 仍不动。
+应用户要求，PR #141 的非嵌套实验通过静态 CI 后进入仓库，并由 v6.5.9 正式发布实施替换：
 
-## 原始到替代的变化
+- **正式配置入口：** [`LoonKit.lcf`](../LoonKit.lcf)；现在属于 v6.5.9。
+- **五份现役资源：** [`rules/releases/v6.5.9/`](../rules/releases/v6.5.9/)（AppleOTA、Bilibili、Microsoft、Apple、Paypal），全部使用 `DOMAIN` / `DOMAIN-SUFFIX`，无 `AND`/`OR`/`NOT` 复合逻辑。
+- **冗余清理：** 旧版独立远程 `Our-RegionalCN` 的 2553 条复合规则全部停止加载（订阅条目删除）；原正式版配置末尾 `GEOIP,CN,DIRECT,no-resolve` 已提供 CN GeoIP 回退；`FINAL,Final` 仍然保留。
+- 其他 31 份订阅、DNS/DoH/TUN、Host、Proxy Group、节点和插件完全不变。
+- 原来的实验配置 `LoonKit.NativeRulesTrial.lcf` 与 `rules/experiments/v6.5.8-native-no-composite/` 不再保留在工作分支/正式发布树内，避免两个配置并存造成误导。它们可以在历史固定 Git 提交中追溯；**v6.5.8 的完整正式发布文件与规则不删**，仍可历史回滚。
 
-| 订阅 | 原始 GEOIP 复合规则 | 实验普通规则 | 策略 |
-| --- | ---: | ---: | --- |
-| Our-RegionalCN | 2,553 | 1 | `GEOIP,CN,no-resolve`（remote policy=DIRECT，与现有本地 GeoIP fallback 重复） |
-| Our-AppleOTA | 82 | 82 | 保留 `DOMAIN` / `DOMAIN-SUFFIX`，原 Apple 策略 |
-| Our-Bilibili | 128 | 120 | 保留域名，跳过原来附带非 CN 判断的 8 条 IP 规则 |
-| Our-Microsoft | 645 | 645 | 保留域名，原 Microsoft 策略 |
-| Our-Apple | 1,574 | 1,561 | 保留域名，跳过原来附带非 CN 判断的 13 条 IP 规则 |
-| Our-Paypal | 246 | 246 | 保留域名，原 PayPal 策略 |
+现役配置拥有 36 份远程订阅、196486 条普通/其它匹配（其中五份是 2654 条普通域名规则）。所有正式资源 URL 固定于提交，不从浮动 main 直接加载。
 
-其他五份列表都没有更改原有 `DOMAIN` / `DOMAIN-SUFFIX` 原子条件及其顺序，只是**移除整个 GEOIP 条件**。两个 IP 例外集没有安全的“非 CN”纯 IP 等价条件，因此不直接改为全部代理；RegionalCN 的 2,553 个 CN 服务域名也**没有**被转换成无依据的 DIRECT 规则，以免违背官方建议。其策略通过原有 IP GeoIP fallback 尽可能处理。
+## 意图与可观测限制
 
-### 必须正视的功能退化（不宣称等价）
+此改动只是从**规则运行时稳定性风险**角度替换语法：
 
-**普通服务域名规则先于 GEOIP/CN**。对于 Apple/Microsoft/PayPal/Bilibili/AppleOTA 等服务，原来可能根据解析 IP 在 CN 走 DIRECT、在海外走相应服务策略；**现在相同域名即使解析到 CN，也可能先命中服务规则而进入代理策略组**。反过来，来自 RegionalCN 中非服务列表的 CDN，可能落到其它 31 份订阅或 FINAL 而非旧 CN 特定 DIRECT 规则。它不是原先自动精确地域分流的等价实现。
+- **过去**：Apple、Microsoft、PayPal、Bilibili/OTA 的同一域名根据 CN/非 CN 目标 IP 条件自动选 DIRECT 或专用策略，实际命中会触发用户报告的 VPN 重启。
+- **现在**：普通 DOMAIN/DOMAIN-SUFFIX 先捕获服务域名，再交给该服务组。国内服务即使 IP 位于 CN，也可能进入代理组；**地区精确切分不再等价**。
+- 不能用无条件的 DIRECT 域名来偷换“国内 IP 直连、海外 IP 代理”的原有设计；如果要求对同一域名严格根据实际解析 IP 分流，需要另行获得 Loon 的稳定支持或上游修复。
+- 用户还报告此前“VPN 不重启”配置存在 **DNS 泄漏**，本版 DNS 参数原样保留，因此 **没有解决 DNS 泄漏**。
+- 仅有静态 CI 的成功证据，**真实匹配服务请求时是否不再重启，必须在用户设备上测量**。
 
-因此：**这只是验证 VPN 是否可安全命中普通域名规则的替代路线，不能作为最终完整地区分流修复立即发布。** 若真实运行稳定，再针对有证据的跨地区节点（域名、DNS CNAME/A/AAAA、策略匹配）逐个收敛名单，无法仅靠标准域名规则+GeoIP fallback 在 Loon 当前匹配优先级下保持同一域名的完整地区自动策略选择。若业务绝对要求该性质，需要向 Loon 官方提供最小复现，等待运行时修复或受支持的新路由能力。
+建议在 Loon 中刷新远程规则后实际访问 Microsoft、Apple、Bilibili、PayPal 的规则命中域名，查看实际请求日志，记录 VPN 是否重启；同时测量 DNS 解析器、UDP 53、IPv6、App 内加密 DNS 失败回退选项及对应服务组策略。若异常仍然出现，应将最小真实命中记录及脱敏的 Network Extension 日志用于向 Loon 官方反馈。
 
-## DNS 与隐私保留
+## 保障与溯源
 
-主配置原样保留：
-```ini
-GEOIP,CN,DIRECT,no-resolve
-FINAL,Final
-```
+- `scripts/release_v659.py` 根据冻结 v6.5.8 构建**严格复现 v6.5.9 配置**，校验规则内容、固定提交、字节哈希、36 份资源以及未改动的非资源配置。
+- `scripts/release_v658.py` 保留历史验证模式，读取 `build/baselines/v6.5.8/`；历史发行校验不因修复被覆盖。
+- `tests/test_native_only_loom_trial.py` 对现役无嵌套规则、冗余移除与 DNS/GeoIP 末尾不变做回归检查。
+- 旧来源及丢失的逐行来源限制见 [来源审计](https://github.com/YohakuSama/loonkit/blob/diagnostics/geoip-six-isolation-20261025/docs/V658_REGIONAL_PROVENANCE_AUDIT.md)。
 
-没有新增任何 DIRECT 域名规则，未改变 `dns-server = 223.5.5.5,223.6.6.6`、`doh-server = https://dns.alidns.com/dns-query`、`hijack-dns = *:53`、IPv6 或 DNS 回退设置。**用户之前已在“VPN 不重启”的组合里报告 DNS 泄漏，所以此版本绝不能声称 DNS 已修复**。参照 [Loon 官方 DNS](https://nsloon.app/docs/DNS/)，加密 DNS 失败时默认可回退普通 DNS，应在 Loon App DNS 服务器设置中核对并关闭回退；测试实际解析器和应用/系统 DNS 请求，以及 Wi-Fi、蜂窝、IPv6 状态。
-
-## 验收（必须主动触发一条匹配）
-
-1. 在同设备、同 Loon/iOS build、同 Wi-Fi/蜂窝和同节点下备份已有配置，导入 [`LoonKit.NativeRulesTrial.lcf`](../LoonKit.NativeRulesTrial.lcf)，刷新远程规则，确认六份实验列表均成功加载、没有解析错误。名称、policy、顺序与正式配置一致。
-2. **不能只观察空闲 VPN**。依次实际访问匹配 AppleOTA、Bilibili、PayPal、Microsoft、Apple 的常用域名。在 Loon 请求日志中确认真实规则命中已切换为普通 `DOMAIN` 或 `DOMAIN-SUFFIX`，同时记录 VPN 是否重启。如实际请求没有命中，则本次测试不能证实复合规则已被正确替换。
-3. 分别检查解析到 CN 与非 CN 的目标地址，记录真实命中策略与 IP 地理归属，明确哪些服务被“过度代理”。不能用 VPN 稳定替代地区自动分流验收。
-4. 同时进行 DNS 泄漏网站/抓包测试（解析器 IP、UDP 53、IPv6、节点专用 DNS），并对照原先的六项全禁用基线。两个问题独立验收。
-5. 如果原生规则命中仍触发 VPN 重启，立即停止这一方向，采集脱敏的 iOS Network Extension 退出/Jetsam 日志及 Loon 规则匹配记录，提交给 Loon 官方。不要再未经验证地增加 DIRECT 域名或 GEOIP 逻辑嵌套。
-
-## 官方参考与来源限制
-
-Loon 官方：[匹配优先级](https://nsloon.app/docs/Rule/) · [普通域名规则](https://nsloon.app/docs/Rule/domain_rule/) · [订阅规则](https://nsloon.app/docs/Rule/sub_rule/) · [IP/GEOIP](https://nsloon.app/docs/Rule/ip_rule/) · [逻辑规则](https://nsloon.app/docs/Rule/logic_rule/)。
-
-这六份由 LoonKit 基于冻结上游合并输入自行生成，**不是 Loon 官方发布**。历史原始上游到逐行域名的来源映射并不完整。详见 [来源审计](https://github.com/YohakuSama/loonkit/blob/diagnostics/geoip-six-isolation-20261025/docs/V658_REGIONAL_PROVENANCE_AUDIT.md)。
-
-静态测试仅验证格式、所有六份仍启用、没有 ANY AND/OR/NOT、正式配置其它内容不变；不代替真实设备稳定性、地区精度和 DNS 安全验收。
+正式版不构成 Loon 官方产品的规则兼容性或性能保证。
