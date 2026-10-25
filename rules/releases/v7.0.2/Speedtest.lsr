@@ -1,9 +1,0 @@
-# Speedtest policy — Loon native DOMAIN / DOMAIN-SUFFIX rules
-DOMAIN-SUFFIX,fast.com
-DOMAIN-SUFFIX,ooklaserver.net
-DOMAIN-SUFFIX,speed.cloudflare.com
-DOMAIN-SUFFIX,speed.dler.io
-DOMAIN-SUFFIX,speedtest.co
-DOMAIN-SUFFIX,speedtest.net
-DOMAIN-SUFFIX,speedtestcustom.com
-DOMAIN-SUFFIX,ookla.com

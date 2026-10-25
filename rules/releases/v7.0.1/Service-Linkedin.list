@@ -1,7 +1,0 @@
-# LoonKit v6.5.5-beta.4 immutable beta overlay; generated from rules/beta/policy_overrides.json
-DOMAIN-SUFFIX,linkedin.com
-DOMAIN-SUFFIX,licdn.com
-DOMAIN-SUFFIX,linkedin.at
-DOMAIN-SUFFIX,linkedin.cn
-DOMAIN-SUFFIX,licdn.cn
-DOMAIN-SUFFIX,lnkd.in

@@ -8,4 +8,4 @@
 
 自动化校验结果见 [CI](https://github.com/YohakuSama/loonkit/actions)。设备记录包含客户端版本、配置 hash、场景、结果和测试时间。
 
-[测试矩阵](./BETA_DEVICE_MATRIX.md) · [发布记录](./RELEASE_READINESS.md)
+[测试矩阵](./BETA_DEVICE_MATRIX.md) · [发布记录](./CHANGELOG.md)

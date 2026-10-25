@@ -1,8 +1,0 @@
-# LoonKit v6.5.7 reviewed Twitch rules; see rules/reviewed/v6.5.7/decisions.json
-DOMAIN-SUFFIX,twitch.tv
-DOMAIN-SUFFIX,ttvnw.net
-DOMAIN-SUFFIX,ext-twitch.tv
-DOMAIN-SUFFIX,jtvnw.net
-DOMAIN-SUFFIX,twitchcdn.net
-DOMAIN-SUFFIX,twitchcon.com
-DOMAIN-SUFFIX,twitchsvc.net

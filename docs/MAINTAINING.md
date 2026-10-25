@@ -1,19 +1,19 @@
-# 维护与发布（通用构建系统）
+# 维护与发布
 
 正式入口为 `main/LoonKit.lcf`；个人测试入口为 `beta` 分支的 `beta/LoonKit.lcf`。
-**不需要为了新版本创建任何 `release_vXXX.py`、`prepare_release_vXXX.py` 或专用 Workflow。**
+新版本统一使用通用构建引擎，无需新增版本专用脚本或 Workflow。
 
-## 架构
+## 当前构建
 
-- `build/release_spec.json`：唯一的当前正式版本号、资源 Commit 和历史校验记录。
-- `build/release_recipe.json`：当前版本的只读基线位置/哈希与变更配方。
+- `build/release_spec.json`：当前版本、固定资源提交及历史配置 SHA256 台账。
+- `build/release_recipe.json`：当前配置的只读基线、SHA256 和逐项变更配方。
 - `scripts/release_engine.py`：版本无关的字节确定性构建与校验。
-- `build/release_manifest.json`：已发布配置、规则资源与插件的完整性记录。
-- `scripts/verify_release.py`：通用验证入口；历史旧版验证器仅用于回归，不再为新版本复制。
-- `rules/releases/`：冻结的完整规则；不移除大规则、不提供精简版本。
-- `.github/workflows/release.yml`：通用发布，读取版本与 SHA，不硬编码发布版本。
+- `build/release_manifest.json`：现役规则的 URL、策略、顺序、数量与摘要。
+- `scripts/verify_release.py`：当前发布的完整性检查入口。
+- `rules/releases/`：正式版、Beta 及其生成输入仍依赖的完整规则。
+- `.github/workflows/release.yml`：读取当前版本和准确提交，在正式 CI 通过后发布。
 
-## 日常验证
+## 验证
 
 ```bash
 python3 scripts/source_lock.py --check
@@ -21,30 +21,28 @@ python3 scripts/release_engine.py --check
 python3 scripts/verify_release.py --check --remote
 python3 scripts/license_audit.py --check
 python3 scripts/test_suites.py current
-# 历史与 Beta 的全套回归可手动运行
+node --test tests/diagnostics.test.cjs tests/diagnostics.retry.test.cjs
+# 包含 Beta 的完整维护回归
 python3 scripts/test_suites.py all
-node --test tests/diagnostics.test.cjs
 ```
 
-## 分层 CI
+正式 CI 检查当前配置、来源锁、策略与许可证，并在隔离 Git 副本中连续模拟两次版本升级。
+`maintenance-audit.yml` 对规则、构建及维护代码修改运行完整生产/Beta 回归，并每周检查固定远程资源、历史 Beta URL 与许可证证据。
+Beta 分支继续由 `beta-ci.yml` 校验。
 
-正式 CI 每次检查源码锁、当前配置完整性、当前策略及许可证，并在隔离 Git 副本连续构建两次新版本。历史审计对涉及历史资源/共享模块的 PR、定期及手动操作执行，不再把旧版本脚本与所有普通修改绑定。Beta CI 仍保留个人测试回归。首次发布新版本仍复核远端固定资源，已有 Release 不会重复下载。
+## 创建下一版本
 
-## 新版本：一次命令创建基线
-
-程序会检查 Git 工作树是否干净，并先完整预检再写入。普通文件写入异常时会回滚，但**多文件修改并非断电级原子操作**，因此始终通过经 CI 验证的 Git commit 发布。运行：
+在干净的 Git 工作树运行：
 
 ```bash
-python3 scripts/release_engine.py --start-next v7.0.5
+python3 scripts/release_engine.py --start-next v7.0.10
 ```
 
-该命令按版本保留前一正式版基线于 `build/baselines/generated/<旧版本>/LoonKit.lcf`，
-更新 `release_spec.json` 中唯一的版本号、历史 SHA256、README、配方和当前校验文件。
-**不触动现有规则 URL、DNS/TUN、插件及策略组。** Git tag 保留更早版本的回滚记录。
+命令先完整预检，再将前一正式配置保存为 `build/baselines/generated/<旧版本>/LoonKit.lcf`，
+更新版本号、历史摘要台账、README、配方和当前校验文件。现有规则 URL、DNS/TUN、插件及策略组沿用原值。
 
-如需修改分流策略，只编辑 `build/release_recipe.json` 的 `changes` 数组。
-每个修改是包含 `find`/`replace` 字符串的对象，旧字符串必须在当前中间结果中**恰好出现一次**。
-保存后运行：
+修改分流策略时，只编辑 `build/release_recipe.json` 的 `changes` 数组。
+每个 `find`/`replace` 修改的旧字符串必须在当前中间结果中恰好出现一次，然后运行：
 
 ```bash
 python3 scripts/release_engine.py --write
@@ -52,24 +50,29 @@ python3 scripts/release_engine.py --check
 python3 scripts/verify_release.py --check --remote
 ```
 
-`--write` 仅刷新当前版本的配置、Manifest 中的配置 SHA256 与当前 checksum 文档；
-上游规则资产变更仍必须按规则源审阅和冻结发布流程进行，不能通过替换发布版本号绕过校验。
+`--write` 刷新当前配置、Manifest 中的配置 SHA256 与当前 checksum 文档；上游规则更新仍需单独审阅并冻结资源提交。
+普通写入异常会回滚，多文件写入不具备断电级原子性，发布以通过 CI 的 Git commit 为准。
+已存在的版本标签和 Release 不重复改写。仓库维护变更保持当前发布版本号。
 
-在发布 PR 上审核准确 head 的 CI 后合并到 main。Release Workflow 只针对 main 上成功的推送 CI 发布；
-已存在的版本标签/Release 不会被重复改写。对于单纯架构/文档变更，保持版本号不变。
+## 保留范围与历史恢复
 
-**注意：** `--start-next` 用于尚未发布的下一版本，不是对已发布版本的原地修改。
-历史基线目录、许可证证据及冻结 Raw 资源在确认依赖前不得清理。
-设备体验由维护者自行验证，自动化检查只证明离线构建和已定义的策略回归。
+工作树只保留现役用途：当前构建基线、Beta 的基础配置和资源、可复现输入、来源锁与许可证证据。
+旧候选配置、重复规则、一次性发布/迁移脚本及其专用测试已移除；通用校验器只检查当前发布。
 
-[发布记录](./RELEASE_READINESS.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)
+历史 SHA256 集中保存在 `build/release_spec.json` 的 `historical_profile_sha256`。
+工作树必须保留当前版本的 checksum 文档与 `release/SHA256SUMS.<版本>`；旧版本的成对校验文件可从工作树移除。
+如旧文件仍存在，验证器会继续核对其版本与台账摘要，并拒绝不完整或未知版本的文件。
 
-## 清理历史文件的边界
+旧发布的完整配置、脚本、文档和规则从原 Git tag/commit 恢复。例如：
 
-已发布的 Git tag 和 SHA 固定 Raw 资源不改写。旧 `rules/releases/`、`build/baselines/`、`build/candidates/`、`rules/inputs/`、Beta 归档以及许可证证据仍被历史审计或发布复现使用，不能按文件年代整批删除；删除工作树副本也不会抹掉 Git 历史的既有对象。
+```bash
+git show v7.0.8:LoonKit.lcf
+```
 
-本次清理了两个不再由 CI、维护文档或主线发布调用的入口：`scripts/check_sources.py`（已有源码锁、上游审计）和 `scripts/prepare_release.py`（过时的 26 份规则候选构建器，当前正式版是 43 份、通用发布引擎）。独立的离线提案审核 `scripts/review_source.py` 仍具有专用用途，因此保留。
+检查旧发布流程时，应检出对应标签后使用该版本自带的验证器。
+清理只删除工作树副本，既有 Git 历史、标签和固定提交 Raw URL 保留。
+日期或目录名不能单独作为删除依据：`rules/inputs/`、Beta 的旧版本目录及许可证材料仍有现役引用。
 
-节点辅助的旧源码只从当前工作树清除：`v20261025r1/node-intelligence.js`、`v20261025r1/media-unlock.js`、`v20261025r2/node-intelligence.js`。现役插件的节点 `v20261025r3`、网络 `v20261025r1`、流媒体 `v20261025r2` 仍原样保留；Beta CI 使用的 `v20261022r11` 三份旧脚本也继续保留。旧正式版通过各自不可变 Git 提交获取原脚本。
+设备体验由维护者自行验证，自动化检查证明离线构建与已定义的策略回归。
 
-正式版 `v7.0.8` 不因仓库清理改变运行时字节，不新增 Release。以后仅清理能明确证明无现役调用、无审计依赖的文件。
+[更新记录](./CHANGELOG.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)

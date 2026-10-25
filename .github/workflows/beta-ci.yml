@@ -29,8 +29,6 @@ jobs:
         run: |
           python3 scripts/source_lock.py --check
           python3 scripts/verify_release.py --check --remote
-          python3 scripts/prepare_promoted_release.py --check
-          python3 scripts/prepare_release_v656.py --check
           python3 scripts/license_audit.py --check
       - name: Reproduce frozen beta asset bytes
         run: |

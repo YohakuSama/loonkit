@@ -1,6 +1,6 @@
 # 分流规则
 
-现役配置：**v7.0.4**。远程规则沿用固定版本 **v7.0.3**，内容未变。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
+现役配置：**v7.0.9**。43 份远程规则固定于资源提交；目录按资源实际发布版本保留。完整资源引用、策略与 SHA256 见 [release_manifest.json](../build/release_manifest.json)。
 
 ## 规则顺序
 
@@ -20,12 +20,12 @@
 | --- | --- |
 | sources.json | 登记上游来源。 |
 | inputs/ | 冻结的来源输入。 |
-| releases/v7.0.3/ | 正式版 43 份 Loon 原生 `.lsr` 分类规则。 |
-| reviewed/v6.5.8/decisions.json | 历史版本的变更配方。 |
-| releases/v6.5.9/ | 固定版本的五份普通域名规则。 |
-| releases/v6.5.8/ | 历史冻结规则，供审计与回滚。 |
+| releases/v7.0.3/ | 40 份现役 Loon 原生 `.lsr` 分类规则。 |
+| releases/v7.0.5/ | 3 份移除重复归属后的现役规则。 |
+| reviewed/v6.5.8/decisions.json | Beta 基础规则的审阅记录。 |
+| releases/v6.5.7/、releases/v6.5.8/、releases/vNext-RC2/ | Beta 和确定性生成器仍依赖的冻结资源。 |
 | beta/upstream/ | 测试渠道的累计精确域名增量。 |
 
-历史版本的配置使用固定提交 URL；新版本通过新的资源提交更新引用。
+历史版本的配置使用固定提交 URL；新版本通过新的资源提交更新引用。已退役候选和重复规则从工作树移除，原 Git tag/commit 保留完整历史。
 
 [规则审阅](../docs/RULE_SAFETY.md) · [上游更新](../docs/BETA_UPSTREAM_AUTOMATION.md)
