@@ -17,6 +17,7 @@ on:
       - 'scripts/loon_resources.py'
       - 'scripts/release_engine.py'
       - 'scripts/optimize_runtime_rules.py'
+      - 'tests/test_maintenance.py'
       - 'tests/test_optimize_runtime_rules.py'
       - 'scripts/beta_*.py'
       - '.github/workflows/ci.yml'
@@ -35,6 +36,7 @@ on:
       - 'scripts/reviewed_release.py'
       - 'scripts/loon_resources.py'
       - 'scripts/release_engine.py'
+      - 'tests/test_maintenance.py'
       - 'scripts/beta_*.py'
       - '.github/workflows/historical-audit.yml'
 permissions:

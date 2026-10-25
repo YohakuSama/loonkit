@@ -281,5 +281,40 @@ class OfflineDiagnosticsTests(unittest.TestCase):
                          {"Spotify": ("spotify.com",)}), "Spotify")
 
 
+
+class WorkingTreeCleanupTests(unittest.TestCase):
+    def test_retired_unreferenced_scripts_do_not_reappear(self):
+        root = Path(__file__).resolve().parents[1]
+        retired = (
+            "scripts/check_sources.py",
+            "scripts/prepare_release.py",
+            "scripts/v20261025r1/node-intelligence.js",
+            "scripts/v20261025r1/media-unlock.js",
+            "scripts/v20261025r2/node-intelligence.js",
+        )
+        for path in retired:
+            with self.subTest(path=path):
+                self.assertFalse((root / path).exists(), path)
+
+    def test_current_helpers_and_historical_beta_fixtures_survive(self):
+        root = Path(__file__).resolve().parents[1]
+        for path in (
+            "scripts/release_engine.py",
+            "scripts/source_lock.py",
+            "scripts/review_source.py",
+            "scripts/v20261025r3/node-intelligence.js",
+            "scripts/v20261025r1/network-diagnostics.js",
+            "scripts/v20261025r2/media-unlock.js",
+            "scripts/v20261022r11/node-intelligence.js",
+            "scripts/v20261022r11/network-diagnostics.js",
+            "scripts/v20261022r11/media-unlock.js",
+            "build/baselines/generated/v7.0.7/LoonKit.lcf",
+            "rules/releases/v7.0.3/AdBlockBalanced.lsr",
+            "rules/releases/v7.0.5/ChinaDirect.lsr",
+        ):
+            with self.subTest(path=path):
+                self.assertTrue((root / path).is_file(), path)
+
+
 if __name__ == "__main__":
     unittest.main()

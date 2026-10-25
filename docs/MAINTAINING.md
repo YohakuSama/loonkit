@@ -64,4 +64,12 @@ python3 scripts/verify_release.py --check --remote
 
 [发布记录](./RELEASE_READINESS.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)
 
-历史脚本整理：v7.0.3 一次性候选发布入口及 v6.5.8 旧的重复准备入口已从当前主线移除，历史 Git tag 仍完整保存原始代码；正在被历史验证器引用的脚本保留，不盲删。
+## 清理历史文件的边界
+
+已发布的 Git tag 和 SHA 固定 Raw 资源不改写。旧 `rules/releases/`、`build/baselines/`、`build/candidates/`、`rules/inputs/`、Beta 归档以及许可证证据仍被历史审计或发布复现使用，不能按文件年代整批删除；删除工作树副本也不会抹掉 Git 历史的既有对象。
+
+本次清理了两个不再由 CI、维护文档或主线发布调用的入口：`scripts/check_sources.py`（已有源码锁、上游审计）和 `scripts/prepare_release.py`（过时的 26 份规则候选构建器，当前正式版是 43 份、通用发布引擎）。独立的离线提案审核 `scripts/review_source.py` 仍具有专用用途，因此保留。
+
+节点辅助的旧源码只从当前工作树清除：`v20261025r1/node-intelligence.js`、`v20261025r1/media-unlock.js`、`v20261025r2/node-intelligence.js`。现役插件的节点 `v20261025r3`、网络 `v20261025r1`、流媒体 `v20261025r2` 仍原样保留；Beta CI 使用的 `v20261022r11` 三份旧脚本也继续保留。旧正式版通过各自不可变 Git 提交获取原脚本。
+
+正式版 `v7.0.8` 不因仓库清理改变运行时字节，不新增 Release。以后仅清理能明确证明无现役调用、无审计依赖的文件。
