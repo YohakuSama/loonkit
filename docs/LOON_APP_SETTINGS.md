@@ -63,4 +63,4 @@ hijack-dns = *:53
 - [Loon 配置导入参考](https://wiki.repcz.link/loon/profile/)
 - [Loon 资源自动更新参考](https://wiki.repcz.link/loon/more-set/)
 
-[返回项目首页](../README.md) · [节点筛选](./NODE_SELECTION.md) · [DNS 验证](./DNS_PRIVACY.md) · [诊断插件](./NETWORK_DIAGNOSTICS.md)
+[图解：完整设置位置](./SETUP_GUIDE.md) · [返回项目首页](../README.md) · [节点筛选](./NODE_SELECTION.md) · [DNS 验证](./DNS_PRIVACY.md) · [诊断插件](./NETWORK_DIAGNOSTICS.md)

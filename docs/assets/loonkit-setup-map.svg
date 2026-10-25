@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 522" width="1180" height="522" role="img" aria-labelledby="title desc">
+  <title id="title">LoonKit 设置地图：运行模式、脚本与插件、DNS、配置更新</title>
+  <desc id="desc">四个设置步骤：选择规则分流；启用网络诊断需要的脚本和插件；在 DNS 服务器页面关闭查询回落；首次导入使用全覆盖更新，日常更新关闭全覆盖。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FAFBFC"/>
+      <stop offset="1" stop-color="#F0F4F9"/>
+    </linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#246BFF"/>
+      <stop offset="1" stop-color="#1AB9A3"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="145%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#263C5B" flood-opacity=".07"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="522" rx="24" fill="url(#bg)"/>
+  <rect x="30" y="34" width="5" height="47" rx="2.5" fill="url(#top)"/>
+  <text x="52" y="49" font-size="13" font-weight="700" letter-spacing="2.8" fill="#64758E" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif">LOONKIT  /  SETUP MAP</text>
+  <text x="52" y="79" font-size="28" font-weight="750" fill="#17223A" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif">从导入到日常维护，四个地方设置好</text>
+  <text x="1118" y="63" text-anchor="end" font-size="13" fill="#7889A1" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif">v7.0.8  ·  iOS / iPadOS</text>
+
+  <!-- card 1 -->
+  <rect x="24" y="120" width="272" height="329" rx="20" fill="#FFFFFF" stroke="#DEE6EF" filter="url(#shadow)"/>
+  <rect x="43" y="140" width="48" height="26" rx="13" fill="#E8F1FF"/>
+  <text x="67" y="158" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#2663CD" font-weight="700">01</text>
+  <text x="103" y="158" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#7A899E">仪表 / 运行模式</text>
+  <text x="43" y="206" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="24" font-weight="740" fill="#19263D">规则分流</text>
+  <text x="43" y="234" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#66768F">让独立策略组参与请求匹配</text>
+  <rect x="43" y="257" width="234" height="110" rx="13" fill="#F6F9FF" stroke="#E2E9F5"/>
+  <rect x="60" y="279" width="200" height="48" rx="11" fill="#E4EEFF"/>
+  <circle cx="84" cy="303" r="11" fill="#3679F6"/>
+  <path d="M79 303l4 4 7-8" stroke="#FFF" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="103" y="309" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="17" font-weight="700" fill="#2156B6">规则分流</text>
+  <text x="60" y="350" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#7587A1">不是「全局直连」或「全局代理」</text>
+  <text x="43" y="400" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">主页可以自定义常用快捷入口</text>
+  <text x="43" y="423" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">快捷入口并非必须全部开启</text>
+
+  <!-- card 2 -->
+  <rect x="311" y="120" width="272" height="329" rx="20" fill="#FFFFFF" stroke="#DEE6EF" filter="url(#shadow)"/>
+  <rect x="330" y="140" width="48" height="26" rx="13" fill="#E5F8F2"/>
+  <text x="354" y="158" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#138E73" font-weight="700">02</text>
+  <text x="390" y="158" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#7A899E">配置 / 功能模块</text>
+  <text x="330" y="206" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="24" font-weight="740" fill="#19263D">诊断所需模块</text>
+  <text x="330" y="234" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#66768F">使用网络辅助时检查启用状态</text>
+  <rect x="330" y="257" width="234" height="110" rx="13" fill="#F6FAF9" stroke="#E1EEE9"/>
+  <text x="347" y="285" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="650" fill="#294236">脚本</text>
+  <rect x="498" y="268" width="48" height="24" rx="12" fill="#26B998"/>
+  <circle cx="533" cy="280" r="9" fill="white"/>
+  <text x="347" y="324" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="650" fill="#294236">插件</text>
+  <rect x="498" y="307" width="48" height="24" rx="12" fill="#26B998"/>
+  <circle cx="533" cy="319" r="9" fill="white"/>
+  <text x="347" y="351" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#6F8B82">网络诊断基于插件中的 Script</text>
+  <text x="330" y="400" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">MitM / 复写不是诊断的前提</text>
+  <text x="330" y="423" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">第三方插件有要求时再按需配置</text>
+
+  <!-- card 3 -->
+  <rect x="598" y="120" width="272" height="329" rx="20" fill="#FFFFFF" stroke="#DEE6EF" filter="url(#shadow)"/>
+  <rect x="617" y="140" width="48" height="26" rx="13" fill="#F0EAFE"/>
+  <text x="641" y="158" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#7651C5" font-weight="700">03</text>
+  <text x="677" y="158" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#7A899E">设置 / DNS</text>
+  <text x="617" y="206" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="24" font-weight="740" fill="#19263D">查询回落</text>
+  <text x="617" y="234" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#66768F">隐私优先场景建议关闭</text>
+  <rect x="617" y="257" width="234" height="110" rx="13" fill="#FAF8FE" stroke="#ECE4F7"/>
+  <text x="634" y="282" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#6D5B83">设置 → DNS → DNS 服务器</text>
+  <line x1="635" y1="295" x2="832" y2="295" stroke="#E9E2F1"/>
+  <text x="635" y="328" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="670" fill="#2F2A46">查询回落</text>
+  <rect x="794" y="307" width="40" height="24" rx="12" fill="#D1D5DB"/>
+  <circle cx="807" cy="319" r="9" fill="#FFF"/>
+  <text x="617" y="400" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">关闭可避免加密 DNS 失败后的</text>
+  <text x="617" y="423" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">普通 DNS 回落，也可能解析失败</text>
+
+  <!-- card 4 -->
+  <rect x="885" y="120" width="272" height="329" rx="20" fill="#FFFFFF" stroke="#DEE6EF" filter="url(#shadow)"/>
+  <rect x="904" y="140" width="48" height="26" rx="13" fill="#FFF2DE"/>
+  <text x="928" y="158" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#B5701F" font-weight="700">04</text>
+  <text x="964" y="158" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#7A899E">配置文件 / 更新策略</text>
+  <text x="904" y="206" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="24" font-weight="740" fill="#19263D">首次与日常</text>
+  <text x="904" y="234" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#66768F">先备份，更新方式分两种</text>
+  <rect x="904" y="257" width="234" height="110" rx="13" fill="#FFFBF4" stroke="#F2E8D5"/>
+  <text x="922" y="287" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="650" fill="#43372B">首次导入</text>
+  <rect x="1070" y="270" width="52" height="24" rx="12" fill="#F2BC63"/>
+  <text x="1096" y="286" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#5C3A0C">ON</text>
+  <line x1="922" y1="301" x2="1120" y2="301" stroke="#F0E4CF"/>
+  <text x="922" y="332" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="650" fill="#43372B">日常更新</text>
+  <rect x="1070" y="316" width="52" height="24" rx="12" fill="#E7E1D8"/>
+  <text x="1096" y="332" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#766C60">OFF</text>
+  <text x="922" y="353" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#887764">全覆盖更新</text>
+  <text x="904" y="400" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">长按 LoonKit.lcf → 更新策略</text>
+  <text x="904" y="423" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#53657F">按需设置频率，日常关闭全覆盖</text>
+
+  <text x="590" y="489" text-anchor="middle" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#63738C">其他高级选项：TUN Only、MitM、QUIC、UDP、SNI 应结合当前配置和实际需求检查，不建议照搬旧版教程一律开启。</text>
+</svg>

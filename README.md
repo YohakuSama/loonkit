@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="#首次导入">首次导入</a>　·　<a href="#日常更新">日常更新</a>　·　<a href="#推荐设置">推荐设置</a>　·　<a href="#功能概览">功能概览</a>　·　<a href="#文档与支持">文档</a>
+  <a href="#首次导入">首次导入</a>　·　<a href="#日常更新">日常更新</a>　·　<a href="#设置位置速览">设置位置</a>　·　<a href="#推荐设置">推荐设置</a>　·　<a href="#功能概览">功能概览</a>　·　<a href="#文档与支持">文档</a>
 </p>
 
 ---
@@ -90,6 +90,12 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
 
 [完整导入与更新说明](./docs/LOON_APP_SETTINGS.md) · [版本更新记录](./docs/CHANGELOG.md)
 
+## 设置位置速览
+
+<p align="center"><img src="./docs/assets/loonkit-setup-map.svg" width="100%" alt="LoonKit 设置位置导览：规则分流、脚本和插件、DNS 查询回落与配置更新" /></p>
+
+<p align="center"><sub>配置入口示意图 · <a href="./docs/SETUP_GUIDE.md">查看完整图文设置指南</a> · 图中开关为针对 LoonKit 的建议，并非所有插件的统一要求</sub></p>
+
 ## 推荐设置
 
 以下建议基于当前 `LoonKit.lcf`，而不是通用于所有 Loon 配置：
@@ -138,7 +144,8 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
 
 | 从这里开始 | 深入了解 |
 | :--- | :--- |
-| [首次导入、日常更新与推荐设置](./docs/LOON_APP_SETTINGS.md) | [DNS 与隐私验证](./docs/DNS_PRIVACY.md) |
+| [可视化设置指南](./docs/SETUP_GUIDE.md) | [DNS 与隐私验证](./docs/DNS_PRIVACY.md) |
+| [首次导入、更新与推荐设置](./docs/LOON_APP_SETTINGS.md) | [Loon 官方使用手册](https://nsloon.app/docs/) |
 | [节点池与自动切换](./docs/NODE_SELECTION.md) | [规则说明](./rules/README.md) |
 | [网络诊断插件](./docs/NETWORK_DIAGNOSTICS.md) | [更新记录](./docs/CHANGELOG.md) |
 | [分流排查](./docs/ROUTE_DIAGNOSTICS.md) | [v7.0.8 校验](./docs/RELEASE_CHECKSUM_v7.0.8.md) |
