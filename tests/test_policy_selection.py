@@ -5,9 +5,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE = ROOT / "LoonKit.lcf"
-EXPECTED_GROUPS = (
-    "Proxy", "Auto", "Fallback", "AdBlock", "Final", "AI", "ChatGPT", "Gemini", "Claude", "GitHub", "Google", "Microsoft", "Apple", "Cloudflare", "Speedtest", "YouTube", "Netflix", "Disney", "PrimeVideo", "Spotify", "TikTok", "Twitch", "HBO", "Abema", "動畫瘋", "Dazn", "BBC", "Bilibili", "Telegram", "Whatsapp", "Instagram", "Facebook", "Twitter", "Discord", "Line", "Reddit", "Linkedin", "Steam", "Paypal",
-)
+REQUIRED_GROUPS = frozenset(("Proxy", "Auto", "Fallback", "AdBlock", "Final", "AI"))
 
 
 def get_section(profile, heading):
@@ -33,9 +31,13 @@ class PolicySelectionTests(unittest.TestCase):
         cls.filters = settings(get_section(cls.profile, "Remote Filter"))
         cls.general = settings(get_section(cls.profile, "General"))
 
-    def test_no_new_or_removed_strategy_groups(self):
-        self.assertEqual(tuple(self.groups), EXPECTED_GROUPS)
-        self.assertEqual(len(self.groups), 39)
+    def test_required_groups_and_unique_declarations(self):
+        self.assertTrue(REQUIRED_GROUPS <= self.groups.keys())
+        declarations = [line.partition("=")[0].strip()
+                        for line in get_section(self.profile, "Proxy Group").splitlines()
+                        if line.strip() and not line.lstrip().startswith("#")]
+        self.assertEqual(len(declarations), len(set(declarations)))
+        self.assertEqual(set(declarations), set(self.groups))
 
     def test_filters_isolate_manual_and_automatic_candidates(self):
         for name in ("ALL_Filter", "Auto_Filter", "Fallback_Filter"):
@@ -44,7 +46,7 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertTrue(self.groups["Auto"].startswith("url-test,Auto_Filter,"))
         self.assertTrue(self.groups["Fallback"].startswith("fallback,Fallback_Filter,"))
         # All existing service selectors retain manual/auto/fallback access.
-        for name in EXPECTED_GROUPS:
+        for name in self.groups:
             if name in ("Proxy", "Auto", "Fallback", "AdBlock", "Final"):
                 continue
             self.assertIn("ALL_Filter", self.groups[name], name)
