@@ -129,8 +129,8 @@ def prepare(candidate: Path, root: Path = ROOT) -> dict:
             "created_at_utc":datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")}
 
 
-def validate_plan(plan, meta, profile, catalog):
-    from route_diagnostics import Router
+def validate_plan(plan, meta, profile, catalog, client, base):
+    from beta_trusted_routes import build_router
     if plan.get("schema_version") != 1 or plan.get("repository") != REPOSITORY:
         raise ValueError("wrong publication plan schema/repository")
     if not HEX40.fullmatch(str(plan.get("base_commit", ""))):
@@ -158,7 +158,7 @@ def validate_plan(plan, meta, profile, catalog):
     groups = plan.get("groups")
     if not isinstance(groups, dict) or set(groups) - OWNERS:
         raise ValueError("direct, advertising, sensitive or unknown service owner cannot be automated")
-    trusted_router=Router(ROOT)
+    trusted_router = build_router(client, base, profile, meta) if groups else None
     total, all_rules = 0, set()
     for group, selection in groups.items():
         additions = selection.get("rules")
@@ -228,7 +228,7 @@ def publish(plan: dict, client) -> dict:
     profile = client.file("beta/LoonKit.lcf", base)
     meta = json.loads(client.file("build/beta_manifest.json", base))
     catalog = json.loads(client.file("rules/sources.json", base))
-    count = validate_plan(plan, meta, profile, catalog)
+    count = validate_plan(plan, meta, profile, catalog, client, base)
     if not count:
         return {"status":"NO_ELIGIBLE_RUNTIME_CHANGE", "manual_groups":plan.get("manual_groups", [])}
     key = digest(encoded({"base":base, "groups":{g:s["rules"] for g,s in plan["groups"].items()}}))[:16]
