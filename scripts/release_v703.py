@@ -58,6 +58,22 @@ def check(remote:bool=False,root:Path=ROOT)->dict:
     if (count!=meta["remote_rule_count"] or count!=meta["runtime_rule_matcher_count"] 
             or count!=candidate["matcher_count"] or meta["remote_subscription_count"]!=43):
         raise ValueError("ruleset checksum/count inconsistency")
+    # The source-group catalog describes current rules, not the archived v7.0.0 split.
+    groups=meta.get("source_group_tags",{})
+    claimed=[tag for tags in groups.values() for tag in tags]
+    tag_index={row["tag"]:row for row in checked}
+    if len(claimed)!=43 or len(set(claimed))!=43 or set(claimed)!=set(tag_index):
+        raise ValueError("source-group tags omit or duplicate active rule subscriptions")
+    computed={
+        name:len(set().union(*(
+            set(lines((root/tag_index[tag]["path"]).read_bytes())) for tag in tags
+        ))) for name,tags in groups.items()
+    }
+    if computed!=meta.get("source_group_counts"):
+        bad={name:(meta.get("source_group_counts",{}).get(name),expected)
+             for name,expected in computed.items()
+             if meta.get("source_group_counts",{}).get(name)!=expected}
+        raise ValueError("published source-group inventory is stale: "+str(bad))
     icon_lines=[x for x in section(text,"Proxy Group").splitlines() if " = " in x]
     if len(icon_lines)!=39 or len({x.split("=",1)[0].strip() for x in icon_lines})!=39:
         raise ValueError("invalid policy group count")
