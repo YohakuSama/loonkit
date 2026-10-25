@@ -206,7 +206,7 @@ test('media: seven mocked supported responses produce seven distinct verdicts', 
   assert.equal(session.completed.length, 1);
   const out = output(session);
   for (const name of ['DAZN','Discovery+','Paramount+','Disney+','Netflix','ChatGPT','YouTube Premium']) {
-    assert.ok(out.includes(name + '：'), 'missing service result: ' + name);
+    assert.ok(out.includes(name + '　'), 'missing service result: ' + name);
   }
   assert.match(out, /✅ Netflix　片源可访问/);
   assert.match(out, /✅ Discovery\+　可访问/);
