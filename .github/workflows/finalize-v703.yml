@@ -42,6 +42,7 @@ jobs:
           python3 scripts/publish_v703_candidate.py --finalize --asset-commit "$ASSET_SHA"
           python3 scripts/release_v703.py --check
           python3 scripts/verify_release.py --check
+          python3 scripts/source_lock.py --check
           python3 scripts/audit_upstream_703.py --candidate build/candidates/v7.0.3
           python3 -m unittest discover -s tests -p 'test_*.py' -q
       - name: Commit and push complete release candidate

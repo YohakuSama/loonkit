@@ -74,6 +74,21 @@ class AuditFixTests(unittest.TestCase):
                 self.assertEqual([l for l in old_lines if not l.startswith('proxy-test-url = ')],
                                  [l for l in new_lines if not l.startswith('proxy-test-url = ')])
                 self.assertIn('proxy-test-url = http://www.bing.com', new_lines)
+            elif name == 'Rule':
+                # Gemini and GitHub Copilot have reviewed, service-specific local overrides.
+                self.assertEqual(
+                    old_lines,
+                    [l.replace('DOMAIN,gemini.google.com,Gemini','DOMAIN,gemini.google.com,AI')
+                      .replace('DOMAIN,aistudio.google.com,Gemini','DOMAIN,aistudio.google.com,AI')
+                     for l in new_lines if l not in {
+                       'DOMAIN,copilot-proxy.githubusercontent.com,AI',
+                       'DOMAIN,copilot-telemetry-service.githubusercontent.com,AI',
+                       'DOMAIN,copilot-telemetry.githubusercontent.com,AI',
+                       'DOMAIN,copilot-workspace.githubnext.com,AI',
+                     }],
+                    name)
+                self.assertEqual(sum(x == 'GEOIP,CN,DIRECT,no-resolve' for x in new_lines),1)
+                self.assertEqual(new_lines[-1], 'FINAL,Final')
             else:
                 self.assertEqual(old_lines, new_lines, name)
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)
