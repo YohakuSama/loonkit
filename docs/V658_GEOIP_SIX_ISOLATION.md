@@ -2,13 +2,21 @@
 
 ## 最新实机反馈（2026-10-25）
 
-**Group A（RegionalCN + AppleOTA + Bilibili）已测试：VPN 没有自动重启，但 DNS 泄漏检测未通过。** Group B（Microsoft + Apple + PayPal）尚未测试。该结果只能说明 Group A 在已测网络和时段下未复现重启，**不能判断 Group A 的三个服务规则在 DNS 方面可用**，也不能宣称故障只存在于 Group B。
+- 用户最新明确反馈：**Group A（RegionalCN + AppleOTA + Bilibili）与 Group B（Microsoft + Apple + PayPal）均触发 VPN 自动关闭/重启**。此前一度反馈 Group A 没有重启，后来明确更正为两组都有该问题。DNS 泄漏也曾在 Group A 测试中观察到，但不得由此推断是某一份订阅导致。
+- **OnlyAppleOTA**（六份可疑中仅加载 AppleOTA 的 82 条原始复合规则）：实机报告 **没有 VPN 重启**。这仅证明该单份规则在本次测试条件下不触发故障，不代表 DNS 已通过。
+- 新增两份按规则条数递增的候选：**AppleOTA_Bilibili**（82 + 128 = 210 条），**AppleOTA_Bilibili_Paypal**（82 + 128 + 246 = 456 条）。按顺序测试，前一份若重启，先停止，避免继续增加混杂变量。两份配置始终保留原始 DNS/TUN、GeoIP/no-resolve 和所有 31 份非目标规则。
+- 三份已实测失败的规则变体：正式 v6.5.8（六份全开）、OR 分组 PR #138、内层 no-resolve PR #139。继续改写语法缺乏可用证据，优先做累加隔离。
 
-检查过原始 v6.5.8 与 Group A、Group B：三者 `[General]` 中的 `dns-server = 223.5.5.5,223.6.6.6`、`doh-server = https://dns.alidns.com/dns-query`、`hijack-dns = *:53`、`ip-mode = dual` 以及 `[Rule]` 的 `GEOIP,CN,DIRECT,no-resolve` / `FINAL,Final` 完全相同。**DNS 泄漏不一定是上述三份新启用规则造成**。尤其官方文档称：同时配置普通 DNS 和 DoH，优先加密解析，但加密 DNS 失败时，App 默认可回退普通 DNS。需要核对 App 内「加密 DNS 失败回退普通 DNS」开关（https://nsloon.app/docs/DNS/）。同时检查节点专用 DNS、系统应用自带 DNS、IPv6、DNS 测试站点解析器列表，不能只凭显示了 AliDNS/所在地就认定普通 UDP DNS 泄漏。
+### DNS 泄漏应另行对照
 
-为区别“六份复合规则影响”与“所有诊断配置共有的 DNS 问题”，新增 [None.lcf](../diagnostics/v6.5.8-geoip-six/None.lcf)：仅禁用六份，**保留原版的 no-resolve 及其他所有 DNS 设置**。在相同 App 开关、网络/节点和泄漏测试站点上，分别比较 None、Group A 和 Group B 的**DNS 解析器 IP/ASN、传输是否为 UDP 53、实际请求命中规则**。若 None 也泄漏，则不能将泄漏归因于 Group A；若 None 不泄漏而 Group A 泄漏，才继续使用单份隔离配置筛查 RegionalCN、AppleOTA、Bilibili。
+仓库核对确认原始 v6.5.8、Group A、Group B、OnlyAppleOTA 和新递增配置的 `[General]`、`[Host]`、`[Rule]` 完全一致。仍保留：
 
-**建议测试顺序**：先完成尚未测试的 **Group B（记录 VPN 和 DNS 两项）**；之后测试 None 作为泄漏的严格基线。如果 Group B 不重启，则调查两组叠加；如果重启，就分别检查 Group B 三个单份规则。测试时无需修改 `GEOIP,CN,DIRECT,no-resolve`，也不要为通过 DNS 检测而盲目添加 DIRECT。
+```ini
+GEOIP,CN,DIRECT,no-resolve
+FINAL,Final
+```
+
+因此不能仅凭本次分组的 DNS 泄漏测试就确定源头，需记录实际 DNS 解析器 IP/ASN、网络传输、IPv6、App 内加密 DNS 失败回退开关。Loon DNS 文档：https://nsloon.app/docs/DNS/ 。
 
 ## 已确认的实机结果
 
@@ -34,6 +42,8 @@
 | [GroupB.lcf](../diagnostics/v6.5.8-geoip-six/GroupB.lcf) | Microsoft、Apple、Paypal | 34 |
 | [OnlyRegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/OnlyRegionalCN.lcf) | RegionalCN | 32 |
 | [OnlyAppleOTA.lcf](../diagnostics/v6.5.8-geoip-six/OnlyAppleOTA.lcf) | AppleOTA | 32 |
+| [AppleOTA_Bilibili.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili.lcf) | AppleOTA、Bilibili（210 条） | 33 |
+| [AppleOTA_Bilibili_Paypal.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal.lcf) | AppleOTA、Bilibili、PayPal（456 条） | 34 |
 | [OnlyBilibili.lcf](../diagnostics/v6.5.8-geoip-six/OnlyBilibili.lcf) | Bilibili | 32 |
 | [OnlyMicrosoft.lcf](../diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf) | Microsoft | 32 |
 | [OnlyApple.lcf](../diagnostics/v6.5.8-geoip-six/OnlyApple.lcf) | Apple | 32 |
@@ -48,12 +58,12 @@ FINAL,Final
 
 以及完整 `[General]` 的 DNS、DoH、`hijack-dns`、`ip-mode`、IPv6，`[Host]`、`[Proxy Group]`、`[Plugin]`、其余远程资源不变。没有新增 CN DIRECT 域名或静态 IP 表，也没有修改 Apple/Microsoft/PayPal 默认策略。
 
-## 最少的有效实机测试顺序
+## 当前最少的有效实机测试顺序
 
-1. **Group A 已测：VPN 稳定，DNS 检测未通过。现在先测试 Group B，并记录 VPN 与 DNS 两项；再测试 None 对照泄漏来源。** 导入时确认**原有配置被替换**，不是在当前配置上追加订阅；执行刷新远程规则，分别确认总数 34、六份可疑中各有三份。保持相同网络、节点、Loon/iOS 版本及 App 内 DNS 回退开关。
-2. **若只有 Group A 触发重启**，测试 OnlyRegionalCN、OnlyAppleOTA、OnlyBilibili。**若只有 Group B 触发**，测试 OnlyMicrosoft、OnlyApple、OnlyPaypal。若两组都触发，则两个组都需要各自定位。
-3. **若 Group A 和 Group B 单独都稳定，六份同时启用却重启**，更像跨组交互或资源累积问题；不能认定单个列表出错。继续对单份规则量/多份叠加进行受控测试，配合 VPN Extension 的 Jetsam/崩溃日志。
-4. **若一组触发，但该组三份单独都不触发**，优先做两两组合排查，而不是从任意一份里删规则。在确定触发组合后，对相关列表再按规则行范围二分。
+1. 已确认 **OnlyAppleOTA 单独启用时 VPN 没有重启**。先导入 **AppleOTA_Bilibili**（新增 Bilibili 的 128 条），刷新远程订阅，验证实际上只加载六份目标规则中的两份。
+2. 若第一份在同样使用场景下未重启，再导入 **AppleOTA_Bilibili_Paypal**（再加 PayPal 的 246 条）。若第一份已经重启，就停止递增，接下来单独测试 OnlyBilibili，而非继续增加更多规则。
+3. 若两份都稳定，才根据增加数量最少的顺序考虑 Microsoft（645 条）、Apple（1,574 条）和 RegionalCN（2,553 条）；但 Group A 与 Group B 均重启的结果意味着之后还需排查组合交互。
+4. DNS 泄漏单独记录，不随意去掉 `GEOIP,CN,DIRECT,no-resolve`。对照六份全关闭的 [None.lcf](../diagnostics/v6.5.8-geoip-six/None.lcf)，避免把 VPN 稳定与 DNS 不泄漏混为一谈。
 
 **每次测试记录**：是否正常导入、六份中实际启用哪几份、规则刷新是否出错、最短复现间隔、iOS 诊断分析中的 Network Extension 退出或 Jetsam 记录，并对比 DNS 测试结果。注意不要公开付费节点、订阅 Token 和设备标识。
 
