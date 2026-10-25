@@ -8,7 +8,7 @@
 
 [![Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml)
 
-[**获取稳定性排障配置**](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf) · [功能概览](#功能概览) · [快速开始](#快速开始) · [问题反馈](https://github.com/YohakuSama/loonkit/issues)
+[**获取配置**](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf) · [功能概览](#功能概览) · [快速开始](#快速开始) · [问题反馈](https://github.com/YohakuSama/loonkit/issues)
 
 </div>
 
@@ -24,7 +24,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 ## 快速开始
 
-**[安全分流排障配置 LoonKit.Safe.lcf](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** · [原始 v6.5.8 配置](./LoonKit.lcf)
+**[下载 / 导入 LoonKit.lcf](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)** · [查看配置](./LoonKit.lcf)
 
 1. 在 Loon 中导入配置。
 2. 添加自己的节点或订阅，在 `Proxy` 中选择线路。
