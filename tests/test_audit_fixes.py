@@ -93,8 +93,12 @@ class AuditFixTests(unittest.TestCase):
                 self.assertEqual(new_lines[-1], 'FINAL,Final')
             elif name == 'Plugin':
                 spec=json.loads((ROOT/'build/release_spec.json').read_text())
+                manifest=json.loads((ROOT/'build/release_manifest.json').read_text())
+                plugin_path=manifest['plugin_path']
+                self.assertTrue(plugin_path.startswith('release/'))
+                self.assertTrue((ROOT/plugin_path).is_file())
                 expected=('https://raw.githubusercontent.com/YohakuSama/loonkit/'
-                          +spec['plugin_assets_commit']+'/release/Network_Diagnostics.plugin, enabled=true')
+                          +spec['plugin_assets_commit']+'/'+plugin_path+', enabled=true')
                 self.assertEqual(new_lines,[expected])
                 self.assertEqual(len(old_lines),1)
             else:
