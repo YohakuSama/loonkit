@@ -449,6 +449,13 @@ def runtime_baseline(root=ROOT, *, profile_path='LoonKit.lcf', manifest_path='bu
             for group,tags in meta['source_group_tags'].items()}
 
 
+def project_catalog_baseline(current: dict, allowed: set) -> tuple[dict, list[str]]:
+    """Bound the legacy-source audit to owners in its frozen catalog."""
+    unknown = sorted(set(current) - allowed)
+    return {owner: rules for owner, rules in current.items()
+            if owner in allowed}, unknown
+
+
 def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tuple[dict, dict[str, bytes], dict]:
     """Return report, exact fetched snapshots, and full change record (no writes)."""
     root = Path(root)
@@ -458,8 +465,12 @@ def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tup
     if len(sources) != 87 or len(active) != 26:
         raise ValueError("source catalog or active policy set unexpectedly changed")
     release_path=root/'build/release_manifest.json'
+    unmatched_runtime_groups = []
     if baseline_rules is None and release_path.is_file() and json.loads(release_path.read_text()).get('schema_version') == 2:
-        baseline_rules=runtime_baseline(root)
+        current = runtime_baseline(root)
+        allowed = set(active) | set(manifest["inactive_groups"])
+        # Limit the 87-source audit without losing evidence of newer owners.
+        baseline_rules, unmatched_runtime_groups = project_catalog_baseline(current, allowed)
     if baseline_rules is not None:
         allowed = set(active) | set(manifest["inactive_groups"])
         if not isinstance(baseline_rules, dict) or not baseline_rules or set(baseline_rules) - allowed:
@@ -635,6 +646,7 @@ def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tup
     report = {
         "schema_version": 1, "status": "REVIEW_ONLY_NEVER_PUBLISH",
         "source_count": len(sources), "active_groups": len(active),
+        "runtime_groups_not_in_legacy_catalog": unmatched_runtime_groups,
         "snapshot_count": len(snapshots),
         "included_snapshot_count": len(included_snapshots),
         "incomplete_sources": sum(x["status"] in

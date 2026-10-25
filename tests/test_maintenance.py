@@ -283,6 +283,23 @@ class OfflineDiagnosticsTests(unittest.TestCase):
 
 
 class WorkingTreeCleanupTests(unittest.TestCase):
+    def test_live_upstream_audit_ignores_newer_owners_but_reports_them(self):
+        from scripts import upstream_review as review
+        root = Path(__file__).resolve().parents[1]
+        legacy = json.loads((root / "build/engine_manifest.json").read_text())
+        current = json.loads((root / "build/release_manifest.json").read_text())
+        allowed = set(legacy["active_groups"]) | set(legacy["inactive_groups"])
+        extra = sorted(set(current["source_group_tags"]) - allowed)
+        self.assertTrue(extra)
+        self.assertIn("ChatGPT", extra)
+        self.assertIn("Gemini", extra)
+        projection = review.project_catalog_baseline(
+            {group: {"DOMAIN-SUFFIX,test.example"} for group in current["source_group_tags"]},
+            allowed,
+        )
+        self.assertEqual(projection[1], extra)
+        self.assertEqual(set(projection[0]), set(current["source_group_tags"]) & allowed)
+
     def test_retired_unreferenced_scripts_do_not_reappear(self):
         root = Path(__file__).resolve().parents[1]
         retired = (
