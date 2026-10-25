@@ -1,36 +1,46 @@
-# LoonKit v6.5.8 Safe Routing：符合 Loon 官方分流原则的排障方案
+# v6.5.8 VPN 重启：六份复合规则隔离诊断
 
-此配置用于判断 VPN 自动断开与复合规则订阅是否相关。**它不是已被实机确认的修复。** 仅保留在 PR 中供设备 A/B 验证，正式 `LoonKit.lcf` 与历史版本发布校验均未修改。
+**现有用户实机证据**：正式 v6.5.8 的其余配置不变，注释掉这六份规则后，VPN 不再反复重启。这证明问题与这些规则的启用状态有关，但尚不能判定哪一份是唯一诱因，也可能是组合负载、某个逻辑子规则或 Loon 的解析/匹配运行时问题。
 
-## 设计原则
+本 PR 保留不可变正式版本和 SHA256 校验；不是面向所有用户的正式发布替代品。
 
-Loon 官方文档：[匹配顺序](https://nsloon.app/docs/Rule/) · [GEOIP 与 no-resolve](https://nsloon.app/docs/Rule/ip_rule/) · [DNS 查询及缓存](https://nsloon.app/docs/DNS/)。
+## 严格单变量基线
 
-1. **不盲目增加国内 DIRECT 例外**。不使用静态 `.cn` 域名清单、Bilibili 域名直连清单，不把 Apple OTA / Apple 全部强制直连，更不以「避免 DNS 查询」作为添加域名直连规则的理由。
-2. 排障配置移除六个复合规则订阅：`Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal`。远程规则由 37 个变为 **31 个**，未增加新的订阅或补丁规则。
-3. `[Rule]` 的 `GEOIP,CN,DIRECT,no-resolve` 改为 **`GEOIP,CN,DIRECT`**。原因：官方文档说明 `no-resolve` 不主动解析域名，若依赖 IP 地理位置判断尚未有目标 IP 的请求，需要允许解析。保留 `FINAL,Final` 与其他本地规则。
-4. 不修改节点、策略组、通用 DNS/TUN 设置和网络诊断插件。此方案可能**不再使用**原有的 Apple / Microsoft / PayPal / Bilibili 专属策略组；这些域名如未命中其他规则，将走 GeoIP 或 Final。
+[`LoonKit.Safe.lcf`](../LoonKit.Safe.lcf) **仅从 v6.5.8 删除六条远程订阅配置**：
+- `Our-RegionalCN`（2,553 条 AND + GEOIP）
+- `Our-AppleOTA`（82 条 AND + NOT + GEOIP）
+- `Our-Bilibili`（128 条）
+- `Our-Microsoft`（645 条）
+- `Our-Apple`（1,574 条）
+- `Our-Paypal`（246 条）
 
-**关键限制**：Loon 按「域名规则先于 IP 规则」处理请求。如果其他 31 份订阅里的域名规则先命中，即使最终解析 IP 在 CN，`GEOIP,CN,DIRECT` 也不能保证覆盖它。因此不能宣称此方案可确保所有大陆 IP 直连，也不能仅靠调整 GeoIP 在配置文件中的顺序绕开官方匹配优先级。
+剩余 31 个远程订阅、全部 General/DNS/TUN 设置、策略组、`[Rule]`、`GEOIP,CN,DIRECT,no-resolve`、插件和 Host 都与发布版字节级一致。不加入任何国内直连域名、Apple OTA 直连或者临时修改 GeoIP 参数。这样确保测试仅改变六份订阅的加载情况。
 
-## Apple 与其他跨地区服务
+## 二分定位（直接导入，无需手写规则）
 
-Apple 不应视为全部在中国大陆或全部在美国。iCloud 中国大陆区与部分本地 CDN 的解析可能位于 CN，部分其他服务则在境外。不要仅凭看到代理就判断配置错误，应检查当次 DNS 解析 IP、GeoIP 地区、实际规则命中和对应节点，再决定是否需要有证据的专用规则。
+| 配置 | 启用的六份目标规则 | 目标规则数 |
+| --- | --- | ---: |
+| [Safe](../LoonKit.Safe.lcf) | 全部禁用（用户已经实测稳定） | 0 |
+| [Group A](../diagnostics/v6.5.8/GroupA.lcf) | RegionalCN、AppleOTA、Bilibili | 2,763 |
+| [Group B](../diagnostics/v6.5.8/GroupB.lcf) | Microsoft、Apple、Paypal | 2,465 |
+| 正式 [v6.5.8](../LoonKit.lcf) | 全部启用（用户报告 VPN 重启） | 5,228 |
 
-Bilibili / Microsoft / PayPal 也可能因服务、接入网络和 DNS 结果而变化，不对整个品牌统一添加 DIRECT。微信与 WeChat 也不应被视为同一个规则对象；不另外为微信堆叠直连域名规则。此排障方案牺牲了六个专属策略组对特定域名的优先命中，以尽可能隔离复合规则的影响。
+1. 在相同 Loon 版本、节点、网络、DNS 与插件设置下，先验证 Safe 仍稳定。
+2. 依次使用 Group A 与 Group B 进行短时测试。如果某个组能稳定复现自动重启，就在**那个组**仅启用其中一份目标规则（其余五份禁用）来单独测试；如果单独都稳定，再逐对启用定位交互问题。
+3. 如果 A、B 都稳定而全部启用后重启，优先检查六份同时加载的总体开销、跨组交互和 iOS Network Extension 进程的内存限制。**不要直接断言某一份规则有错。**
+4. 每次记录 Loon build / iOS 版本、VPN 断开时间、Wi-Fi/蜂窝、节点、规则刷新结果、DNS 解析与系统诊断日志。若有崩溃、Jetsam 或 Extension 异常可提供脱敏记录，不要公开订阅 token。
 
-## DNS / ECS
+注意：A 与 B 是从原始正式配置直接保留原规则，不改变任何规则内容。它们仍然可能触发重启；测试期间请在网络可用、数据已保存的环境进行。
 
-- 保留已发布配置的 AliDNS DNS 设置，不未经验证就替换 DNS 服务。
-- 记录出现问题时的 DNS A / AAAA / CNAME、实际连接的目标 IP、使用的 DNS 服务器、Loon 的规则命中、节点/策略以及是否命中 DNS 缓存。
-- **ECS** 是由 DNS 解析器及上游共同支持的功能，不意味着所有 DNS 查询必然使用 ECS，也不能保证每次解析都返回本地最优节点。使用支持 ECS 的可信解析器或自行部署，可作为**有证据后**的定位选项，不是该修复的必要前提。
-- DNS 解析仍会发生，不能把普通域名规则的使用等同于减少 DNS 查询次数。
+## 官方分流口径与完整功能的区别
 
-## A/B 验证
+Loon 官方说明：[匹配优先级](https://nsloon.app/docs/Rule/)、[逻辑规则](https://nsloon.app/docs/Rule/logic_rule/)、[IP 与 no-resolve](https://nsloon.app/docs/Rule/ip_rule/)、[DNS](https://nsloon.app/docs/DNS/)。
 
-1. 备份正式配置并记录 Loon/iOS 版本、Wi-Fi 或蜂窝、代理节点、断线时间与频率。
-2. 从修复分支导入 `LoonKit.Safe.lcf`，保持**相同**网络、节点订阅、DNS、插件和测速选项。刷新远程规则。
-3. 在相同条件下对比正式 v6.5.8 与 Safe 配置的 VPN 开关行为、Network Extension 退出日志和相关请求的 DNS 解析结果。
-4. 如果 Safe 配置仍反复重启，再分别排查剩余订阅、网络诊断插件、测速、DNS、节点以及其他 VPN 冲突。没有实机日志不能认定复合规则是唯一根因。
+- 普通 DOMAIN / DOMAIN-SUFFIX 规则与 IP 规则的匹配阶段有区别。对同一域名的 CN / 海外 CDN 做精确地区判断，无法仅靠把域名映射到 Apple/Microsoft/Paypal/Bilibili 代理组再附加一条 GEOIP 就完全复现；域名规则可能先命中代理策略。因此，地区分流既要关注 DNS 解析结果，也要考虑 Loon 的规则优先级。
+- **不要盲目添加 CN 直连清单**。微信与 WeChat 不应混淆，Apple 不应整体强制直连，DNS 查询无法被堆叠 DIRECT 规则消除。必要时结合实际 DNS 的 A/AAAA、CNAME、GeoIP、使用的策略与代理节点排查。ECS 是否有效取决于解析器、上游及客户端网络。
+- 六组全部关闭的 Safe 是**定位手段**，暂时丧失这六组的精细地区自动分流。这不代表已经完整解决原定的 Apple / Microsoft / PayPal 分流目标。需要先锁定崩溃源，再考虑少量经过实机验证的逻辑规则或按部署证据做最小化服务分流。
+- v6.5.8 的 50 条宽泛 `USER-AGENT` 已移除，无需在此重新解决同一问题。
+- DNS 泄漏防护尚未完成端到端验收：虽已设置 AliDNS DoH 与 DNS 劫持，仍需在 **Loon → DNS 服务器**关闭加密 DNS 失败时回退普通 DNS，并检验网络切换、IPv6 和客户端自带 DNS。只检查 .lcf 不足以证明无泄漏。
+- 上游更新的真实写入 PR、GitHub 权限和 CI dispatch 仍需使用**真实且经过审核的新增规则**完成独立端到端测试；不能将单元测试当作写入流程已经验证。
 
-在确认设备表现并完成新版发布流程前，**不要覆盖正式 `LoonKit.lcf`**。此排障配置是以临时暂停 Apple/Microsoft/PayPal/Bilibili 专用分流为代价换取隔离测试的诊断工具，不是与 v6.5.8 功能完全等价的长期替代品。
+此文档和测试配置不会替代生产发布门禁。问题在设备复现并定位后，再单独提交一个功能修复 PR，审查服务规则、DNS 路由差异和发布不可变性。
