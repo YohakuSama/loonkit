@@ -281,5 +281,57 @@ class OfflineDiagnosticsTests(unittest.TestCase):
                          {"Spotify": ("spotify.com",)}), "Spotify")
 
 
+
+class WorkingTreeCleanupTests(unittest.TestCase):
+    def test_live_upstream_audit_ignores_newer_owners_but_reports_them(self):
+        review = upstream_review
+        root = Path(__file__).resolve().parents[1]
+        legacy = json.loads((root / "build/engine_manifest.json").read_text())
+        current = json.loads((root / "build/release_manifest.json").read_text())
+        allowed = set(legacy["active_groups"]) | set(legacy["inactive_groups"])
+        extra = sorted(set(current["source_group_tags"]) - allowed)
+        self.assertTrue(extra)
+        self.assertIn("ChatGPT", extra)
+        self.assertIn("Gemini", extra)
+        projection = review.project_catalog_baseline(
+            {group: {"DOMAIN-SUFFIX,test.example"} for group in current["source_group_tags"]},
+            allowed,
+        )
+        self.assertEqual(projection[1], extra)
+        self.assertEqual(set(projection[0]), set(current["source_group_tags"]) & allowed)
+
+    def test_retired_unreferenced_scripts_do_not_reappear(self):
+        root = Path(__file__).resolve().parents[1]
+        retired = (
+            "scripts/check_sources.py",
+            "scripts/prepare_release.py",
+            "scripts/v20261025r1/node-intelligence.js",
+            "scripts/v20261025r1/media-unlock.js",
+            "scripts/v20261025r2/node-intelligence.js",
+        )
+        for path in retired:
+            with self.subTest(path=path):
+                self.assertFalse((root / path).exists(), path)
+
+    def test_current_helpers_and_historical_beta_fixtures_survive(self):
+        root = Path(__file__).resolve().parents[1]
+        for path in (
+            "scripts/release_engine.py",
+            "scripts/source_lock.py",
+            "scripts/review_source.py",
+            "scripts/v20261025r3/node-intelligence.js",
+            "scripts/v20261025r1/network-diagnostics.js",
+            "scripts/v20261025r2/media-unlock.js",
+            "scripts/v20261022r11/node-intelligence.js",
+            "scripts/v20261022r11/network-diagnostics.js",
+            "scripts/v20261022r11/media-unlock.js",
+            "build/baselines/generated/v7.0.7/LoonKit.lcf",
+            "rules/releases/v7.0.3/AdBlockBalanced.lsr",
+            "rules/releases/v7.0.5/ChinaDirect.lsr",
+        ):
+            with self.subTest(path=path):
+                self.assertTrue((root / path).is_file(), path)
+
+
 if __name__ == "__main__":
     unittest.main()
