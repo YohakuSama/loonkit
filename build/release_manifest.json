@@ -541,6 +541,30 @@
     ],
     "ChinaDirect": [
       "Our-ChinaDirect-Scoped"
+    ],
+    "DomesticAI": [
+      "Our-DomesticAI"
+    ],
+    "ChatGPT": [
+      "Our-ChatGPT"
+    ],
+    "Gemini": [
+      "Our-Gemini"
+    ],
+    "Claude": [
+      "Our-Claude"
+    ],
+    "GitHub": [
+      "Our-GitHub"
+    ],
+    "Speedtest": [
+      "Our-Speedtest"
+    ],
+    "Cloudflare": [
+      "Our-Cloudflare"
+    ],
+    "SharedInfrastructure": [
+      "Our-SharedInfrastructure"
     ]
   },
   "source_group_counts": {
@@ -553,10 +577,10 @@
     "Linkedin": 6,
     "Abema": 9,
     "DomesticCore": 9,
-    "AI": 99,
+    "AI": 81,
     "AppleOTA": 82,
     "SteamCN": 13,
-    "Steam": 62,
+    "Steam": 56,
     "YouTube": 183,
     "Netflix": 31,
     "Disney": 185,
@@ -576,7 +600,15 @@
     "Microsoft": 645,
     "Apple": 1561,
     "Paypal": 246,
-    "ChinaDirect": 114709
+    "ChinaDirect": 114707,
+    "DomesticAI": 10,
+    "ChatGPT": 19,
+    "Gemini": 20,
+    "Claude": 9,
+    "GitHub": 29,
+    "Speedtest": 8,
+    "Cloudflare": 7,
+    "SharedInfrastructure": 8
   },
   "rules": {
     "AI": {
