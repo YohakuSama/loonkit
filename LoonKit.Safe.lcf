@@ -1,6 +1,6 @@
-# LoonKit v6.5.8 - Safe Routing (non-composite)
-# Six high-volume GEOIP AND/NOT subscriptions use plain matchers. Domestic split uses explicit CN roots.
-# This stability build deliberately trades runtime IP-geolocation precision for lower routing complexity.
+# LoonKit v6.5.8 - Safe Routing (official GeoIP-first fallback)
+# Disable six composite rule subscriptions without adding any DIRECT exceptions.
+# CN requests not captured by preceding domain rules use GEOIP,CN,DIRECT. Other unmatched requests use FINAL.
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -72,7 +72,6 @@ Paypal = select,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.githubuserc
 
 [Remote Rule]
 https://raw.githubusercontent.com/YohakuSama/loonkit/8f144d9d74dfae4e5064e4c1eeed23addd62199d/rules/releases/v6.5.7/AdBlockBalanced.list, policy=AdBlock, tag=Beta-AdBlock-Balanced, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/RegionalCN.list, policy=DIRECT, tag=Our-RegionalCN, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/Service-Spotify.list, policy=Spotify, tag=Beta-Service-Spotify, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/8f144d9d74dfae4e5064e4c1eeed23addd62199d/rules/releases/v6.5.7/Service-Twitch.list, policy=Twitch, tag=Beta-Service-Twitch, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/Service-BBC.list, policy=BBC, tag=Beta-Service-BBC, enabled=true
@@ -84,7 +83,6 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ea
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/DomesticSupplement.list, policy=DIRECT, tag=Beta-DomesticSupplement, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/AIScoped.list, policy=AI, tag=Beta-AIScoped, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/SharedInfrastructure.list, policy=Proxy, tag=Beta-SharedInfrastructure, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/AppleOTA.list, policy=DIRECT, tag=Our-AppleOTA, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/SteamCN.list, policy=DIRECT, tag=Beta-SteamCN, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/1b54e079486a06a5cfff5c5f03016628a52a7701/rules/beta/v6.5.5-beta.4/SteamGlobal.list, policy=Steam, tag=Beta-SteamGlobal, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/YouTube.list, policy=YouTube, tag=Our-YouTube, enabled=true
@@ -92,7 +90,6 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ea
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Disney.list, policy=Disney, tag=Our-Disney, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/PrimeVideo.list, policy=PrimeVideo, tag=Our-PrimeVideo, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/TikTok.list, policy=TikTok, tag=Our-TikTok, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/Bilibili.list, policy=Bilibili, tag=Our-Bilibili, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/AnimeCrazy.list, policy=動畫瘋, tag=Our-AnimeCrazy, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Dazn.list, policy=Dazn, tag=Our-Dazn, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/8f144d9d74dfae4e5064e4c1eeed23addd62199d/rules/releases/v6.5.7/Telegram.list, policy=Telegram, tag=Our-Telegram, enabled=true
@@ -103,10 +100,7 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/9bbac4c9aa0ec33c82ab5fe0364
 https://raw.githubusercontent.com/YohakuSama/loonkit/9bbac4c9aa0ec33c82ab5fe03648127f3f4754f4/rules/releases/vNext-RC2/Discord.list, policy=Discord, tag=Our-Discord, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/HBO.list, policy=HBO, tag=Our-HBO, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/Google.list, policy=Google, tag=Our-Google, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/Microsoft.list, policy=Microsoft, tag=Our-Microsoft, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/Apple.list, policy=Apple, tag=Our-Apple, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/8f144d9d74dfae4e5064e4c1eeed23addd62199d/rules/releases/v6.5.7/Steam.list, policy=Steam, tag=Our-Steam, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/ead898c87aebf68563cccc0263e9e02665d05f3a/rules/hotfix/v6.5.8-safe/Paypal.list, policy=Paypal, tag=Our-Paypal, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/7f11406a1b958cbf4f64d3281ead6ce417a19dbf/rules/releases/v6.5.8/ChinaDirect.list, policy=DIRECT, tag=Beta-ChinaDirect-Scoped, enabled=true
 
 [Host]
@@ -117,7 +111,7 @@ DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy
 DOMAIN,gemini.google.com,AI
 DOMAIN,aistudio.google.com,AI
 DOMAIN,copilot.microsoft.com,AI
-GEOIP,CN,DIRECT,no-resolve
+GEOIP,CN,DIRECT
 FINAL,Final
 
 [Plugin]
