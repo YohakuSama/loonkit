@@ -1,6 +1,14 @@
-# DNS 设置与故障核验
+# LoonKit · DNS 设置与故障核验
 
-默认解析器为 AliDNS。DoH 使用 `dns.alidns.com` 的 HTTPS 域名进行 TLS 验证，`[Host]` 提供启动解析地址。此处不变更已有 DNS、IPv6 或 TUN 的实际配置。
+**适用版本：v7.0.8。** 本页说明 LoonKit 的现有 DNS 配置、App 必须手动核对的选项，以及隐私与可用性的取舍。不修改现有 DNS、IPv6 或 TUN 的运行时配置。
+
+## 最重要的 App 开关
+
+**设置 → DNS → DNS 服务器 → 查询回落 → 关闭**（隐私优先时推荐）。
+
+这项设置不能仅通过主配置中的 `dns-server`、`doh-server` 推断或替代。根据 [Loon 官方 DNS 文档](https://nsloon.app/docs/DNS/)，默认情况下加密 DNS 查询失败可回落普通 DNS；关闭后应避免这一明文回落路径，但 **DoH 不可用时可能发生解析失败**。如果当前网络阻断 DoH 且优先考虑可用性，可以自行决定是否打开回落；不要将「关闭回落」宣传成绝对无 DNS 泄漏。
+
+## 当前配置（保持不变）
 
 ```ini
 [General]
@@ -14,21 +22,19 @@ ipv6-vif = auto
 dns.alidns.com = 223.5.5.5
 ```
 
-## 必须在 Loon App 内核对
+AliDNS 是目前配置的解析服务；DoH 使用 `dns.alidns.com` 的 HTTPS 端点，`[Host]` 提供启动解析地址。`hijack-dns = *:53` 处理匹配的 UDP 53 DNS 请求，**不保证能拦截 App 内置的加密 DNS、私有解析或其他协议**。节点入口若使用独立的 `server-dns`，应额外检查解析路径。
 
-在 Loon「DNS 服务器」中关闭**「加密 DNS 失败回退到普通 DNS」**。这个开关不能仅凭配置文件设置，也不能由仓库 CI 推断当前手机的开关状态。普通 DNS 地址保留用于现有配置兼容；关闭回退之后，加密 DNS 故障应呈现解析失败，而不是静默向普通 DNS 发送明文请求。
+## 真实设备检查清单
 
-## 真机验证
+| 场景 | 建议检查 |
+| :--- | :--- |
+| 正常网络 | 在 Loon DNS 日志中确认 DoH 正常；若需判断明文流量，配合抓包检查。 |
+| DoH 故障 | 仅在可控网络中测试故障行为，确认关闭回落后的失败方式；恢复网络后复测。 |
+| Wi-Fi / 蜂窝切换 | 分别核对 DNS 记录与实际查询通道，不凭网页能否打开下结论。 |
+| 订阅节点域名 | 若有独立 `server-dns`，区分节点服务器解析和普通网页解析。 |
+| App 内置 DoH/DoT | 确认是否走 Loon 的 DNS 处理路径，不能把 `hijack-dns` 当作万能拦截。 |
+| IPv4 / IPv6 | 分别检查 A/AAAA 与实际连接，不能用 IPv4 结果代表 IPv6。 |
 
-| 场景 | 期望与检查方法 |
-| --- | --- |
-| 正常解析 | 从 Loon DNS 日志确认 DoH 生效；必要时抓包核实没有意外的公网明文 53 端口查询 |
-| 仅 DoH 不可达 | 临时制造受控故障，确认不会回退到 UDP/TCP 53；恢复网络后确认自动恢复解析 |
-| Wi-Fi / 蜂窝切换 | 分别检查 DNS 日志，不能仅依靠网页可访问判定无泄漏 |
-| 节点域名 | 若使用单独的 `server-dns`，核查节点入口域名的实际解析路径 |
-| 应用自带 DoH/DoT | 分别核对应用 DNS 流量及路由；`hijack-dns = *:53` 不等于能拦截所有加密 DNS |
-| IPv4 / IPv6 | 双栈分别检验 AAAA/A 返回和实际访问，不能将一个地址族的结果外推给另一个 |
+诊断插件只能报告 Loon DNS API 返回的测试结果，**不能单独证明整个设备无 DNS 泄漏**。
 
-插件的「网络检测」能检查 Loon DNS API 的解析状态，**不能独立证明全设备无 DNS 泄漏**。IP/DNS 泄漏测试网站显示的解析器国家也不能证明是否通过明文传输。
-
-[配置](../LoonKit.lcf) · [Loon DNS 文档](https://nsloon.app/docs/DNS/) · [App 设置](./LOON_APP_SETTINGS.md)
+[返回首页](../README.md) · [App 设置与更新策略](./LOON_APP_SETTINGS.md) · [官方 DNS 说明](https://nsloon.app/docs/DNS/)

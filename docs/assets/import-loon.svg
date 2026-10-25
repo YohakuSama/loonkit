@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 218 48" width="218" height="48" role="img" aria-label="一键导入 Loon">
-<rect x=".75" y=".75" width="216.5" height="46.5" rx="10" fill="#18181B" stroke="#52525B" stroke-width="1.5"/>
-<g fill="none" stroke="#FAFAFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<path d="M26 13v14m-5-5 5 5 5-5M18 30v4h16v-4"/>
-</g>
-<text x="49" y="30" fill="#FAFAFA" font-size="16" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif">一键导入 Loon</text>
-<path d="M190 19l6 5-6 5" fill="none" stroke="#BEBEC7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="242" height="54" viewBox="0 0 242 54" role="img" aria-label="一键导入 LoonKit">
+<rect x="1" y="1" width="240" height="52" rx="11" fill="#1B2739" stroke="#1B2739" stroke-width="1.5"/>
+<g fill="none" stroke="#A7E9D8" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M27 15v17m-6-6 6 6 6-6"/><path d="M18 35v5h18v-5"/></g>
+<text x="49" y="34" font-family="Noto Sans CJK SC,PingFang SC,Microsoft YaHei,Arial,sans-serif" font-weight="650" font-size="17" fill="#FFFFFF">一键导入 LoonKit</text>
+<path d="m214 22 6 5-6 5" fill="none" stroke="#91ABCE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
