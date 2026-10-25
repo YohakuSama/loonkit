@@ -31,6 +31,25 @@ ShuntRules 仓库仅提供目录和链接，实际 .lsr 由 rule.kelee.one 托�
 | SteamCN / Steam | `steamchina.com` 与国际 Steam/CDN 规则相交 | 国内下载服务优先 DIRECT |
 | AppleOTA / Apple | `gdmf.g.aaplimg.com` 落入 Apple 的 `aaplimg.com` 后缀 | 相同 Apple 策略下可考虑去重 |
 
+## 候选资源的全量静态审查
+
+CI 执行 `python3 scripts/routing_candidate_audit.py --check`，读取 36 份资源中的全部 196486 条匹配器，结果为 **相同策略、相同规则表达式的重复次数 0**。这说明当前发布资源已经没有这一类简单的冗余，不能再把“去重”理解为机械删除相同行。
+
+下表仅统计不同策略间的 DOMAIN / DOMAIN-SUFFIX 静态覆盖；**命中覆盖不等于 Loon 实际选路错误，也不包含 IP 网段覆盖**。
+
+| 策略对 | 静态覆盖命中条目 | 后续决定 |
+| --- | ---: | --- |
+| AdBlock / DIRECT | 2885 | 广告功能已稳定，暂不大规模调整，单独检查是否包含必要服务 |
+| AdBlock / Microsoft | 88 | 识别统计域名与登录、下载、更新资源的差异 |
+| DIRECT / Google | 75 | 核查中国大陆 Google 服务与通常应走代理的服务边界 |
+| AI / Google | 36 | 保持 Gemini、AI Studio 等具体 AI 主机的业务优先级 |
+| DIRECT / Steam | 31 | 国内 Steam 下载节点与海外服务分别归属 |
+| Google / YouTube | 15 | YouTube 精确业务域名先于 Google 通用后缀 |
+| DIRECT / YouTube | 9 | 核查 CDN/信标域名，不因后缀重叠就自动改路由 |
+| AdBlock / TikTok | 33 | 区分广告统计和短视频业务接口 |
+
+静态审查未将这些数值当作缺陷数量；最终应结合 Loon 当前匹配顺序、请求日志、目标域名与解析状态判断是否需要调整。广告拦截不纳入此次自动改动范围。
+
 ## 与 ShuntRules 分类的差异
 
 当前 LoonKit 的核心 AI 统一落在 AI 策略；ShuntRules 有 OpenAI、Claude、Anthropic、Gemini 等独立分类。Apple 还有 AppleID、AppleMusic、AppleNews 等业务细分；微软生态可拆 OneDrive、MicrosoftEdge；视频有 YouTubeMusic、BiliBiliIntl；其他候选包括 GitHub、SteamCN、ChinaMedia、ChinaMaxNoMedia。
