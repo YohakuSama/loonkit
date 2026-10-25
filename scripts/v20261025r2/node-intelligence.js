@@ -61,7 +61,7 @@
     var sections=ip.split("::");
     if(sections.length>2)return false;
     var fields=ip.split(":").filter(function(x){return x.length>0;});
-    if(fields.some(function(x){return !/^[0-9a-f]{1,4}$/i.test(x)}))return false;
+    if(fields.some(function(x){return !/^[0-9a-f]{1,4}$/i.test(x);}))return false;
     return sections.length===2?fields.length<8:fields.length===8;
   }
   function country(code){

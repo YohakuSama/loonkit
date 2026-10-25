@@ -235,8 +235,9 @@
     var lines=["节点："+shortNode(node),"",
       "可访问："+ok+" / "+items.length,""];
     items.forEach(function(s){
-      lines.push(present(result[s[0]]).split(" ")[0]+" "+
-        s[1]+"　"+present(result[s[0]]).slice(3));
+      var label=present(result[s[0]]);
+      var offset=label.indexOf(" ");
+      lines.push(label.slice(0,offset)+" "+s[1]+"　"+label.slice(offset+1));
     });
     return {title:"解锁检测",content:lines.join("\n")};
   }
