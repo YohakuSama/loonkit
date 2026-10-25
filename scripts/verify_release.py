@@ -77,10 +77,10 @@ def check_public_checksums(root: Path, release: dict, spec: dict) -> str:
 
 def verify(remote=False):
     current = json.loads((ROOT/"build/release_spec.json").read_text())
+    if current.get("release_engine") == "generic":
+        from release_engine import check as verify_generic
+        return verify_generic(remote=remote)
     if current.get('schema_version') == 2:
-        if current.get('stable_release_version') == 'v7.0.4':
-            from release_v704 import check as verify_v704
-            return verify_v704(remote=remote)
         if current.get('stable_release_version') == 'v7.0.3':
             from release_v703 import check as verify_v703
             return verify_v703(remote=remote)

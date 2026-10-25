@@ -11,15 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - name: Measure HTTP 204 endpoints without following redirects
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Measure configured connectivity endpoints without following redirects
         shell: bash
         run: |
           set -u
           echo '## External endpoint check (GitHub runner only)' >> "$GITHUB_STEP_SUMMARY"
           echo '| Use | URL | Request 1 | Request 2 |' >> "$GITHUB_STEP_SUMMARY"
           echo '| --- | --- | --- | --- |' >> "$GITHUB_STEP_SUMMARY"
+          proxy_url="$(sed -n 's/^proxy-test-url[[:space:]]*=[[:space:]]*//p' LoonKit.lcf | head -n 1)"
+          test -n "$proxy_url" || exit 1
           for entry in \
-            'Configuration proxy test|http://bing.com/generate_204' \
+            "Configuration proxy test|$proxy_url" \
             'Plugin proxy check|https://www.gstatic.com/generate_204' \
             'Plugin direct check|http://wifi.vivo.com.cn/generate_204'; do
             name="${entry%%|*}"
