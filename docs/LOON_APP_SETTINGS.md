@@ -51,6 +51,8 @@ hijack-dns = *:53
 | MitM | **网络诊断插件不依赖 MitM**。其他插件若明确需要，再按要求配置证书、主机名与权限。 |
 | Wi-Fi 共享 | 当前 `allow-wifi-access = false`，保持关闭，除非确实需要局域网设备接入。 |
 
+**补充：Paypal 默认使用 `Proxy`，并不是默认直连。**
+
 **服务组默认：** `Apple`、`Microsoft`、`Bilibili`、`Line`、`Speedtest` 优先 `DIRECT`；`Paypal` 优先 `Proxy`。策略组选项与最终命中规则应分别核对。
 
 **兼容性：** `ip-mode = dual`、`ipv6-vif = auto` 保留双栈能力；`disable-stun = true`、`udp-fallback-mode = REJECT` 保护特定场景，但可能影响 WebRTC、语音和 UDP 游戏。先核对请求记录与节点 UDP 能力，不建议为排查某一个应用而全局取消保护。
