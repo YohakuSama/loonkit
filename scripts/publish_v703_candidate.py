@@ -167,6 +167,26 @@ def finish(asset_sha:str)->dict:
                 runtime_change={"version":VERSION,"runtime_semantics":"SERVICE_CLASSIFICATION_UPDATE",
                                 "new_policy_groups":6,"new_subscriptions":7,
                                 "dns_tun":"UNCHANGED","adblock":"UNCHANGED"})
+    # Rebuild source-group inventory from actual v7.0.3 immutable subscription rows.
+    tags=copy.deepcopy(old_meta["source_group_tags"])
+    for group,tag in (
+        ("DomesticAI","Our-DomesticAI"),
+        ("ChatGPT","Our-ChatGPT"),("Gemini","Our-Gemini"),
+        ("Claude","Our-Claude"),("GitHub","Our-GitHub"),
+        ("Speedtest","Our-Speedtest"),("Cloudflare","Our-Cloudflare"),
+        ("SharedInfrastructure","Our-SharedInfrastructure"),
+    ):
+        tags[group]=[tag]
+    by_tag={row["tag"]:row for row in rows}
+    covered=[tag for names in tags.values() for tag in names]
+    if len(covered)!=len(rows) or set(covered)!=set(by_tag):
+        raise ValueError("source-group catalog must cover every active subscription once")
+    meta["source_group_tags"]=tags
+    meta["source_group_counts"]={
+        group:len(set().union(*(set(rule_lines((ROOT/by_tag[tag]["path"]).read_bytes()))
+                                    for tag in sources)))
+        for group,sources in tags.items()
+    }
     meta["previous_release"]={"version":"v7.0.0","profile_sha256":old_sha,
        "commit":"04b7f0712ba9c48945397ac8e865ef7ecd9c0859"}
     meta["maintainer_approval"]="USER_REQUESTED_V703_FORMAL_PUBLICATION_2026_10_25"
