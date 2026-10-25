@@ -49,6 +49,34 @@ class OptimizationTests(unittest.TestCase):
         self.assertEqual(report["totals"]["before"], manifest["runtime_rule_matcher_count"])
         self.assertEqual(report["sources"], len(manifest["runtime_resources"]))
 
+    def test_write_dir_cannot_overwrite_published_assets(self):
+        import tempfile
+        from optimize_runtime_rules import safe_candidate_output
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for forbidden in ("rules/releases/v7.0.3", "../other",
+                              "build/rule_candidates/../../rules", "/tmp"):
+                with self.subTest(path=forbidden):
+                    with self.assertRaises(ValueError):
+                        safe_candidate_output(root, forbidden, "Apple.lsr")
+            allowed = safe_candidate_output(root, "build/rule_candidates/v7.0.5", "Apple.lsr")
+            self.assertEqual(allowed, root / "build/rule_candidates/v7.0.5/Apple.lsr")
+
+    def test_global_dominance_only_when_prior_policy_matches(self):
+        from optimize_runtime_rules import PriorPolicyIndex, prune_against_prior
+        prior = PriorPolicyIndex()
+        earlier = b"DOMAIN-SUFFIX,alipay.com\nIP-CIDR,10.0.0.0/8,no-resolve\n"
+        same = b"DOMAIN,api.alipay.com\nIP-CIDR,10.2.0.0/16,no-resolve\nDOMAIN,elsewhere.test\n"
+        unchanged, _ = prune_against_prior(earlier, prior)
+        self.assertEqual(unchanged, earlier)
+        result, removed = prune_against_prior(same, prior)
+        self.assertEqual(len(removed), 2)
+        self.assertEqual(result, b"DOMAIN,elsewhere.test\n")
+        other_policy = PriorPolicyIndex()
+        same_other, other_removed = prune_against_prior(same, other_policy)
+        self.assertEqual(same_other, same)
+        self.assertFalse(other_removed)
+
 
 if __name__ == "__main__":
     unittest.main()
