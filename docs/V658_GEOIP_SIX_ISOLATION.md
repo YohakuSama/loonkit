@@ -1,5 +1,27 @@
 # 六份 GEOIP 复合规则导致 VPN 重启：单变量定位（v6.5.8）
 
+## 2026-10-25 最新实机结论：Microsoft 加入后复现重启
+
+| 六份可疑订阅的加载组合 | 复合规则数 | VPN | DNS 泄漏 |
+| --- | ---: | --- | --- |
+| AppleOTA | 82 | 用户测试正常 | 用户报告泄漏 |
+| AppleOTA + Bilibili | 210 | 用户测试正常 | 用户报告泄漏 |
+| AppleOTA + Bilibili + PayPal | 456 | **用户测试正常** | 用户报告泄漏 |
+| **上述三项 + Microsoft** | **1,101** | **用户确认发生 VPN 重启** | 暂不判断 |
+| 上述三项 + Apple（明确不加 Microsoft） | **2,030** | **待测试** | 待测试 |
+| 上述四项 + RegionalCN（仍不加 Microsoft） | **4,583** | **待测试** | 待测试 |
+
+**Microsoft 被列为优先排查的复合规则集。** 原始发布资源是 `rules/releases/v6.5.8/Microsoft.list`，含 **645 条** AND/NOT/GEOIP 复合规则。严格意义上，当前只证明在原先 456 条稳定组合上**增加 Microsoft 就复现重启**，尚未证明 Microsoft 规则单独运行必定异常。独立验证文件仍有 `diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf`；稍后可据此判断是单份故障还是组合问题。
+
+为避免重复复现已知问题，新增两份**排除 Microsoft** 的累加对照文件：
+- `AppleOTA_Bilibili_Paypal_Apple.lcf`：维持已稳定的三份，加入 Apple 的 1,574 条规则，仍禁用 Microsoft 和 RegionalCN。
+- `AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf`：在上一版基础上加入 RegionalCN 的 2,553 条规则；Microsoft 始终禁用。
+
+**测试顺序**：先 Apple 版；只有 Apple 版 VPN 不重启时再测试 RegionalCN 版。如果第一份发生重启，停止加量，优先单独测试 `OnlyApple.lcf`。如果第一份稳定、第二份重启，则优先单独测试 `OnlyRegionalCN.lcf`。这不等价于完成故障修复，亦不保证 DNS 安全。
+
+所有上述配置仅改变原始六项订阅的启用范围；保持原版其他 31 份订阅、原有 `GEOIP,CN,DIRECT,no-resolve`、`FINAL,Final`、DoH/TUN、规则标签及策略、Host 与插件不变。**DNS 泄漏是独立未通过项，不靠继续添加服务域名规则解决**。可用同条件 `None.lcf` 测量泄漏基线，并核对 Loon App 内加密 DNS 失败回退开关与 DNS 测试报告的解析器 IP。
+
+
 ## 最新实机反馈（2026-10-25）
 
 - 用户最新明确反馈：**Group A（RegionalCN + AppleOTA + Bilibili）与 Group B（Microsoft + Apple + PayPal）均触发 VPN 自动关闭/重启**。此前一度反馈 Group A 没有重启，后来明确更正为两组都有该问题。DNS 泄漏也曾在 Group A 测试中观察到，但不得由此推断是某一份订阅导致。
@@ -48,6 +70,8 @@ FINAL,Final
 | [AppleOTA_Bilibili_Paypal_Microsoft_Apple.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Microsoft_Apple.lcf) | 再加 Apple（2,675 条） | 36 |
 | [OnlyBilibili.lcf](../diagnostics/v6.5.8-geoip-six/OnlyBilibili.lcf) | Bilibili | 32 |
 | [OnlyMicrosoft.lcf](../diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf) | Microsoft | 32 |
+| [AppleOTA_Bilibili_Paypal_Apple.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple.lcf) | AppleOTA、Bilibili、PayPal、Apple（2,030 条；禁用 Microsoft） | 35 |
+| [AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf) | 除 Microsoft 外其他五项（4,583 条） | 36 |
 | [OnlyApple.lcf](../diagnostics/v6.5.8-geoip-six/OnlyApple.lcf) | Apple | 32 |
 | [OnlyPaypal.lcf](../diagnostics/v6.5.8-geoip-six/OnlyPaypal.lcf) | Paypal | 32 |
 
@@ -62,10 +86,10 @@ FINAL,Final
 
 ## 当前最少的有效实机测试顺序
 
-1. 三份小规模原始规则组合（82/210/456 条）**已实测 VPN 稳定，但都有 DNS 泄漏**。现在从 456 条配置递增，先导入 `AppleOTA_Bilibili_Paypal_Microsoft.lcf`（1,101 条），刷新订阅并确认目标四份启用。
-2. **只有 Microsoft 递增版不重启时**，才使用 `AppleOTA_Bilibili_Paypal_Microsoft_Apple.lcf`（2,675 条）。如果某一级出现 VPN 自动重启，应停止添加，不要继续升到下一档；定位本次新增规则集与前面组合之间的关系。
-3. **RegionalCN（2,553 条）尚未加入这些递增测试**。加入它后会回到已知重启的正式 v6.5.8 全六份状态；如果前五份均稳定，应优先独立测试 `OnlyRegionalCN.lcf`，再考虑与其他规则组合的最小触发集，不要直接尝试全六份。
-4. **DNS 泄漏是单独未通过的验收项目**。Loon 官方说明同时配置普通 DNS 和 DoH 时优先使用加密 DNS，但默认 DoH 失败允许回退普通 DNS。须在 Loon App 的 DNS 服务器设置中检查并关闭“加密 DNS 失败时回退普通 DNS”（按需先备份设置），比较 `None.lcf` 与三份已测方案在同一网络/节点/站点显示的实际 DNS 解析器 IP、流量来源和 IPv6。静态配置相同不证明真实 DNS 路径安全；本轮增加规则**不会修复 DNS 泄漏**。<https://nsloon.app/docs/DNS/>
+1. 在 456 条稳定组合加入 Microsoft（总计 1,101 条）后**已实测 VPN 重启**。因此暂时不再添加 Microsoft，先导入 [AppleOTA_Bilibili_Paypal_Apple.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple.lcf) 测试新增 Apple 后的 VPN 稳定性。
+2. **只有 Apple 版不重启时**，再导入 [AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf](../diagnostics/v6.5.8-geoip-six/AppleOTA_Bilibili_Paypal_Apple_RegionalCN.lcf) 测试 RegionalCN。若任一步重启，停止加量并单独测试新增的规则集。
+3. 如两份不含 Microsoft 的配置都稳定，再通过 [OnlyMicrosoft.lcf](../diagnostics/v6.5.8-geoip-six/OnlyMicrosoft.lcf) 或 Microsoft 的规则行二分确定它单独还是与其他订阅组合时触发，不直接修改 immutable v6.5.8 原文件。
+4. **DNS 泄漏另行对照**，不要误把 VPN 不重启解释为 DNS 安全。静态 DNS 参数在这些配置中完全一致；检查 Loon 加密 DNS 失败回退开关、实际解析器 IP、IPv6、节点解析及对照 [None.lcf](../diagnostics/v6.5.8-geoip-six/None.lcf) 的结果。不能依靠给域名加 DIRECT 来消除 DNS 查询。
 
 **每次测试记录**：是否正常导入、六份中实际启用哪几份、规则刷新是否出错、最短复现间隔、iOS 诊断分析中的 Network Extension 退出或 Jetsam 记录，并对比 DNS 测试结果。注意不要公开付费节点、订阅 Token 和设备标识。
 
