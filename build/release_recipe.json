@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "target_version": "v7.0.4",
+  "base": {
+    "path": "build/candidates/v7.0.3/LoonKit.lcf",
+    "sha256": "bf68380929f713989251e68a8f82f9a256486e89aae31882405f000bb1ce3616"
+  },
+  "changes": [
+    {
+      "find": "AdBlock = select,REJECT,Proxy,",
+      "replace": "AdBlock = select,REJECT,DIRECT,Proxy,"
+    },
+    {
+      "find": "Apple = select,Proxy,Auto,Fallback,ALL_Filter,",
+      "replace": "Apple = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,"
+    },
+    {
+      "find": "Microsoft = select,Proxy,Auto,Fallback,ALL_Filter,",
+      "replace": "Microsoft = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,"
+    },
+    {
+      "find": "Bilibili = select,Proxy,Auto,Fallback,ALL_Filter,",
+      "replace": "Bilibili = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,"
+    },
+    {
+      "find": "Speedtest = select,Proxy,Auto,Fallback,ALL_Filter,",
+      "replace": "Speedtest = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,"
+    },
+    {
+      "find": "Line = select,Proxy,Auto,Fallback,ALL_Filter,",
+      "replace": "Line = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,"
+    },
+    {
+      "find": "DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy\n",
+      "replace": "DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy\nDOMAIN,trae-api-sg.mchost.guru,AI\nDOMAIN,trae-api-us.mchost.guru,AI\n"
+    }
+  ]
+}

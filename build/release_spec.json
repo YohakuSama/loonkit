@@ -44,5 +44,6 @@
   "native_rules_release_commit": "8452034ad371e75d13fd3ff2a17eff92f1149727",
   "native_rules_release_path": "rules/releases/v6.5.9/",
   "removed_redundant_remote": "Our-RegionalCN",
-  "service_geoip_composite_removed": true
+  "service_geoip_composite_removed": true,
+  "release_engine": "generic"
 }

@@ -1,27 +1,59 @@
-# 维护与发布
+# 维护与发布（通用构建系统）
 
-正式入口为 main/LoonKit.lcf，测试入口为 beta 分支的 beta/LoonKit.lcf。现役构建参数位于 build/release_spec.json，资源和校验值位于 build/release_manifest.json。
+正式入口为 `main/LoonKit.lcf`；个人测试入口为 `beta` 分支的 `beta/LoonKit.lcf`。
+**不需要为了新版本创建任何 `release_vXXX.py`、`prepare_release_vXXX.py` 或专用 Workflow。**
 
-## 校验
+## 架构
+
+- `build/release_spec.json`：唯一的当前正式版本号、资源 Commit 和历史校验记录。
+- `build/release_recipe.json`：当前版本的只读基线位置/哈希与变更配方。
+- `scripts/release_engine.py`：版本无关的字节确定性构建与校验。
+- `build/release_manifest.json`：已发布配置、规则资源与插件的完整性记录。
+- `scripts/verify_release.py`：通用验证入口；历史旧版验证器仅用于回归，不再为新版本复制。
+- `rules/releases/`：冻结的完整规则；不移除大规则、不提供精简版本。
+- `.github/workflows/release.yml`：通用发布，读取版本与 SHA，不硬编码发布版本。
+
+## 日常验证
 
 ```bash
 python3 scripts/source_lock.py --check
+python3 scripts/release_engine.py --check
 python3 scripts/verify_release.py --check --remote
-python3 scripts/beta_channel.py --remote
 python3 scripts/license_audit.py --check
-python3 scripts/license_evidence.py --check
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 node --test tests/diagnostics.test.cjs
 ```
 
-## 规则变更
+## 新版本：一次命令创建基线
 
-1. 更新 rules/reviewed/ 下的版本配方，并补充行为回归。
-2. 先提交规则资源，再用该提交 SHA 生成配置和 manifest。
-3. 同步版本号、checksum、依赖、更新记录及下一轮 beta 基线。
-4. 创建发布 PR，检查准确 head 的 CI，再合并发布。
-5. 下载正式入口复核 hash，更新发布记录，将维护改动同步到 beta。
+先确保当前仓库可重现且工作树干净，接着运行：
 
-历史基线用于确定性构建和回滚。清理工作树前运行 beta_cleanup.py 与 --verify-archives，保留当前配置及校验器依赖。
+```bash
+python3 scripts/release_engine.py --start-next v7.0.5
+```
+
+该命令保留前一正式版本的固定基线于 `build/baselines/previous/LoonKit.lcf`，
+更新 `release_spec.json` 中唯一的版本号、历史 SHA256、README、配方和当前校验文件。
+**不触动现有规则 URL、DNS/TUN、插件及策略组。** Git tag 保留更早版本的回滚记录。
+
+如需修改分流策略，只编辑 `build/release_recipe.json` 的 `changes` 数组。
+每个修改是包含 `find`/`replace` 字符串的对象，旧字符串必须在当前中间结果中**恰好出现一次**。
+保存后运行：
+
+```bash
+python3 scripts/release_engine.py --write
+python3 scripts/release_engine.py --check
+python3 scripts/verify_release.py --check --remote
+```
+
+`--write` 仅刷新当前版本的配置、Manifest 中的配置 SHA256 与当前 checksum 文档；
+上游规则资产变更仍必须按规则源审阅和冻结发布流程进行，不能通过替换发布版本号绕过校验。
+
+在发布 PR 上审核准确 head 的 CI 后合并到 main。Release Workflow 只针对 main 上成功的推送 CI 发布；
+已存在的版本标签/Release 不会被重复改写。对于单纯架构/文档变更，保持版本号不变。
+
+**注意：** `--start-next` 用于尚未发布的下一版本，不是对已发布版本的原地修改。
+历史基线目录、许可证证据及冻结 Raw 资源在确认依赖前不得清理。
+设备体验由维护者自行验证，自动化检查只证明离线构建和已定义的策略回归。
 
 [发布记录](./RELEASE_READINESS.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)

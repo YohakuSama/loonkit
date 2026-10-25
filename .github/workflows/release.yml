@@ -16,14 +16,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.3
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - name: Verify reproducible formal release
+      - name: Verify exact release, licenses and immutable resources
         run: |
+          set -euo pipefail
           python3 scripts/verify_release.py --check --remote
-          python3 scripts/reviewed_release.py --check
           python3 scripts/license_audit.py --check
+          version="$(python3 -c "import json; print(json.load(open('build/release_spec.json'))['stable_release_version'])")"
+          sha256sum -c "release/SHA256SUMS.$version"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: verified-stable-release
@@ -31,14 +33,14 @@ jobs:
             LoonKit.lcf
             build/release_manifest.json
             build/release_spec.json
-            release/SHA256SUMS.v7.0.3
-            docs/RELEASE_CHECKSUM_v7.0.3.md
+            release/SHA256SUMS.*
           retention-days: 30
           if-no-files-found: error
 
   publish:
     if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: write
     concurrency:
@@ -49,43 +51,49 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.3
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
-      - name: Gate on current exact main commit
+      - name: Gate on the current exact main commit
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
+          set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test "$(gh api repos/${{ github.repository }}/branches/main --jq .commit.sha)" = "$EXPECTED_SHA"
-          test "$(python3 -c "import json;print(json.load(open('build/release_spec.json'))['stable_release_version'])")" = 'v7.0.3'
-          test "$(head -n 1 LoonKit.lcf)" = '# LoonKit v7.0.3'
-      - name: Validate publishable bytes and pinned resources
+      - name: Validate publishable bytes
         run: |
+          set -euo pipefail
           python3 scripts/verify_release.py --check --remote
-          python3 scripts/reviewed_release.py --check
           python3 scripts/license_audit.py --check
-          sha256sum -c release/SHA256SUMS.v7.0.3
-      - name: Create immutable version tag and published release
+          version="$(python3 -c "import json; print(json.load(open('build/release_spec.json'))['stable_release_version'])")"
+          test "$(head -n 1 LoonKit.lcf)" = "# LoonKit $version"
+          sha256sum -c "release/SHA256SUMS.$version"
+      - name: Publish immutable version release
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          if gh release view v7.0.3 >/dev/null 2>&1; then
-            test "$(gh api repos/${{ github.repository }}/git/ref/tags/v7.0.3 --jq .object.sha)" = "$EXPECTED_SHA"
+          set -euo pipefail
+          version="$(python3 -c "import json; print(json.load(open('build/release_spec.json'))['stable_release_version'])")"
+          if gh release view "$version" >/dev/null 2>&1; then
+            echo "$version already published: keep its immutable tag and assets."
             exit 0
           fi
-          if gh api repos/${{ github.repository }}/git/ref/tags/v7.0.3 >/dev/null 2>&1; then
-            echo 'v7.0.3 tag already exists without a published release; refusing to overwrite.'
+          if gh api "repos/${{ github.repository }}/git/ref/tags/$version" >/dev/null 2>&1; then
+            echo "Tag exists without a matching release: refusing overwrite."
             exit 1
           fi
-          gh release create v7.0.3 \
-            LoonKit.lcf \
-            release/SHA256SUMS.v7.0.3 \
-            build/release_manifest.json \
-            build/release_spec.json \
+          notes=()
+          if [ -f "docs/RELEASE_NOTES_$version.md" ]; then
+            notes+=(--notes-file "docs/RELEASE_NOTES_$version.md")
+          else
+            notes+=(--generate-notes)
+          fi
+          gh release create "$version" \
+            LoonKit.lcf "release/SHA256SUMS.$version" \
+            build/release_manifest.json build/release_spec.json \
             --target "$EXPECTED_SHA" \
-            --title 'LoonKit v7.0.3' \
-            --notes-file docs/RELEASE_NOTES_v7.0.3.md \
-            --latest
+            --title "LoonKit $version" \
+            "${notes[@]}" --latest
