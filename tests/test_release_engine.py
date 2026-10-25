@@ -67,7 +67,7 @@ class RecipeTests(unittest.TestCase):
         (self.root / "build" / "release_spec.json").write_text(json.dumps(spec))
         (self.root / "build" / "release_manifest.json").write_text(json.dumps(meta))
         with patch.object(release_engine, "check", return_value={}):
-            digest = release_engine.start_next(self.root, "v1.0.1")
+            digest = release_engine.start_next(self.root, "v1.0.1", require_clean=False)
         self.assertEqual(digest, hashlib.sha256((self.root / "LoonKit.lcf").read_bytes()).hexdigest())
         self.assertEqual(release_engine.render(self.root), (self.root / "LoonKit.lcf").read_bytes())
         self.assertIn("v1.0.1", (self.root / "README.md").read_text())
@@ -75,6 +75,46 @@ class RecipeTests(unittest.TestCase):
                          ["historical_profile_sha256"]["v1.0.0"], old_hash)
         self.assertEqual((self.root / "release" / "SHA256SUMS.v1.0.1").read_text().split()[0], digest)
 
+
+    def test_dirty_checkout_fails_before_any_write(self):
+        with patch.object(release_engine, "require_clean_git_checkout",
+                          side_effect=ValueError("working tree is dirty")):
+            with self.assertRaisesRegex(ValueError, "dirty"):
+                release_engine.start_next(self.root, "v1.0.1")
+        self.assertFalse((self.root / "LoonKit.lcf").exists())
+
+    def test_partial_output_replacement_rolls_back_every_file(self):
+        from unittest.mock import patch
+        original = release_engine.os.replace
+        before = b"unchanged old checksum"
+        original_file = self.root / "release" / "existing.txt"
+        original_file.write_bytes(before)
+        outputs = {"release/existing.txt": b"new",
+                   "docs/new.txt": b"new"}
+        calls = [0]
+
+        def inject_failure(src, dst):
+            calls[0] += 1
+            if calls[0] == 2:
+                raise OSError("simulated filesystem failure")
+            return original(src, dst)
+
+        with patch.object(release_engine.os, "replace", side_effect=inject_failure):
+            with self.assertRaisesRegex(OSError, "simulated"):
+                release_engine.apply_outputs(self.root, outputs)
+        self.assertEqual(original_file.read_bytes(), before)
+        self.assertFalse((self.root / "docs" / "new.txt").exists())
+
+    def test_distinct_versioned_snapshot_is_not_overwritten(self):
+        version = "v1.0.0"
+        path = self.root / "build" / "baselines" / "generated" / version / "LoonKit.lcf"
+        path.parent.mkdir(parents=True)
+        path.write_bytes(b"wrong snapshot")
+        (self.root / "LoonKit.lcf").write_bytes(self.raw)
+        with patch.object(release_engine, "check", return_value={}):
+            with self.assertRaisesRegex(ValueError, "historical snapshot differs"):
+                release_engine.start_next(self.root, "v1.0.1", require_clean=False)
+        self.assertEqual(path.read_bytes(), b"wrong snapshot")
 
 if __name__ == "__main__":
     unittest.main()

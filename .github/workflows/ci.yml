@@ -45,6 +45,21 @@ jobs:
           python3 scripts/license_evidence.py --check
       - name: Python regression tests (real assertions)
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Simulate two successive releases without publication (isolated Git clone)
+        run: |
+          set -euo pipefail
+          git clone --local . "$RUNNER_TEMP/loonkit-upgrade"
+          cd "$RUNNER_TEMP/loonkit-upgrade"
+          git -c user.name="Release CI" -c user.email="ci@example.invalid" status --porcelain
+          for version in v7.0.5 v7.0.6; do
+            python3 scripts/release_engine.py --start-next "$version"
+            python3 scripts/release_engine.py --check
+            python3 scripts/verify_release.py --check
+            python3 -m unittest discover -s tests -p 'test_release_engine.py' -v
+            git add -A
+            git -c user.name="Release CI" -c user.email="ci@example.invalid" commit -qm "test: simulate $version"
+          done
       - name: Audit unified routing candidate and cross-policy coverage
         run: python3 scripts/routing_candidate_audit.py --check
       - name: Verify declarative release and immutable resources
