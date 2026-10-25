@@ -44,4 +44,12 @@ FINAL,Final
 4. 对 Apple、Microsoft、PayPal、Bilibili 的一两个具体域名，记录 DNS A/AAAA、实际请求目标 IP、GEOIP 归属、命中策略。无解析结果不等于海外。
 5. 如果依旧重启，**不要继续凭空更换逻辑语法**。按 [六份原始规则的二分定位流程](https://github.com/YohakuSama/loonkit/blob/fix/loon-regional-safe-20261025/docs/SAFE_ROUTING.md) 用 Group A / Group B 及单份订阅定位；结合 Loon/iOS VPN Extension 日志查看是否为 CPU/内存或解析问题。
 
+## 可重复构建与更新限制
+
+用 `python3 scripts/build_geoip_no_resolve_trial.py --check` 验证全部六份实验规则与正式发布的源规则逐行一致，仅在内部 `GEOIP,CN` 加入 `no-resolve`；如需重新生成实验文件，明确执行 `--write`。脚本禁止修改正式 v6.5.8 原文件。此机制由 CI 的 Python 回归测试触发。
+
+**请勿用这一实验生成器代替正式发布流程**。后续版本需要单独修改发布生成器、审查策略变化，并生成全新不可变发布资源和哈希，而不能悄悄覆盖历史文件。
+
+**不能仅凭配置不变证明 DNS 不泄漏**。官方 [DNS 文档](https://nsloon.app/docs/DNS/) 说明普通 DNS 与 DoH 同时配置时会优先加密解析，但默认加密 DNS 失败可以回落普通 DNS。这需要检查设备上的 App 开关和实际 DNS 抓包/泄漏测试。现有实验只约束不引入额外的 DNS 行为差异。
+
 测试版未合并到生产版，也不修改 v6.5.8 的不可变 release 文件和哈希。所有静态回归测试的通过仅能证明预期编辑范围，不能替代真机稳定性测试。
