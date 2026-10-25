@@ -1,6 +1,0 @@
-# LoonKit v6.5.8 RegionalCN native-matcher *experimental* runtime workaround.
-# NO AND/OR/NOT. Historical regional geoIP semantics are NOT preserved.
-# One official-native GEOIP CN matcher with no-resolve, redundant with local [Rule] fallback; no broad direct domains.
-# Original 2553 CN logic expressions intentionally not executed; local GEOIP,CN,DIRECT,no-resolve remains.
-# All original v6.5.8 release assets remain untouched; not a final regional-splitting fix.
-GEOIP,CN,no-resolve
