@@ -19,6 +19,8 @@ GROUPS = {
     "GroupB": SUSPECTS[3:],
     "AppleOTA_Bilibili": ("AppleOTA", "Bilibili"),
     "AppleOTA_Bilibili_Paypal": ("AppleOTA", "Bilibili", "Paypal"),
+    "AppleOTA_Bilibili_Paypal_Microsoft": ("AppleOTA", "Bilibili", "Paypal", "Microsoft"),
+    "AppleOTA_Bilibili_Paypal_Microsoft_Apple": ("AppleOTA", "Bilibili", "Paypal", "Microsoft", "Apple"),
     **{"Only" + item: (item,) for item in SUSPECTS},
 }
 
