@@ -23,7 +23,7 @@
   "approved_runtime_directives_sha256": "16c7ae59c51dc46ed92af8cb38d9aa2635062a0b1bbb5aa5ab21659600f539a9",
   "baseline_template_path": "build/baselines/v6.5.4/LoonKit.lcf",
   "baseline_manifest_path": "build/baselines/v6.5.4/release_manifest.json",
-  "current_runtime_directives_sha256": "40b2e553ca2b45f495ab05a270b35b1a0c075cc1be91971fc8a42af9dd8e725b",
+  "current_runtime_directives_sha256": "5d31a29d8b7d93b4c7c8a3f0d4a308fef5c5532ab7abdd33c25a6d0e3da3fa8d",
   "previous_formal_profile_sha256": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715",
   "previous_formal_profile_path": "build/baselines/v6.5.8/LoonKit.lcf",
   "previous_formal_manifest_path": "build/baselines/v6.5.8/release_manifest.json",
