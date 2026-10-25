@@ -75,7 +75,7 @@ class TestSafeRouting(unittest.TestCase):
         self.assertIn("dns.alidns.com = 223.5.5.5",
                       section(self.safe, "Host"))
         self.assertEqual(
-            len(re.findall(r"(?m)^https://.*\\.plugin, enabled=true$",
+            len(re.findall(r"(?m)^https://.*[.]plugin, enabled=true$",
                            section(self.safe, "Plugin"))),
             1,
         )
