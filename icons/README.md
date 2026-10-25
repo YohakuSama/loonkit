@@ -1,7 +1,9 @@
 # LoonKit 图标
 
-LoonKit 为 33 个策略组提供图标，网络辅助插件使用 `Console.png`。相关 PNG 文件位于 [图标目录](./v20261021r1/)，可编辑 SVG 源文件位于 [source](./source/)。
+所有策略组及网络诊断 PNG 图标统一存放在本目录 `icons/`，均为 **512×512 PNG**，不再分版本创建 PNG 子目录。
 
-图标用于在 Loon 中识别对应策略组。项目内的第三方品牌名称和图形适用各自的权利要求，详见 [第三方来源与许可](../docs/THIRD_PARTY_NOTICES.md)。
+应用图标的原始素材及统一规范见 [App Store 来源清单](./appstore_sources.json)；可重新生成的脚本为 [build_appstore_icons.py](../scripts/build_appstore_icons.py)。已有图标可编辑 SVG 源文件保存在 [source](./source/)，不参与运行时资源引用。
 
-[返回项目首页](../README.md)
+对于原有的 v7.0.0 正式版，历史 Git 提交中固定引用的图标 URL 仍保持有效。新候选 v7.0.2 的 39 个策略组只引用同一固定资源提交下的 `icons/*.png`。
+
+应用图标和商标归相应权利人所有；素材只用于识别相应策略，不代表平台认可或赞助。

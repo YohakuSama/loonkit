@@ -1,0 +1,5 @@
+# LoonKit v6.5.5-beta.4 immutable beta overlay; generated from rules/beta/policy_overrides.json
+DOMAIN-SUFFIX,cm.steampowered.com
+DOMAIN-SUFFIX,steamcontent.com
+DOMAIN-SUFFIX,steamserver.net
+DOMAIN-SUFFIX,steamusercontent.com

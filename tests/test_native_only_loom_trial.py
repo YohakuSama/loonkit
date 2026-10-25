@@ -22,14 +22,16 @@ class TestFormalNativeRelease(unittest.TestCase):
     def test_live_profile_is_exact_patch_of_frozen_v658(self):
         self.assertEqual((ROOT / "build/baselines/v6.5.9/LoonKit.lcf").read_bytes(), render_v659(ROOT))
         self.assertEqual((ROOT / "build/baselines/v6.5.10/LoonKit.lcf").read_bytes(), render_v6510(ROOT))
-        self.assertEqual((ROOT / "LoonKit.lcf").read_bytes(), render_v700(ROOT))
+        self.assertEqual((ROOT / "build/baselines/v7.0.0/LoonKit.lcf").read_bytes(), render_v700(ROOT))
+        self.assertEqual((ROOT / "LoonKit.lcf").read_bytes(),
+                         (ROOT / "build/candidates/v7.0.3/LoonKit.lcf").read_bytes())
         archived = (ROOT / "build/baselines/v6.5.8/LoonKit.lcf").read_text()
         self.assertEqual(
             sum("tag=Our-RegionalCN," in l for l in archived.splitlines()), 1)
         current = (ROOT / "LoonKit.lcf").read_text()
         self.assertNotIn("tag=Our-RegionalCN,", current)
         self.assertIn("\nGEOIP,CN,DIRECT,no-resolve\nFINAL,Final\n", current)
-        self.assertEqual(len(remote_entries(current)), 36)
+        self.assertEqual(len(remote_entries(current)), 43)
 
     def test_native_service_rules_have_no_nested_conditions(self):
         current = (ROOT / "LoonKit.lcf").read_text()
@@ -44,8 +46,12 @@ class TestFormalNativeRelease(unittest.TestCase):
                 self.assertFalse(any(
                     x.startswith(("AND,", "OR,", "NOT,", "GEOIP,"))
                     for x in rules))
+                historical = (ROOT / "build/baselines/v7.0.0/LoonKit.lcf").read_text()
                 self.assertIn(PINNED_RULE_COMMIT + f"/rules/releases/v6.5.9/{name}.list",
-                              current)
+                              historical)
+                self.assertIn(f"/rules/releases/v7.0.3/{name}.lsr, policy=", current)
+                published = ROOT / f"rules/releases/v7.0.3/{name}.lsr"
+                self.assertEqual(content_rules(published.read_bytes()), rules)
 
     def test_no_duplicate_cn_remote_or_retired_experimental_entry(self):
         current = (ROOT / "LoonKit.lcf").read_text()
@@ -57,9 +63,9 @@ class TestFormalNativeRelease(unittest.TestCase):
         self.assertFalse(
             (ROOT / "rules/experiments/v6.5.8-native-no-composite").exists())
         meta = json.loads((ROOT / "build/release_manifest.json").read_text())
-        self.assertEqual(meta["runtime_rule_count"], 36)
-        self.assertEqual(meta["remote_rule_count"], 196486)
-        self.assertEqual(meta["label"], "v7.0.0")
+        self.assertEqual(meta["runtime_rule_count"], 43)
+        self.assertEqual(meta["remote_rule_count"], sum(x["matcher_count"] for x in meta["runtime_resources"]))
+        self.assertEqual(meta["label"], "v7.0.3")
         self.assertNotIn("Our-RegionalCN",
                          {r["tag"] for r in meta["runtime_resources"]})
 

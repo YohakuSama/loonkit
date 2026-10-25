@@ -14,7 +14,7 @@
 
 LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦截与网络诊断。
 
-当前版本：**v7.0.0**。
+当前版本：**v7.0.3**。
 
 ## 快速开始
 
@@ -31,7 +31,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 | 功能 | 说明 |
 | --- | --- |
 | 分流 | 国内常用服务直连，AI、流媒体和社交服务独立选路。 |
-| 分流策略 | Apple、Microsoft、PayPal、Bilibili 使用普通 Loon 域名规则； |
+| 分流策略 | 39 个服务与通用策略组，GitHub、ChatGPT、Gemini、Claude、Speedtest、Cloudflare 均可独立选路。 |
 | 节点选择 | 支持手动选择、延迟测试和故障切换。 |
 | 广告拦截 | `AdBlock` 中选择 `REJECT` 拦截、`Proxy` 放行。 |
 | 网络辅助 | 查看节点出口、连接状态及流媒体和 AI 服务状态。 |
@@ -46,6 +46,8 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 | `Fallback` | 按顺序选择可用节点。 |
 | `AdBlock` | 切换广告拦截与放行。 |
 | `Final` | 处理未命中其他规则的请求。 |
+
+43 份 `.lsr` 远程规则按国内直连、AI、Google/YouTube、GitHub、流媒体及社交服务分类；40 张 PNG 图标集中于 `icons/`。
 
 [节点选择](./docs/NODE_SELECTION.md) · [DNS 设置](./docs/DNS_PRIVACY.md) · [Loon App 设置](./docs/LOON_APP_SETTINGS.md)
 
@@ -62,7 +64,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 [更新记录](./docs/CHANGELOG.md) · [规则说明](./rules/README.md) · [反馈问题](https://github.com/YohakuSama/loonkit/issues)
 
-[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.0.md) · [安全报告](./SECURITY.md)
+[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.3.md) · [安全报告](./SECURITY.md)
 
 ## 开源许可
 

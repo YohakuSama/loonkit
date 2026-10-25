@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "source": "Apple App Store iTunes lookup by verified application ID",
+  "icons": {
+    "GitHub": {
+      "app_store_id": 1477376905,
+      "app_store_url": "https://apps.apple.com/us/app/github/id1477376905?uo=4",
+      "publisher": "GitHub",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d2/27/2d/d2272d28-81e2-f24d-d767-2e158eca3694/AppIcon-0-0-1x_U007epad-0-1-P3-85-220.png/512x512bb.jpg",
+      "sha256": "d0f43696caeb9d6c52fd339de45c7f6d682143be7a346b0ccd9c86810ca9c68d",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 25,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    },
+    "ChatGPT": {
+      "app_store_id": 6448311069,
+      "app_store_url": "https://apps.apple.com/us/app/chatgpt/id6448311069?uo=4",
+      "publisher": "OpenAI OpCo, LLC",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/42/3b/1d/423b1d61-1b55-0bca-d3b9-1ce597c7b4b0/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/512x512bb.jpg",
+      "sha256": "677c1bb2dc0ff2eff9518604c530345d24a0389b9b9bf1e9f1ab0286525728d2",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 25,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    },
+    "Gemini": {
+      "app_store_id": 6477489729,
+      "app_store_url": "https://apps.apple.com/us/app/google-gemini/id6477489729?uo=4",
+      "publisher": "Google",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/30/06/62/300662ce-cd91-f109-8ca9-ca1517193f61/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220.png/512x512bb.jpg",
+      "sha256": "cdcf860bd0fe7f1a4664615e1805ab01a7eb7b798ac9fb226a7321a1720fc820",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 20,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    },
+    "Claude": {
+      "app_store_id": 6473753684,
+      "app_store_url": "https://apps.apple.com/us/app/claude-by-anthropic/id6473753684?uo=4",
+      "publisher": "Anthropic PBC",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/eb/00/7c/eb007c0a-a26e-eb3e-9f89-cb1c37049237/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg",
+      "sha256": "1ae8b3fa7a3e0f03235b1855186a89dffa4ff9e40c48b2d24e861b55ac8b6862",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 0,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    },
+    "Speedtest": {
+      "app_store_id": 300704847,
+      "app_store_url": "https://apps.apple.com/us/app/speedtest-by-ookla/id300704847?uo=4",
+      "publisher": "Ookla",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/2a/8b/52/2a8b524a-a145-ec7a-3015-4583737eb8df/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-85-220.png/512x512bb.jpg",
+      "sha256": "3a216b660aada2dcca1d9f813c165fff757ca0dee28d07c7709369650f412aef",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 0,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    },
+    "Cloudflare": {
+      "app_store_id": 1423538627,
+      "app_store_url": "https://apps.apple.com/us/app/1-1-1-1-faster-internet/id1423538627?uo=4",
+      "publisher": "Cloudflare",
+      "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d6/f9/f1/d6f9f1f7-0417-3ab7-095d-2988dcc9a11b/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/512x512bb.jpg",
+      "sha256": "60ac7e8a46d34483c2ce549f2e72387a1734ed82fcdc51e912c4d4178880a4bb",
+      "original_dimensions": [
+        512,
+        512
+      ],
+      "crop_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "glass_edge_trim_pixels": 0,
+      "output_dimensions": [
+        512,
+        512
+      ],
+      "mode": "RGBA"
+    }
+  }
+}

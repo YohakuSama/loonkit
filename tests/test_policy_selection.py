@@ -6,11 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE = ROOT / "LoonKit.lcf"
 EXPECTED_GROUPS = (
-    "Proxy", "Auto", "Fallback", "AdBlock", "Final", "AI", "Google",
-    "Microsoft", "Apple", "YouTube", "Netflix", "Disney", "PrimeVideo",
-    "Spotify", "TikTok", "Twitch", "HBO", "Abema", "動畫瘋", "Dazn",
-    "BBC", "Bilibili", "Telegram", "Whatsapp", "Instagram", "Facebook",
-    "Twitter", "Discord", "Line", "Reddit", "Linkedin", "Steam", "Paypal",
+    "Proxy", "Auto", "Fallback", "AdBlock", "Final", "AI", "ChatGPT", "Gemini", "Claude", "GitHub", "Google", "Microsoft", "Apple", "Cloudflare", "Speedtest", "YouTube", "Netflix", "Disney", "PrimeVideo", "Spotify", "TikTok", "Twitch", "HBO", "Abema", "動畫瘋", "Dazn", "BBC", "Bilibili", "Telegram", "Whatsapp", "Instagram", "Facebook", "Twitter", "Discord", "Line", "Reddit", "Linkedin", "Steam", "Paypal",
 )
 
 
@@ -39,7 +35,7 @@ class PolicySelectionTests(unittest.TestCase):
 
     def test_no_new_or_removed_strategy_groups(self):
         self.assertEqual(tuple(self.groups), EXPECTED_GROUPS)
-        self.assertEqual(len(self.groups), 33)
+        self.assertEqual(len(self.groups), 39)
 
     def test_filters_isolate_manual_and_automatic_candidates(self):
         for name in ("ALL_Filter", "Auto_Filter", "Fallback_Filter"):
@@ -77,7 +73,7 @@ class PolicySelectionTests(unittest.TestCase):
                 pattern = self.filters[name].split('FilterKey = "', 1)[1].rstrip('"')
                 matched = [node for node in nodes if re.search(pattern, node)]
                 self.assertEqual(matched, nodes, (size, name))
-        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v7.0.0")
+        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v7.0.3")
 
     def test_auto_prioritizes_latency_and_fallback_uses_order(self):
         # Confirm group strategy semantics; Loon makes actual runtime decisions.

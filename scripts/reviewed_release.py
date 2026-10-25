@@ -180,6 +180,10 @@ def verify(root=ROOT, remote=False):
     if version == 'v6.5.8':
         from release_v658 import verify as verify_current
         return verify_current(root, remote)
+    if version == 'v7.0.3':
+        from release_v703 import check as verify_current
+        result = verify_current(remote=remote,root=root)
+        return {'release':result['version'],**result}
     if version == 'v7.0.0':
         from release_v700 import verify as verify_current
         return verify_current(root, remote)

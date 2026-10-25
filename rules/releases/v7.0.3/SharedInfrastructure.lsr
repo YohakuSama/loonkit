@@ -1,0 +1,9 @@
+# LoonKit reviewed shared services; international commerce boundary from o-ocn/loon-rules GPL-2.0
+DOMAIN,api.statsig.com
+DOMAIN,client-api.arkoselabs.com
+DOMAIN-SUFFIX,featuregates.org
+DOMAIN-SUFFIX,host.livekit.cloud
+DOMAIN-SUFFIX,turn.livekit.cloud
+DOMAIN-SUFFIX,aliexpress.com
+DOMAIN-SUFFIX,lazada.com
+DOMAIN-SUFFIX,daraz.com

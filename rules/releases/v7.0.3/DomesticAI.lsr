@@ -1,0 +1,12 @@
+# LoonKit domestic AI only; derived from o-ocn/loon-rules dist/AI-China-Direct.lsr GPL-2.0
+# Source: https://github.com/o-ocn/loon-rules/tree/47fa36ef0fcbfb9b664bac6fa2f4e574b6107b0f/dist/AI-China-Direct.lsr
+DOMAIN-SUFFIX,moonshot.cn
+DOMAIN-SUFFIX,kimichat.com
+DOMAIN-SUFFIX,zhipuai.cn
+DOMAIN-SUFFIX,chatglm.cn
+DOMAIN-SUFFIX,bigmodel.cn
+DOMAIN-SUFFIX,coze.cn
+DOMAIN-SUFFIX,hailuoai.video
+DOMAIN-SUFFIX,01.ai
+DOMAIN-SUFFIX,sensenova.cn
+DOMAIN-SUFFIX,sparkchain.cn
