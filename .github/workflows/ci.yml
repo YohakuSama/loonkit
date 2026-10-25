@@ -52,23 +52,25 @@ jobs:
         run: node --test tests/diagnostics.test.cjs
       - name: Native plugin JavaScript syntax
         run: |
-          node --check scripts/v20261025r1/node-intelligence.js
+          node --check scripts/v20261025r2/node-intelligence.js
           node --check scripts/v20261025r1/network-diagnostics.js
-          node --check scripts/v20261025r1/media-unlock.js
+          node --check scripts/v20261025r2/media-unlock.js
       - name: Native results are concise and node-scoped
         run: |
           node - <<'JS'
           const fs = require('node:fs');
           const assert = require('node:assert/strict');
           const read = p => fs.readFileSync(p, 'utf8');
-          const media = read('scripts/v20261025r1/media-unlock.js');
-          const node = read('scripts/v20261025r1/node-intelligence.js');
+          const media = read('scripts/v20261025r2/media-unlock.js');
+          const node = read('scripts/v20261025r2/node-intelligence.js');
           const network = read('scripts/v20261025r1/network-diagnostics.js');
           const plugin = read('release/Network_Diagnostics.plugin');
           assert(!media.includes('7 项平台检测'));
           for (const word of ['DAZN','Discovery+','Paramount+','Disney+','Netflix','ChatGPT','YouTube Premium']) assert(media.includes(word));
           assert(media.includes('test(it[0]') && media.includes('setTimeout(done,22000)'));
-          assert(node.includes('风险评分') && node.includes('网络特征'));
+          assert(node.includes('核验：') && node.includes('出口 IP：'));
+          assert(media.includes('✅') && media.includes('⛔') && media.includes('⚠️'));
+          assert(!node.includes('风险评分'));
           assert(network.includes('连接状态') && network.includes('nativeDns('));
           assert.equal((plugin.match(/^generic then script\(/gm)||[]).length,3);
           assert.equal((plugin.match(/^network-changed then script\(/gm)||[]).length,0);
@@ -76,7 +78,7 @@ jobs:
           assert(!media.includes('/users/me'));
           assert(network.includes('DIRECT_URL,"DIRECT"'));
           assert(media.includes('resolveNode()'));
-          assert(node.includes('数据来源：'));
+          assert(node.includes('ipquery.io') && node.includes('ipwho.is'));
 
           JS
       - name: No mutation of production content

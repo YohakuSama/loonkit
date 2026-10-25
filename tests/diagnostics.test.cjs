@@ -51,7 +51,8 @@ function run(kind, handler, options = {}) {
     $notification: {post(...args) {alerts.push(args);}},
     setTimeout(fn, delay) {timers.push({fn, delay}); return timers.length;}
   };
-  const src = fs.readFileSync(path.join(ROOT, 'scripts/v20261025r1', SCRIPTS[kind]), 'utf8');
+  const folder = kind === 'network' ? 'v20261025r1' : 'v20261025r2';
+  const src = fs.readFileSync(path.join(ROOT, 'scripts', folder, SCRIPTS[kind]), 'utf8');
   vm.runInNewContext(src, sandbox, {timeout:3000, filename:SCRIPTS[kind]});
   return {requests, completed, timers, alerts, writes};
 }
@@ -64,47 +65,65 @@ function nodeGoodResponse() {
     risk:{is_datacenter:true,is_mobile:false,is_vpn:false,is_proxy:false,is_tor:false,risk_score:7}
   });
 }
-test('node: successful primary JSON stays on named node, disables redirects and completes once', () => {
-  const session = run('node', () => ({status:200, body:nodeGoodResponse()}));
-  assert.equal(session.requests.length, 1);
-  assert.equal(session.requests[0].request.node, 'Node-A');
-  assert.equal(session.requests[0].request['auto-redirect'], false);
-  assert.equal(session.requests[0].request['auto-cookie'], false);
-  assert.match(output(session), /8\.8\.8\.8/);
-  assert.match(output(session), /风险评分：7/);
-  assert.equal(session.completed.length, 1);
+function ipwhoResponse(ip = '8.8.8.8', region='US', asn=15169) {
+  return JSON.stringify({ip,country_code:region,region:'CA',city:'Mountain View',
+    connection:{asn,isp:'Google'}});
+}
+const nodeOK = ({request}) => request.url === 'https://api.ipquery.io/?format=json' ?
+  {status:200,body:nodeGoodResponse()} : {status:200,body:ipwhoResponse()};
+test('node: verified egress, ASN and region, no speculative reputation', () => {
+  const s=run('node',nodeOK);
+  assert.equal(s.requests.length,2);
+  assert.ok(s.requests.every(x=>x.request.node==='Node-A'));
+  assert.match(output(s),/出口 IP：8\.8\.8\.8/);
+  assert.match(output(s),/核验：双源一致/);
+  assert.match(output(s),/地区：US/);
+  assert.match(output(s),/ASN：AS15169/);
+  assert.doesNotMatch(output(s),/风险评分|网络特征|机房/);
 });
-
-test('node: redirect, timeout, malformed JSON and thrown error use the existing backup', () => {
-  const primaryCases = [
-    {status:302, headers:{location:'https://other.example'}},
-    {error:new Error('timeout')},
-    {status:200, body:'{invalid'},
-    {throwError:true}
-  ];
-  for (const primary of primaryCases) {
-    const session = run('node', ({index}) => {
-      if (index === 0) {
-        if (primary.throwError) throw new Error('TLS certificate error');
-        return primary;
+test('node: inconsistent IP, region or ASN is explicitly not verified', () => {
+  const s=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
+    {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('1.1.1.1','JP',13335)});
+  assert.match(output(s),/出口 IP：结果不一致/);
+  assert.match(output(s),/地区 \/ ASN：待核实/);
+  assert.doesNotMatch(output(s),/地区：US/);
+  const country=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
+    {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('8.8.8.8','JP',13335)});
+  assert.match(output(country),/地区：不一致/);
+  assert.match(output(country),/ASN：不一致/);
+});
+test('node: fallback still works, failures never invent egress', () => {
+  for(const err of [{status:302},{error:new Error('timeout')},{status:200,body:'{'},{throws:true}]){
+    const s=run('node',({request})=>{
+      if(request.url === 'https://api.ipquery.io/?format=json'){
+        if(err.throws)throw Error('TLS');
+        return err;
       }
-      return {status:200, body:JSON.stringify({
-        ip:'1.1.1.1', country:'Australia', country_code:'AU',
-        connection:{asn:13335,isp:'Cloudflare',org:'Cloudflare'}
-      })};
+      return {status:200,body:ipwhoResponse()};
     });
-    assert.equal(session.requests.length, 2);
-    assert.match(session.requests[1].request.url, /ipwho\.is/);
-    assert.match(output(session), /1\.1\.1\.1/);
-    assert.equal(session.completed.length, 1);
+    assert.match(output(s),/核验：ipwho\.is（单源）/);
   }
+  const no=run('node',()=>({status:200,body:'{"ip":"invalid"}'}));
+  assert.match(output(no),/出口 IP：查询失败/);
 });
-
-test('node: malformed primary and backup never become successful measurements', () => {
-  const session = run('node', () => ({status:200, body:'{"ip":"nonsense"}'}));
-  assert.equal(session.requests.length, 2);
-  assert.match(output(session), /查询失败/);
-  assert.equal(session.completed.length, 1);
+test('node: nodeInfo takes precedence, groups without concrete node fail closed', () => {
+  const s=run('node',nodeOK,{params:{node:'Wrong',nodeInfo:{name:'Selected-Node'}},argument:{target_policy:'Proxy'}});
+  assert.ok(s.requests.every(x=>x.request.node==='Selected-Node'));
+  const bad=run('node',nodeOK,{params:{},argument:{target_policy:'Proxy'}});
+  assert.equal(bad.requests.length,0);
+  assert.match(output(bad),/指定具体节点/);
+});
+test('node: explicit direct comparison verifies both selected and direct paths', () => {
+  const s=run('node',({request})=>{
+    if(request.node==='DIRECT'){
+      if(request.url === 'https://api.ipquery.io/?format=json')return {status:200,body:JSON.stringify({ip:'1.1.1.1',location:{country_code:'AU'},isp:{asn:13335,isp:'Cloudflare'}})};
+      return {status:200,body:ipwhoResponse('1.1.1.1','AU',13335)};
+    }
+    return nodeOK({request});
+  },{argument:{target_policy:'Node-A',compare_direct:true}});
+  assert.equal(s.requests.length,4);
+  assert.match(output(s),/直连出口：1\.1\.1\.1/);
+  assert.match(output(s),/出口对照：不同/);
 });
 
 function networkReply(request, status) {
@@ -187,12 +206,13 @@ test('media: seven mocked supported responses produce seven distinct verdicts', 
   assert.equal(session.completed.length, 1);
   const out = output(session);
   for (const name of ['DAZN','Discovery+','Paramount+','Disney+','Netflix','ChatGPT','YouTube Premium']) {
-    assert.ok(out.includes(name + '：'), 'missing service result: ' + name);
+    assert.ok(out.includes(name + '　'), 'missing service result: ' + name);
   }
-  assert.match(out, /Netflix：片源页面可访问/);
-  assert.match(out, /Discovery\+：接口可访问/);
-  assert.match(out, /YouTube Premium：区域可用/);
-  assert.equal((out.match(/区域可用/g)||[]).length, 5);
+  assert.match(out, /✅ Netflix　片源可访问/);
+  assert.match(out, /✅ Discovery\+　可访问/);
+  assert.match(out, /✅ YouTube Premium　可用/);
+  assert.match(out,/可访问：7 \/ 7/);
+  assert.equal((out.match(/✅/g)||[]).length, 7);
   assert.doesNotMatch(out, /会员|已订阅|完整解锁/);
   assert.ok(session.requests.every(r => r.request.node === 'Node-A'));
   assert.ok(session.requests.length >= 8);
@@ -209,9 +229,9 @@ test('media: redirect-based block and Netflix 404 remain conservative', () => {
       return {status:302, headers:{Location:'https://auth.openai.com/login'}};
     return mediaResponse(call);
   });
-  assert.match(output(session), /Paramount\+：地区受限/);
-  assert.match(output(session), /Netflix：待确认/);
-  assert.match(output(session), /ChatGPT：区域可用/);
+  assert.match(output(session), /⛔ Paramount\+　受限/);
+  assert.match(output(session), /⚠️ Netflix　待确认/);
+  assert.match(output(session), /✅ ChatGPT　可用/);
 });
 
 test('media: malformed platform JSON and thrown requests cannot create supported verdicts', () => {
@@ -220,8 +240,8 @@ test('media: malformed platform JSON and thrown requests cannot create supported
     if (new URL(call.request.url).hostname === 'startup.core.indazn.com') throw new Error('request exception');
     return mediaResponse(call);
   });
-  assert.match(output(session), /DAZN：检测失败/);
-  assert.match(output(session), /Disney\+：检测失败/);
+  assert.match(output(session), /⚠️ DAZN　失败/);
+  assert.match(output(session), /⚠️ Disney\+　失败/);
 });
 
 test('media: node context overrides a different configured fallback', () => {
@@ -256,7 +276,7 @@ test('media: challenge pages never claim service access', () => {
     }
     return mediaResponse(call);
   });
-  assert.match(output(session), /YouTube Premium：检测失败/);
+  assert.match(output(session), /⚠️ YouTube Premium　失败/);
 });
 
 test('media: a delayed request reaches the existing 22-second watchdog exactly once', () => {
@@ -269,7 +289,7 @@ test('media: a delayed request reaches the existing 22-second watchdog exactly o
   assert.ok(watchdog);
   watchdog.fn();
   assert.equal(session.completed.length, 1);
-  assert.match(output(session), /Netflix：检测失败/);
+  assert.match(output(session), /⚠️ Netflix　未完成/);
   session.requests.find(r => new URL(r.request.url).hostname === 'www.netflix.com')
     .callback(null, {status:200}, 'Netflix /title/81280792');
   watchdog.fn();

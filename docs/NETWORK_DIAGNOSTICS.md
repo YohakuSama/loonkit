@@ -4,7 +4,7 @@
 
 ## 节点信息
 
-显示所选节点的出口 IP、地区、运营商、ASN 和网络特征。可选直连出口对照。
+通过两个来源核对所选节点的出口 IP、地区、运营商和 ASN；数据不同则标为待核实。可选直连出口对照。
 
 ## 网络检测
 
@@ -12,7 +12,7 @@
 
 ## 节点解锁检测
 
-仅通过所选节点测试 DAZN、Discovery+、Paramount+、Disney+、Netflix、ChatGPT、YouTube Premium 的服务接口、访问限制或区域响应。不访问账号资料接口，也不判断会员权益。结果按平台逐行显示。
+仅通过所选节点测试 DAZN、Discovery+、Paramount+、Disney+、Netflix、ChatGPT、YouTube Premium 的服务接口、访问限制或区域响应。不访问账号资料接口，也不判断会员权益。结果使用醒目的状态符号逐行显示。
 
 ## 更新
 
