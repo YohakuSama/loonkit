@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "label": "v6.5.10",
+  "label": "v7.0.0",
   "profile_sha256": {
-    "LoonKit.lcf": "dad4a801d387ef9d41e0db53b62b74de2848da24520dd08f90b15a824c83f111"
+    "LoonKit.lcf": "a5c0fb40987bf8079ed84167702593d5dd8ce631a03e3df704be09e3578d87b0"
   },
   "runtime_resources": [
     {
@@ -10,7 +10,7 @@
       "commit": "8f144d9d74dfae4e5064e4c1eeed23addd62199d",
       "path": "rules/releases/v6.5.7/AdBlockBalanced.list",
       "policy": "AdBlock",
-      "tag": "Beta-AdBlock-Balanced",
+      "tag": "Our-AdBlock-Balanced",
       "enabled": "true",
       "sha256": "eb4b30b96232bd76f4308f2333478ed94d1c2d885079ffd0da4b7b5f66738349",
       "matcher_count": 76895
@@ -20,7 +20,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-Spotify.list",
       "policy": "Spotify",
-      "tag": "Beta-Service-Spotify",
+      "tag": "Our-Service-Spotify",
       "enabled": "true",
       "sha256": "c77e7aefa435a909434f422f2c256767d2640098cfa83d44cd3cc502e6606b93",
       "matcher_count": 15
@@ -30,7 +30,7 @@
       "commit": "8f144d9d74dfae4e5064e4c1eeed23addd62199d",
       "path": "rules/releases/v6.5.7/Service-Twitch.list",
       "policy": "Twitch",
-      "tag": "Beta-Service-Twitch",
+      "tag": "Our-Service-Twitch",
       "enabled": "true",
       "sha256": "61c3d2dd1d96ff7363a96c12e16febb40c794c3725751d9e1c93a9e3b623ddbb",
       "matcher_count": 7
@@ -40,7 +40,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-BBC.list",
       "policy": "BBC",
-      "tag": "Beta-Service-BBC",
+      "tag": "Our-Service-BBC",
       "enabled": "true",
       "sha256": "604aa27e6ef146d16d9ce987a5e88af3454d12a68566bd168f512b5cc033be0e",
       "matcher_count": 13
@@ -50,7 +50,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-Line.list",
       "policy": "Line",
-      "tag": "Beta-Service-Line",
+      "tag": "Our-Service-Line",
       "enabled": "true",
       "sha256": "9c81f117b78ea6dcf8de0db4897a31cb9dadfb254e4567b77051e8b4bd280b1b",
       "matcher_count": 13
@@ -60,7 +60,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-Reddit.list",
       "policy": "Reddit",
-      "tag": "Beta-Service-Reddit",
+      "tag": "Our-Service-Reddit",
       "enabled": "true",
       "sha256": "309e74f24128a051116e0c92a767222e2fb4cfb519c449c0fc2ff710f2cf35d5",
       "matcher_count": 12
@@ -70,7 +70,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-Linkedin.list",
       "policy": "Linkedin",
-      "tag": "Beta-Service-Linkedin",
+      "tag": "Our-Service-Linkedin",
       "enabled": "true",
       "sha256": "0edbccf6b90dbe5356d7a35a5e69c3e5adcd6dfdf15b4124f45e9b3f65ecbc85",
       "matcher_count": 6
@@ -80,7 +80,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/Service-Abema.list",
       "policy": "Abema",
-      "tag": "Beta-Service-Abema",
+      "tag": "Our-Service-Abema",
       "enabled": "true",
       "sha256": "c560afa8bc56f90c3c262773ecdbf6d393db2dac689a9bba35456060341b3155",
       "matcher_count": 9
@@ -100,7 +100,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/DomesticSupplement.list",
       "policy": "DIRECT",
-      "tag": "Beta-DomesticSupplement",
+      "tag": "Our-DomesticSupplement",
       "enabled": "true",
       "sha256": "88a1856295532f0859916e01d354f08e0eb05909bf3a7f0d8101c17a54ba7f9c",
       "matcher_count": 3
@@ -110,7 +110,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/AIScoped.list",
       "policy": "AI",
-      "tag": "Beta-AIScoped",
+      "tag": "Our-AIScoped",
       "enabled": "true",
       "sha256": "3e5f4d2e1052ef55fa34f52c23753574248897b23277f0f35e7db52e9a74aea2",
       "matcher_count": 99
@@ -120,7 +120,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/SharedInfrastructure.list",
       "policy": "Proxy",
-      "tag": "Beta-SharedInfrastructure",
+      "tag": "Our-SharedInfrastructure",
       "enabled": "true",
       "sha256": "aaeb04b87520dc9a8eb85334b40def14abb27debbb2d0b8921eaef3c1c9eda5d",
       "matcher_count": 5
@@ -140,7 +140,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/SteamCN.list",
       "policy": "DIRECT",
-      "tag": "Beta-SteamCN",
+      "tag": "Our-SteamCN",
       "enabled": "true",
       "sha256": "96b5fb646a81021f47a1cd48c67f90c544f0505c072bafa0cabda69f7a42fe7e",
       "matcher_count": 13
@@ -150,7 +150,7 @@
       "commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
       "path": "rules/beta/v6.5.5-beta.4/SteamGlobal.list",
       "policy": "Steam",
-      "tag": "Beta-SteamGlobal",
+      "tag": "Our-SteamGlobal",
       "enabled": "true",
       "sha256": "9eafb51fe5a7650e44ddda96108814436a685f45e36ad58af26a8eddecf840b1",
       "matcher_count": 4
@@ -360,7 +360,7 @@
       "commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
       "path": "rules/releases/v6.5.8/ChinaDirect.list",
       "policy": "DIRECT",
-      "tag": "Beta-ChinaDirect-Scoped",
+      "tag": "Our-ChinaDirect-Scoped",
       "enabled": "true",
       "sha256": "842c6ada846c126938746fab2352a2a9d968671afb914f94e56dc154d053dd4b",
       "matcher_count": 114709
@@ -372,44 +372,44 @@
   "runtime_rule_matcher_count": 196486,
   "source_group_tags": {
     "AdBlock": [
-      "Beta-AdBlock-Balanced"
+      "Our-AdBlock-Balanced"
     ],
     "Spotify": [
-      "Beta-Service-Spotify"
+      "Our-Service-Spotify"
     ],
     "Twitch": [
-      "Beta-Service-Twitch"
+      "Our-Service-Twitch"
     ],
     "BBC": [
-      "Beta-Service-BBC"
+      "Our-Service-BBC"
     ],
     "Line": [
-      "Beta-Service-Line"
+      "Our-Service-Line"
     ],
     "Reddit": [
-      "Beta-Service-Reddit"
+      "Our-Service-Reddit"
     ],
     "Linkedin": [
-      "Beta-Service-Linkedin"
+      "Our-Service-Linkedin"
     ],
     "Abema": [
-      "Beta-Service-Abema"
+      "Our-Service-Abema"
     ],
     "DomesticCore": [
       "Our-DomesticCore",
-      "Beta-DomesticSupplement"
+      "Our-DomesticSupplement"
     ],
     "AI": [
-      "Beta-AIScoped"
+      "Our-AIScoped"
     ],
     "AppleOTA": [
       "Our-AppleOTA"
     ],
     "SteamCN": [
-      "Beta-SteamCN"
+      "Our-SteamCN"
     ],
     "Steam": [
-      "Beta-SteamGlobal",
+      "Our-SteamGlobal",
       "Our-Steam"
     ],
     "YouTube": [
@@ -470,7 +470,7 @@
       "Our-Paypal"
     ],
     "ChinaDirect": [
-      "Beta-ChinaDirect-Scoped"
+      "Our-ChinaDirect-Scoped"
     ]
   },
   "source_group_counts": {
@@ -700,11 +700,11 @@
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
   "reviewed_recipe": "rules/reviewed/v6.5.8/decisions.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-  "maintainer_approval": "USER_REQUESTED_NONGEOIP_COMPOSITE_PRODUCTION_MERGE_2026_10_25",
-  "device_test": "UNVERIFIED_ON_DEVICE_BING_PROBE",
+  "maintainer_approval": "USER_REQUESTED_V7_FORMAL_PUBLICATION_2026_10_25",
+  "device_test": "NOT_CLAIMED",
   "publication": {
-    "status": "DRAFT_PR_AWAITING_CI_AND_DEVICE_VALIDATION",
-    "warning": "Bing HTTP probe may be intercepted or redirected; not measured on device."
+    "status": "VERSIONED_RELEASE",
+    "channel": "stable"
   },
   "service_roots": {
     "Spotify": [
@@ -802,20 +802,18 @@
   "source_snapshot_commit": "d405e4be28c447b6e57a4790e965c89f342d6dd6",
   "upstream_historical_lineage": "UNRECOVERABLE",
   "legacy_compiler_rule_count": 26,
-  "stage": "CANDIDATE_USER_REQUESTED",
+  "stage": "FORMAL_RELEASE",
   "old_main_rollback_commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
-  "approved_runtime_directives_sha256": "2a63eb7a2a350015e5717ef5e8aa26b376ec9875b8e8ce99c5dfc18cec15922d",
+  "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
-    "version": "v6.5.9",
-    "profile_sha256": "c0e2bbc6f4565104a7bfa4474d2ac63df617dcc1805216b942712d361d1c23b1",
-    "commit": "b541c100ae77cd893fb08689bd5c31f1f6a8fce7"
+    "version": "v6.5.10",
+    "profile_sha256": "dad4a801d387ef9d41e0db53b62b74de2848da24520dd08f90b15a824c83f111",
+    "commit": "0969be7b442aaf151e7c0e3b2b69c4bc259fcfc1"
   },
   "runtime_change": {
-    "speed_test": "replace Cloudflare generate_204 with http://www.bing.com in general, Auto, Fallback only",
-    "dns": "UNCHANGED",
-    "remote_rules": "UNCHANGED",
-    "plugin": "UNCHANGED",
-    "beta": "INTERNAL_UNCHANGED"
+    "version": "v7.0.0",
+    "runtime_semantics": "UNCHANGED",
+    "tags": "PRESENTATION_ONLY"
   }
 }

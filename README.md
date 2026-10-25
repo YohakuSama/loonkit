@@ -14,7 +14,7 @@
 
 LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦截与网络诊断。
 
-当前版本：**v6.5.10**（普通 Loon 服务域名规则，尚待 DNS 与地区路由实机复测）。
+当前版本：**v7.0.0**。
 
 ## 快速开始
 
@@ -23,16 +23,15 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 1. 在 Loon 中导入配置。
 2. 添加自己的节点或订阅，在 `Proxy` 中选择线路。
 3. 刷新远程规则和插件，按需调整各服务策略。
-4. 在 DNS 设置中关闭「加密 DNS 失败回退到普通 DNS」；本版仍未通过设备 DNS 防泄漏验收。
 
-节点测速使用 `http://www.bing.com`（General、Auto、Fallback）；直连互联网检测地址不变。部分运营商或机场可能对 HTTP 请求重定向或干预，测速结果需实机判断，并不等于物理落地 RTT。
+节点测速使用 `http://www.bing.com`；互联网连接检测与网络诊断保持原有设置。
 
 ## 功能概览
 
 | 功能 | 说明 |
 | --- | --- |
 | 分流 | 国内常用服务直连，AI、流媒体和社交服务独立选路。 |
-| 分流策略 | Apple、Microsoft、PayPal、Bilibili 使用普通 Loon 域名规则；同域名按 CN／非 CN 自动选路暂时不可用。 |
+| 分流策略 | Apple、Microsoft、PayPal、Bilibili 使用普通 Loon 域名规则； |
 | 节点选择 | 支持手动选择、延迟测试和故障切换。 |
 | 广告拦截 | `AdBlock` 中选择 `REJECT` 拦截、`Proxy` 放行。 |
 | 网络辅助 | 查看节点出口、连接状态及流媒体和 AI 服务状态。 |
@@ -63,7 +62,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 [更新记录](./docs/CHANGELOG.md) · [规则说明](./rules/README.md) · [反馈问题](https://github.com/YohakuSama/loonkit/issues)
 
-[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v6.5.8.md) · [安全报告](./SECURITY.md)
+[维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.0.md) · [安全报告](./SECURITY.md)
 
 ## 开源许可
 
