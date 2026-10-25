@@ -25,3 +25,7 @@
 计划绑定 beta 提交、配置 hash 和 24 小时有效期；beta 移动后重新生成计划。正常更新不会自动合并 beta 或发布正式版。
 
 [Actions](https://github.com/YohakuSama/loonkit/actions/workflows/beta-upstream-update.yml) · [维护流程](./MAINTAINING.md)
+
+## 最近线上检查
+
+[运行记录](https://github.com/YohakuSama/loonkit/actions/runs/40157438559)：来源审阅成功，没有合格新增。发布器权限检查返回 403，仓库「Allow GitHub Actions to create and approve pull requests」当前关闭；开启后重试 verify-publisher job。

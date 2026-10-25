@@ -2,7 +2,7 @@
   "schema_version": 2,
   "rc_label": "vNext-RC2",
   "stable_release_version": "v6.5.8",
-  "status": "REVIEWED_CANDIDATE_PENDING_PR_CI",
+  "status": "VERIFIED_PUBLISHED_V6_5_8",
   "release_rules_dir": "rules/releases/vNext-RC2",
   "release_assets_dir": "release",
   "release_assets_commit": "9bbac4c9aa0ec33c82ab5fe03648127f3f4754f4",
