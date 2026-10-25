@@ -14,6 +14,6 @@ target_policy = input,"Proxy",tag=检测节点,desc=优先使用节点菜单选�
 compare_direct = switch,false,tag=直连 IP 对照,desc=对照直连与代理出口 IP
 
 [Script]
-generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/88d45878b3b638ffe40b53d2ba19c67be16008da/scripts/v20261025r1/node-intelligence.js", {${target_policy}, ${compare_direct}}) with tag="节点信息", img_url="location.fill.viewfinder.system", timeout=40
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/48c256b0d1913f167fc1cd75ddd2ece2e78b3b3e/scripts/v20261025r2/node-intelligence.js", {${target_policy}, ${compare_direct}}) with tag="节点信息", img_url="location.fill.viewfinder.system", timeout=40
 generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/88d45878b3b638ffe40b53d2ba19c67be16008da/scripts/v20261025r1/network-diagnostics.js", {${target_policy}}) with tag="网络检测", img_url="network.system", timeout=40
-generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/88d45878b3b638ffe40b53d2ba19c67be16008da/scripts/v20261025r1/media-unlock.js", {${target_policy}}) with tag="解锁检测", img_url="play.rectangle.system", timeout=30
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/48c256b0d1913f167fc1cd75ddd2ece2e78b3b3e/scripts/v20261025r2/media-unlock.js", {${target_policy}}) with tag="解锁检测", img_url="play.rectangle.system", timeout=30
