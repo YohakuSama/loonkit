@@ -102,6 +102,70 @@ def trim_rules(raw: bytes) -> tuple[bytes, dict, list[dict]]:
     }, removed
 
 
+
+class PriorPolicyIndex:
+    """Only predicates from strictly earlier subscriptions of this same policy."""
+
+    def __init__(self):
+        self.exact = set()
+        self.suffix = set()
+        self.ip = defaultdict(set)
+        self.other = set()
+
+    def covers(self, key):
+        kind, value, flags = key
+        if kind == "DOMAIN":
+            return (value, flags) in self.exact or any(
+                (parent, flags) in self.suffix for parent in ancestors(value))
+        if kind == "DOMAIN-SUFFIX":
+            return any((parent, flags) in self.suffix for parent in ancestors(value))
+        if kind in IP_KINDS:
+            network = ipaddress.ip_network(value, strict=False)
+            available = self.ip[(kind, flags)]
+            while True:
+                if network in available:
+                    return True
+                if not network.prefixlen:
+                    break
+                network = network.supernet()
+        return key in self.other
+
+    def add(self, key):
+        kind, value, flags = key
+        if kind == "DOMAIN":
+            self.exact.add((value, flags))
+        elif kind == "DOMAIN-SUFFIX":
+            self.suffix.add((value, flags))
+        elif kind in IP_KINDS:
+            self.ip[(kind, flags)].add(ipaddress.ip_network(value, strict=False))
+        else:
+            self.other.add(key)
+
+
+def prune_against_prior(raw: bytes, prior: PriorPolicyIndex) -> tuple[bytes, list[dict]]:
+    """Drop a later predicate only when a strictly earlier same-policy rule covers it."""
+    lines = raw.decode("utf-8").splitlines(keepends=True)
+    omitted = set()
+    removed = []
+    current_keys = []
+    for index, line in enumerate(lines):
+        rule = line.strip()
+        if not rule or rule.startswith(("#", ";", "//")):
+            continue
+        key = rule_fields(rule)
+        if prior.covers(key):
+            omitted.add(index)
+            removed.append({"line": index + 1, "rule": rule,
+                            "reason": "EARLIER_SAME_POLICY_DOMINANCE"})
+        else:
+            current_keys.append(key)
+    # Do not include the current subscription until all of its rules are
+    # considered; otherwise same-subscription ordering could be misread.
+    for key in current_keys:
+        prior.add(key)
+    return "".join(line for i, line in enumerate(lines) if i not in omitted).encode("utf-8"), removed
+
+
 def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
     manifest = json.loads((root / "build/release_manifest.json").read_text(encoding="utf-8"))
     records = manifest["runtime_resources"]
@@ -109,6 +173,7 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
     samples = {}
     counts = Counter()
     totals = Counter()
+    policy_indexes = defaultdict(PriorPolicyIndex)
     for row in records:
         path = root / row["path"]
         source = path.read_bytes()
@@ -117,6 +182,17 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
         dest, summary, removed = trim_rules(source)
         if summary["before"] != row["matcher_count"]:
             raise ValueError("manifest count mismatch: " + row["path"])
+        earlier, more_removed = prune_against_prior(dest, policy_indexes[row["policy"]])
+        dest = earlier
+        summary["locally_removed"] = summary["removed"]
+        summary["globally_removed"] = len(more_removed)
+        summary["removed"] += len(more_removed)
+        summary["after"] -= len(more_removed)
+        summary["bytes_after"] = len(dest)
+        summary["optimized_sha256"] = hashlib.sha256(dest).hexdigest()
+        summary["reasons"] = dict(Counter(summary["reasons"]) +
+                                  Counter(r["reason"] for r in more_removed))
+        removed += more_removed
         if summary["removed"] and write_dir:
             target = root / write_dir / path.name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -131,7 +207,7 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
         totals.update({"before": summary["before"], "after": summary["after"],
                        "removed": summary["removed"], "bytes_before": summary["bytes_before"],
                        "bytes_after": summary["bytes_after"]})
-    report = {"algorithm": "same_subscription_equivalent_subsumption_v1",
+    report = {"algorithm": "same_and_earlier_same_policy_equivalent_subsumption_v2",
               "version": manifest["label"], "sources": len(records),
               "totals": dict(totals), "reasons": dict(counts),
               "resources": result, "examples": samples}
