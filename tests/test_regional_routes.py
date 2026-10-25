@@ -94,6 +94,12 @@ class RegionalRouteTests(unittest.TestCase):
         self.assertIn('DOMAIN-SUFFIX,apple.com',formal['Apple'])
         self.assertFalse(any(r.startswith('AND,') for group in formal.values() for r in group))
 
+    def test_upstream_plan_cannot_shadow_cn_only_scopes(self):
+        from beta_upstream_delivery import effective_conflict
+        for host in ('servicewechat.com','new.autonavi.com','tenant.kunlunhuf.com'):
+            self.assertEqual(effective_conflict(host,'YouTube',self.local,self.remotes),'REGIONAL_SCOPE_REVIEW')
+        self.assertIsNone(effective_conflict('unreviewed.example.test','YouTube',self.local,self.remotes))
+
     def test_alidns_tls_hostname_and_bootstrap_are_preserved(self):
         text=(ROOT/'LoonKit.lcf').read_text()
         self.assertIn('doh-server = https://dns.alidns.com/dns-query',text)
