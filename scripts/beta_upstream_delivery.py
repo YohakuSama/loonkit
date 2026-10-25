@@ -53,6 +53,30 @@ def next_version(version):
     return hit[1] + str(int(hit[2]) + 1)
 
 
+@__import__('functools').lru_cache(maxsize=1)
+def _historical_regional_cn_matchers():
+    # v6.5.9 disables the crash-on-hit remote in runtime. Maintain the
+    # original reviewed CN scopes as conservative metadata-only beta guards.
+    from beta_channel import content_rules
+    from regional_rules import source_matcher
+    path = ROOT / 'rules/releases/v6.5.8/RegionalCN.list'
+    exact, suffix = set(), set()
+    for line in content_rules(path.read_bytes()):
+        rule = source_matcher(line)
+        if rule.startswith('DOMAIN,'):
+            exact.add(rule.split(',',1)[1].lower())
+        elif rule.startswith('DOMAIN-SUFFIX,'):
+            suffix.add(rule.split(',',1)[1].lower())
+    return exact, suffix
+
+
+def historical_regional_cn_domain(host):
+    exact, suffix = _historical_regional_cn_matchers()
+    host = host.lower().rstrip('.')
+    return host in exact or any(host == parent or host.endswith('.' + parent)
+                                for parent in suffix)
+
+
 def effective_conflict(host, group, local, remotes):
     from beta_effective_audit import trace
     route=trace(host,local,remotes)
@@ -151,8 +175,10 @@ def validate_plan(plan, meta, profile, catalog):
             host = rule.split(",", 1)[1]
             if any(host == value or host.endswith("." + value) for value in SHARED):
                 raise ValueError("shared infrastructure needs manual review")
-            if any(not trusted_router.match(host,country=code)['predicted_policy'].startswith('Final') for code in ('CN','US')):
-                raise ValueError('candidate host already covered by current routing')
+            if (historical_regional_cn_domain(host) or any(
+                    not trusted_router.match(host,country=code)['predicted_policy'].startswith('Final')
+                    for code in ('CN','US'))):
+                raise ValueError('candidate host already covered by current routing or historical CN scope')
             evidence = selection["provenance"][rule]
             if not isinstance(evidence, list) or not evidence or any(s not in sources or sources[s]["group"] != group for s in evidence):
                 raise ValueError("rule source owner mismatch")
