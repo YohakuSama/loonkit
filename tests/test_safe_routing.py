@@ -70,6 +70,32 @@ class TestSafeRouting(unittest.TestCase):
                            section(self.safe, "Plugin"))), 1,
         )
 
+    def test_diagnostic_groups_split_original_six_and_nothing_else(self):
+        halves = {
+            "A": {"Our-RegionalCN", "Our-AppleOTA", "Our-Bilibili"},
+            "B": {"Our-Microsoft", "Our-Apple", "Our-Paypal"},
+        }
+        self.assertEqual(halves["A"] | halves["B"], DISABLED)
+        self.assertFalse(halves["A"] & halves["B"])
+        original_entries = remote_entries(self.original)
+        for letter, keep in halves.items():
+            profile = (ROOT / f"diagnostics/v6.5.8/Group{letter}.lcf").read_text(
+                encoding="utf-8"
+            )
+            expected = [line for line in original_entries
+                        if tag(line) not in (DISABLED - keep)]
+            self.assertEqual(remote_entries(profile), expected)
+            self.assertEqual(len(remote_entries(profile)), 34)
+            removed = set(original_entries) - set(expected)
+            self.assertEqual(
+                directives("\\n".join(line for line in self.original.splitlines()
+                                      if line not in removed)),
+                directives(profile),
+            )
+            for name in ("General", "Proxy Group", "Host", "Rule", "Plugin"):
+                self.assertEqual(section(self.original, name),
+                                 section(profile, name))
+
     def test_profile_identical_except_six_entries_and_comments(self):
         removed = set(remote_entries(self.original)) - set(remote_entries(self.safe))
         expected = [line for line in self.original.splitlines()
