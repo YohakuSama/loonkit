@@ -4,7 +4,7 @@
   "version": "v6.5.9-beta.1",
   "configuration_sha256": "81fd3bd0bb9aa0b414588afd0ce0d0211537063e0adeddde77b965bd2a6692da",
   "commit_sha": null,
-  "rollback_commit_sha": "3366ee77d3e1ee44788e60ba1381e976406f4596",
+  "rollback_commit_sha": "6eef8e7c218330d5f62a63d3ce155395b566d2db",
   "observation_started_utc": null,
   "observation_finished_utc": null,
   "ci": {

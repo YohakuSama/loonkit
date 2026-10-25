@@ -724,12 +724,23 @@
     "beta_sync_pull_request": "https://github.com/YohakuSama/loonkit/pull/131",
     "beta_sync_commit_sha": "55a5e8fdf69b07dd934eae44e25014e9e320abb0",
     "beta_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157430514",
-    "upstream_review_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157438559",
+    "upstream_review_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737181",
     "upstream_review_stage_conclusion": "success",
     "upstream_review_result": "SOURCE_INTEGRITY_COMPLETE_NO_ROUTINE_ADDITIONS",
-    "publisher_integration_status": "BLOCKED_BY_DISABLED_ACTIONS_PR_SETTING",
-    "publisher_integration_http_status": 403,
-    "scheduled_workflow_conclusion": "failure"
+    "publisher_integration_status": "VERIFIED_BRANCH_AND_EXACT_HEAD_CI",
+    "scheduled_workflow_conclusion": "success",
+    "publisher_review_mode": "MANUAL_PR",
+    "automatic_pr_creation_allowed": false,
+    "publisher_integration_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737181",
+    "publisher_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159746722",
+    "publisher_verified_head_sha": "2de48f1bf180363c49d83eb23789a9eb8ff0ecf4",
+    "publisher_check_branch_removed": true,
+    "maintenance_pull_request": "https://github.com/YohakuSama/loonkit/pull/135",
+    "maintenance_main_commit_sha": "6eef8e7c218330d5f62a63d3ce155395b566d2db",
+    "maintenance_main_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159737209",
+    "maintenance_beta_pull_request": "https://github.com/YohakuSama/loonkit/pull/134",
+    "maintenance_beta_commit_sha": "2fb00a529d14f0063a7a8c59e8e681521b2a95ff",
+    "maintenance_beta_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40159725019"
   },
   "service_roots": {
     "Spotify": [
