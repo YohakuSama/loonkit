@@ -69,7 +69,7 @@ function ipwhoResponse(ip = '8.8.8.8', region='US', asn=15169) {
   return JSON.stringify({ip,country_code:region,region:'CA',city:'Mountain View',
     connection:{asn,isp:'Google'}});
 }
-const nodeOK = ({request}) => request.url.includes('ipquery.io') ?
+const nodeOK = ({request}) => request.url === 'https://api.ipquery.io/?format=json' ?
   {status:200,body:nodeGoodResponse()} : {status:200,body:ipwhoResponse()};
 test('node: verified egress, ASN and region, no speculative reputation', () => {
   const s=run('node',nodeOK);
@@ -82,12 +82,12 @@ test('node: verified egress, ASN and region, no speculative reputation', () => {
   assert.doesNotMatch(output(s),/风险评分|网络特征|机房/);
 });
 test('node: inconsistent IP, region or ASN is explicitly not verified', () => {
-  const s=run('node',({request})=>request.url.includes('ipquery.io')?
+  const s=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
     {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('1.1.1.1','JP',13335)});
   assert.match(output(s),/出口 IP：结果不一致/);
   assert.match(output(s),/地区 \/ ASN：待核实/);
   assert.doesNotMatch(output(s),/地区：US/);
-  const country=run('node',({request})=>request.url.includes('ipquery.io')?
+  const country=run('node',({request})=>request.url === 'https://api.ipquery.io/?format=json'?
     {status:200,body:nodeGoodResponse()}:{status:200,body:ipwhoResponse('8.8.8.8','JP',13335)});
   assert.match(output(country),/地区：不一致/);
   assert.match(output(country),/ASN：不一致/);
@@ -95,7 +95,7 @@ test('node: inconsistent IP, region or ASN is explicitly not verified', () => {
 test('node: fallback still works, failures never invent egress', () => {
   for(const err of [{status:302},{error:new Error('timeout')},{status:200,body:'{'},{throws:true}]){
     const s=run('node',({request})=>{
-      if(request.url.includes('ipquery.io')){
+      if(request.url === 'https://api.ipquery.io/?format=json'){
         if(err.throws)throw Error('TLS');
         return err;
       }
@@ -116,7 +116,7 @@ test('node: nodeInfo takes precedence, groups without concrete node fail closed'
 test('node: explicit direct comparison verifies both selected and direct paths', () => {
   const s=run('node',({request})=>{
     if(request.node==='DIRECT'){
-      if(request.url.includes('ipquery.io'))return {status:200,body:JSON.stringify({ip:'1.1.1.1',location:{country_code:'AU'},isp:{asn:13335,isp:'Cloudflare'}})};
+      if(request.url === 'https://api.ipquery.io/?format=json')return {status:200,body:JSON.stringify({ip:'1.1.1.1',location:{country_code:'AU'},isp:{asn:13335,isp:'Cloudflare'}})};
       return {status:200,body:ipwhoResponse('1.1.1.1','AU',13335)};
     }
     return nodeOK({request});
