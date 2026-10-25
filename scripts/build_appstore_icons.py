@@ -24,6 +24,8 @@ APPS = {
     "Cloudflare": (1423538627, "cloudflare"),
 }
 CANVAS = 512
+# Modern iOS liquid-glass artwork can include a visible outer framing ring.
+EDGE_INSET = {"GitHub": 25, "ChatGPT": 25, "Gemini": 20}
 
 def download(url: str, *, max_bytes: int = 8_000_000) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "LoonKit-Icon-Builder/1.0"})
@@ -55,7 +57,7 @@ def lookup(app_id: int, seller_hint: str) -> tuple[dict, str]:
     artwork = re.sub(r"/\d+x\d+(?:bb|wa)(?=\.)", "/512x512bb", artwork)
     return app, artwork
 
-def normalize(payload: bytes) -> tuple[bytes, dict]:
+def normalize(payload: bytes, strategy: str) -> tuple[bytes, dict]:
     original = Image.open(io.BytesIO(payload))
     original.load()
     if original.width < 100 or original.height < 100 or original.width > 8192 or original.height > 8192:
@@ -77,6 +79,10 @@ def normalize(payload: bytes) -> tuple[bytes, dict]:
         image = ImageOps.fit(image, (CANVAS, CANVAS), method=Image.Resampling.LANCZOS, centering=(0.5,0.5))
     else:
         image = image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
+    inset = EDGE_INSET.get(strategy, 0)
+    if inset:
+        image = image.crop((inset, inset, CANVAS-inset, CANVAS-inset))
+        image = image.resize((CANVAS, CANVAS), Image.Resampling.LANCZOS)
     # Rounded iOS-style mask, with anti-aliasing, consistent for all new icon assets.
     supersample = 4
     side = CANVAS * supersample
@@ -89,14 +95,14 @@ def normalize(payload: bytes) -> tuple[bytes, dict]:
     image.putalpha(PIL.ImageChops.multiply(a, mask))
     result = io.BytesIO()
     image.save(result, format="PNG", optimize=True, compress_level=9)
-    return result.getvalue(), {"original_dimensions":[original.width,original.height],"crop_box":list(crop),"output_dimensions":[CANVAS,CANVAS],"mode":"RGBA"}
+    return result.getvalue(), {"original_dimensions":[original.width,original.height],"crop_box":list(crop),"glass_edge_trim_pixels":inset,"output_dimensions":[CANVAS,CANVAS],"mode":"RGBA"}
 
 def build() -> dict:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     manifest = {"schema_version":1,"source":"Apple App Store iTunes lookup by verified application ID","icons":{}}
     for strategy, (app_id, seller) in APPS.items():
         app, url = lookup(app_id, seller)
-        result, details = normalize(download(url))
+        result, details = normalize(download(url), strategy)
         path = OUTPUT / (strategy + ".png")
         path.write_bytes(result)
         manifest["icons"][strategy] = {
