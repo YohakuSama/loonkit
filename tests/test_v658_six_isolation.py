@@ -17,6 +17,8 @@ GROUPS = {
     "None": (),
     "GroupA": SUSPECTS[:3],
     "GroupB": SUSPECTS[3:],
+    "AppleOTA_Bilibili": ("AppleOTA", "Bilibili"),
+    "AppleOTA_Bilibili_Paypal": ("AppleOTA", "Bilibili", "Paypal"),
     **{"Only" + item: (item,) for item in SUSPECTS},
 }
 
