@@ -45,10 +45,13 @@ def build_router(client, base: str, profile: bytes, manifest: dict, *, root: Pat
                     not rel.parts or rel.parts[0] != "rules" or
                     not isinstance(row.get("sha256"), str) or len(row["sha256"]) != 64):
                 raise ValueError("unsafe beta resource manifest path/hash")
-            local = root / rel
-            # Avoid network calls for unchanged immutable resources on main.
-            if local.is_file() and sha256(local.read_bytes()) == row["sha256"]:
-                raw = local.read_bytes()
+            local = (root / rel).resolve()
+            if not local.is_relative_to(root.resolve()):
+                raise ValueError("beta resource escapes trusted checkout")
+            # Reuse verified local bytes without a second disk read.
+            local_bytes = local.read_bytes() if local.is_file() else None
+            if local_bytes is not None and sha256(local_bytes) == row["sha256"]:
+                raw = local_bytes
             else:
                 raw = client.file(row["path"], row["commit"])
             if len(raw) > MAX_RESOURCE_BYTES or sha256(raw) != row["sha256"]:

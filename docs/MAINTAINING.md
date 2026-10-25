@@ -63,3 +63,5 @@ python3 scripts/verify_release.py --check --remote
 设备体验由维护者自行验证，自动化检查只证明离线构建和已定义的策略回归。
 
 [发布记录](./RELEASE_READINESS.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)
+
+历史脚本整理：v7.0.3 一次性候选发布入口及 v6.5.8 旧的重复准备入口已从当前主线移除，历史 Git tag 仍完整保存原始代码；正在被历史验证器引用的脚本保留，不盲删。
