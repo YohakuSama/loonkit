@@ -49,12 +49,15 @@ jobs:
       - name: Verify declarative release and immutable resources
         run: python3 scripts/release_engine.py --check
       - name: Native Loon mocked-response regressions
-        run: node --test tests/diagnostics.test.cjs
+        run: node --test tests/diagnostics.test.cjs tests/diagnostics.retry.test.cjs
       - name: Native plugin JavaScript syntax
         run: |
           node --check scripts/v20261025r3/node-intelligence.js
           node --check scripts/v20261025r1/network-diagnostics.js
           node --check scripts/v20261025r2/media-unlock.js
+          node --check scripts/v20261026r1/node-intelligence.js
+          node --check scripts/v20261026r1/network-diagnostics.js
+          node --check scripts/v20261026r1/media-unlock.js
       - name: Native results are concise and node-scoped
         run: |
           node - <<'JS'
