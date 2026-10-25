@@ -85,12 +85,16 @@ class RegionalRouteTests(unittest.TestCase):
         self.assertTrue(self.router.match('unregistered.example',country='CN')['predicted_policy'].startswith('Final'))
 
     def test_no_active_ua_or_keywords_and_reviewed_direct_options(self):
-        meta=json.loads((ROOT/'build/release_manifest.json').read_text())
+        meta = json.loads((ROOT/'build/release_manifest.json').read_text())
         for row in meta['runtime_resources']:
-            self.assertFalse(any(r.startswith(('USER-AGENT,','DOMAIN-KEYWORD,')) for r in content_rules((ROOT/row['path']).read_bytes())))
-        text=(ROOT/'LoonKit.lcf').read_text()
-        for group in ('Apple','Microsoft','Bilibili','Speedtest','Line'):
-            line=re.search(r'(?m)^'+group+r' = (.*)
+            self.assertFalse(any(r.startswith(('USER-AGENT,', 'DOMAIN-KEYWORD,'))
+                                 for r in content_rules((ROOT/row['path']).read_bytes())))
+        text = (ROOT/'LoonKit.lcf').read_text()
+        for group in ('Apple', 'Microsoft', 'Bilibili', 'Speedtest', 'Line'):
+            line = re.search(r'(?m)^' + group + r' = (.*)$', text)[1].split('img-url', 1)[0]
+            self.assertEqual(line, 'select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,')
+        paypal = re.search(r'(?m)^Paypal = (.*)$', text)[1].split('img-url', 1)[0]
+        self.assertEqual(paypal, 'select,Proxy,Auto,Fallback,ALL_Filter,')
 
     def test_removed_regional_cn_scope_does_not_reintroduce_blanket_direct(self):
         # The high-risk RegionalCN subscription is entirely gone from active
