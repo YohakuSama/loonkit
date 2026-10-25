@@ -84,14 +84,114 @@ class RegionalRouteTests(unittest.TestCase):
         self.assertEqual(self.router.match('203.1.1.1',country='CN')['predicted_policy'],'DIRECT')
         self.assertTrue(self.router.match('unregistered.example',country='CN')['predicted_policy'].startswith('Final'))
 
-    def test_no_active_ua_or_keywords_and_overseas_groups_have_no_direct_option(self):
+    def test_no_active_ua_or_keywords_and_reviewed_direct_options(self):
         meta=json.loads((ROOT/'build/release_manifest.json').read_text())
         for row in meta['runtime_resources']:
             self.assertFalse(any(r.startswith(('USER-AGENT,','DOMAIN-KEYWORD,')) for r in content_rules((ROOT/row['path']).read_bytes())))
         text=(ROOT/'LoonKit.lcf').read_text()
-        for group in ('Apple','Microsoft','Paypal','Bilibili'):
-            line=re.search(r'(?m)^'+group+r' = (.*)$',text)[1].split('img-url',1)[0]
-            self.assertEqual(line,'select,Proxy,Auto,Fallback,ALL_Filter,')
+        for group in ('Apple','Microsoft','Bilibili','Speedtest','Line'):
+            line=re.search(r'(?m)^'+group+r' = (.*)
+
+    def test_removed_regional_cn_scope_does_not_reintroduce_blanket_direct(self):
+        # The high-risk RegionalCN subscription is entirely gone from active
+        # profile, and the local no-resolve GEOIP fallback is still present.
+        content=(ROOT/'LoonKit.lcf').read_text()
+        self.assertNotIn('tag=Our-RegionalCN,',content)
+        self.assertIn('GEOIP,CN,DIRECT,no-resolve',content)
+        self.assertIn('FINAL,Final',content)
+        for host in ('autonavi.com','tenant.ksyungslb.com','tenant.kunlunhuf.com'):
+            for country in ('CN','US'):
+                self.assertTrue(self.router.match(host,country=country)['predicted_policy'].startswith('Final'))
+
+    def test_review_baseline_is_native_only_with_beta_still_historical(self):
+        formal=upstream_review.runtime_baseline(
+            ROOT,profile_path='build/baselines/v7.0.0/LoonKit.lcf',
+            manifest_path='build/baselines/v7.0.0/release_manifest.json')
+        beta=upstream_review.runtime_baseline(
+            ROOT,profile_path='beta/LoonKit.lcf',manifest_path='build/beta_manifest.json')
+        self.assertEqual(len(formal),33)
+        self.assertEqual(set(formal),set(beta))
+        self.assertIn('DOMAIN-SUFFIX,apple.com',formal['Apple'])
+        self.assertFalse(any(r.startswith(('AND,','OR,','NOT,'))
+                             for group in formal.values() for r in group))
+        self.assertTrue(all(x.startswith(('DOMAIN,','DOMAIN-SUFFIX,'))
+                            for x in formal['Apple']))
+        # Explicit, traceable intentional differences: former conditional IP
+        # sub-rules are excluded, rather than routed without GEOIP checks.
+        self.assertEqual(len(beta['Apple']-formal['Apple']),13)
+        self.assertEqual(len(beta['Bilibili']-formal['Bilibili']),8)
+        for group in formal:
+            if group not in ('Apple','Bilibili'):
+                self.assertEqual(formal[group],beta[group],group)
+
+    def test_upstream_plan_cannot_shadow_cn_only_scopes(self):
+        from beta_upstream_delivery import effective_conflict
+        for host in ('servicewechat.com','new.autonavi.com','tenant.kunlunhuf.com'):
+            self.assertEqual(effective_conflict(host,'YouTube',self.local,self.remotes),'REGIONAL_SCOPE_REVIEW')
+        self.assertIsNone(effective_conflict('unreviewed.example.test','YouTube',self.local,self.remotes))
+
+    def test_alidns_tls_hostname_and_bootstrap_are_preserved(self):
+        text=(ROOT/'LoonKit.lcf').read_text()
+        self.assertIn('doh-server = https://dns.alidns.com/dns-query',text)
+        self.assertIn('[Host]\ndns.alidns.com = 223.5.5.5',text)
+        self.assertNotIn('https://223.5.5.5/',text)
+        self.assertNotIn('skip-server-cert-verify',text)
+
+
+if __name__=='__main__':unittest.main()
+,text)[1].split('img-url',1)[0]
+            self.assertEqual(line,'select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,')
+        paypal = re.search(r'(?m)^Paypal = (.*)
+
+    def test_removed_regional_cn_scope_does_not_reintroduce_blanket_direct(self):
+        # The high-risk RegionalCN subscription is entirely gone from active
+        # profile, and the local no-resolve GEOIP fallback is still present.
+        content=(ROOT/'LoonKit.lcf').read_text()
+        self.assertNotIn('tag=Our-RegionalCN,',content)
+        self.assertIn('GEOIP,CN,DIRECT,no-resolve',content)
+        self.assertIn('FINAL,Final',content)
+        for host in ('autonavi.com','tenant.ksyungslb.com','tenant.kunlunhuf.com'):
+            for country in ('CN','US'):
+                self.assertTrue(self.router.match(host,country=country)['predicted_policy'].startswith('Final'))
+
+    def test_review_baseline_is_native_only_with_beta_still_historical(self):
+        formal=upstream_review.runtime_baseline(
+            ROOT,profile_path='build/baselines/v7.0.0/LoonKit.lcf',
+            manifest_path='build/baselines/v7.0.0/release_manifest.json')
+        beta=upstream_review.runtime_baseline(
+            ROOT,profile_path='beta/LoonKit.lcf',manifest_path='build/beta_manifest.json')
+        self.assertEqual(len(formal),33)
+        self.assertEqual(set(formal),set(beta))
+        self.assertIn('DOMAIN-SUFFIX,apple.com',formal['Apple'])
+        self.assertFalse(any(r.startswith(('AND,','OR,','NOT,'))
+                             for group in formal.values() for r in group))
+        self.assertTrue(all(x.startswith(('DOMAIN,','DOMAIN-SUFFIX,'))
+                            for x in formal['Apple']))
+        # Explicit, traceable intentional differences: former conditional IP
+        # sub-rules are excluded, rather than routed without GEOIP checks.
+        self.assertEqual(len(beta['Apple']-formal['Apple']),13)
+        self.assertEqual(len(beta['Bilibili']-formal['Bilibili']),8)
+        for group in formal:
+            if group not in ('Apple','Bilibili'):
+                self.assertEqual(formal[group],beta[group],group)
+
+    def test_upstream_plan_cannot_shadow_cn_only_scopes(self):
+        from beta_upstream_delivery import effective_conflict
+        for host in ('servicewechat.com','new.autonavi.com','tenant.kunlunhuf.com'):
+            self.assertEqual(effective_conflict(host,'YouTube',self.local,self.remotes),'REGIONAL_SCOPE_REVIEW')
+        self.assertIsNone(effective_conflict('unreviewed.example.test','YouTube',self.local,self.remotes))
+
+    def test_alidns_tls_hostname_and_bootstrap_are_preserved(self):
+        text=(ROOT/'LoonKit.lcf').read_text()
+        self.assertIn('doh-server = https://dns.alidns.com/dns-query',text)
+        self.assertIn('[Host]\ndns.alidns.com = 223.5.5.5',text)
+        self.assertNotIn('https://223.5.5.5/',text)
+        self.assertNotIn('skip-server-cert-verify',text)
+
+
+if __name__=='__main__':unittest.main()
+, text)[1].split('img-url', 1)[0]
+        self.assertEqual(paypal, 'select,Proxy,Auto,Fallback,ALL_Filter,')
 
     def test_removed_regional_cn_scope_does_not_reintroduce_blanket_direct(self):
         # The high-risk RegionalCN subscription is entirely gone from active
