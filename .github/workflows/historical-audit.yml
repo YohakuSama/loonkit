@@ -16,6 +16,8 @@ on:
       - 'scripts/reviewed_release.py'
       - 'scripts/loon_resources.py'
       - 'scripts/release_engine.py'
+      - 'scripts/optimize_runtime_rules.py'
+      - 'tests/test_optimize_runtime_rules.py'
       - 'scripts/beta_*.py'
       - '.github/workflows/ci.yml'
       - '.github/workflows/release.yml'
@@ -64,6 +66,8 @@ jobs:
           python3 scripts/license_evidence.py --check
       - name: Full production beta and historical regression suite
         run: python3 scripts/test_suites.py all
+      - name: Audit potential lossless rule reduction (read-only)
+        run: python3 scripts/optimize_runtime_rules.py --audit
       - name: Inspect pinned GitHub Raw bytes
         run: python3 scripts/verify_release.py --check --remote
       - name: Ensure validators never rewrite released files
