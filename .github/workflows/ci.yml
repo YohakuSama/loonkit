@@ -45,6 +45,8 @@ jobs:
           python3 scripts/license_evidence.py --check
       - name: Python regression tests (real assertions)
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Audit unified routing candidate and cross-policy coverage
+        run: python3 scripts/routing_candidate_audit.py --check
       - name: Native Loon mocked-response regressions
         run: node --test tests/diagnostics.test.cjs
       - name: Native plugin JavaScript syntax
