@@ -146,7 +146,7 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertIn("DNS 服务器", app)
         self.assertIn("加密 DNS 失败回退到普通 DNS", dns)
         self.assertIn("不能独立证明全设备无 DNS 泄漏", dns)
-        self.assertIn("Paypal 默认使用 \`Proxy\`", app)
+        self.assertIn("Paypal 默认使用 `Proxy`", app)
         self.assertIn("disable-stun = true", app)
         self.assertIn("udp-fallback-mode = REJECT", app)
 
