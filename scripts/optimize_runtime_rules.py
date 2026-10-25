@@ -173,12 +173,37 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
     samples = {}
     counts = Counter()
     totals = Counter()
+    by_kind = Counter()
+    by_kind_policy = defaultdict(Counter)
+    first_owner = {}
+    cross_policy_conflicts = Counter()
+    conflict_examples = []
+    potential_dns_ip_lookups = Counter()
     policy_indexes = defaultdict(PriorPolicyIndex)
     for row in records:
         path = root / row["path"]
         source = path.read_bytes()
         if hashlib.sha256(source).hexdigest() != row["sha256"]:
             raise ValueError("unverified input bytes: " + row["path"])
+        for record in source.decode("utf-8").splitlines():
+            line = record.strip()
+            if not line or line.startswith(("#", ";", "//")):
+                continue
+            kind, value, flags = rule_fields(line)
+            by_kind[kind] += 1
+            by_kind_policy[row["policy"]][kind] += 1
+            if kind in IP_KINDS and "no-resolve" not in flags:
+                potential_dns_ip_lookups[row["tag"]] += 1
+            key = (kind, value, flags)
+            known = first_owner.get(key)
+            if known is None:
+                first_owner[key] = (row["tag"], row["policy"])
+            elif known[1] != row["policy"]:
+                cross_policy_conflicts[(known[1], row["policy"])] += 1
+                if len(conflict_examples) < 20:
+                    conflict_examples.append({"rule": line, "earlier": known[0],
+                                              "earlier_policy": known[1], "later": row["tag"],
+                                              "later_policy": row["policy"]})
         dest, summary, removed = trim_rules(source)
         if summary["before"] != row["matcher_count"]:
             raise ValueError("manifest count mismatch: " + row["path"])
@@ -210,7 +235,21 @@ def audit(root: Path = ROOT, *, write_dir: str | None = None) -> dict:
     report = {"algorithm": "same_and_earlier_same_policy_equivalent_subsumption_v2",
               "version": manifest["label"], "sources": len(records),
               "totals": dict(totals), "reasons": dict(counts),
-              "resources": result, "examples": samples}
+              "resources": result, "examples": samples,
+              "rule_kinds": dict(sorted(by_kind.items())),
+              "expensive_rule_count": sum(by_kind.get(k, 0)
+                                            for k in ("DOMAIN-KEYWORD", "USER-AGENT", "URL-REGEX")),
+              "dns_resolving_ip_rules": dict(potential_dns_ip_lookups),
+              "cross_policy_exact_collision_count": sum(cross_policy_conflicts.values()),
+              "cross_policy_examples": conflict_examples,
+              "cross_policy_pairs": {a + " => " + b: n
+                                     for (a, b), n in sorted(cross_policy_conflicts.items())},
+              "expensive_by_policy": {
+                  owner: {kind: n for kind, n in sorted(kinds.items())
+                          if kind in ("DOMAIN-KEYWORD", "USER-AGENT", "URL-REGEX")}
+                  for owner, kinds in sorted(by_kind_policy.items())
+                  if any(kinds.get(kind, 0) for kind in ("DOMAIN-KEYWORD", "USER-AGENT", "URL-REGEX"))
+              }}
     return report
 
 
@@ -227,7 +266,10 @@ def main():
     if args.report:
         Path(args.report).write_text(output + "\n", encoding="utf-8")
     print(json.dumps({"version": report["version"], "totals": report["totals"],
-                      "reasons": report["reasons"],
+                      "reasons": report["reasons"], "rule_kinds": report["rule_kinds"],
+                      "expensive_rule_count": report["expensive_rule_count"],
+                      "dns_resolving_ip_rules": report["dns_resolving_ip_rules"],
+                      "cross_policy_exact_collision_count": report["cross_policy_exact_collision_count"],
                       "top": sorted(((k, v["removed"], v["bytes_before"] - v["bytes_after"])
                                      for k, v in report["resources"].items()),
                                     key=lambda x: x[1], reverse=True)[:15]},
