@@ -295,12 +295,13 @@
     "kunlunpi.com"
   ],
   "doh_servers": [
-    "https://223.5.5.5/dns-query",
-    "https://223.6.6.6/dns-query"
+    "https://dns.alidns.com/dns-query"
   ],
   "references": [
     "https://nsloon.app/docs/Rule/logic_rule/",
     "https://nsloon.app/docs/DNS/",
     "https://nsloon.app/docs/General/"
-  ]
+  ],
+  "dns_bootstrap_host": "dns.alidns.com",
+  "dns_bootstrap_ip": "223.5.5.5"
 }
