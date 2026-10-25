@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "version": "v6.5.9",
+  "decision": "USER_REQUESTED_REMOVE_GEOIP_COMPOSITES_AND_PUBLISH",
+  "received_date": "2026-10-25",
+  "release_profile_sha256": "c0e2bbc6f4565104a7bfa4474d2ac63df617dcc1805216b942712d361d1c23b1",
+  "protected_directive": "GEOIP,CN,DIRECT,no-resolve",
+  "protected_final": "FINAL,Final",
+  "dns_provider": "AliDNS",
+  "accepted_limitations": [
+    "same-domain CN versus overseas auto-selection cannot be preserved by native domain-only service rules",
+    "DNS leak has been reported and not yet verified fixed",
+    "new native-only release has not yet passed live-hit device testing"
+  ],
+  "require_actual_pr_head_ci": true,
+  "require_main_raw_verification": true
+}
