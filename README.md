@@ -25,7 +25,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 3. 刷新远程规则和插件，按需调整各服务策略。
 4. 在 DNS 设置中关闭「加密 DNS 失败回退到普通 DNS」；本版仍未通过设备 DNS 防泄漏验收。
 
-[导入测试版](https://raw.githubusercontent.com/YohakuSama/loonkit/beta/beta/LoonKit.lcf) · [测试渠道](https://github.com/YohakuSama/loonkit/blob/beta/docs/BETA_CHANNEL.md)
+节点测速使用 `http://www.bing.com`（General、Auto、Fallback）；直连互联网检测地址不变。部分运营商或机场可能对 HTTP 请求重定向或干预，测速结果需实机判断，并不等于物理落地 RTT。
 
 ## 功能概览
 
@@ -61,7 +61,7 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 ## 文档与支持
 
-[更新记录](./docs/CHANGELOG.md) · [规则说明](./rules/README.md) · [测试渠道](./docs/BETA_CHANNEL.md) · [反馈问题](https://github.com/YohakuSama/loonkit/issues)
+[更新记录](./docs/CHANGELOG.md) · [规则说明](./rules/README.md) · [反馈问题](https://github.com/YohakuSama/loonkit/issues)
 
 [维护文档](./docs/MAINTAINING.md) · [依赖清单](./docs/DEPENDENCIES.md) · [版本校验](./docs/RELEASE_CHECKSUM_v6.5.8.md) · [安全报告](./SECURITY.md)
 
