@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "label": "v7.0.6",
+  "label": "v7.0.7",
   "profile_sha256": {
-    "LoonKit.lcf": "0b042aef3cb4ffc3d8093c6187c86b82965a4dcb23e495200fbcc1389466c054"
+    "LoonKit.lcf": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0"
   },
   "runtime_resources": [
     {
@@ -796,13 +796,13 @@
   },
   "legacy_compiler_matcher_count": 197765,
   "plugin_path": "release/Network_Diagnostics.plugin",
-  "plugin_sha256": "8519516aacbbb4ab9787b44c6cc0ffcdd805a695f8dd5aad03136f843e3d0403",
+  "plugin_sha256": "7d4da4382a1a63bd3bb0bf1ea7dac718cd44ba2ce4e64884b16455d19dd08423",
   "promoted_beta_config_sha256": "fd1a01c6f8363a5dffaa1db9dbf044014c711fa48ea46e34a7c107180acbe0b7",
   "promoted_beta_commit_sha": "adc567168eed8e21dc8d80aebc40b85f35fc1a1b",
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
   "reviewed_recipe": "build/release_recipe.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-  "maintainer_approval": "USER_REQUESTED_MANUAL_ONLY_DIAGNOSTICS_AND_NODE_UI_2026_10_25",
+  "maintainer_approval": "USER_REQUESTED_NODE_INFORMATION_ACCURACY_AND_UNLOCK_VISIBILITY_2026_10_25",
   "device_test": "NOT_CLAIMED",
   "publication": {
     "status": "VERSIONED_RELEASE",
@@ -905,15 +905,15 @@
   "upstream_historical_lineage": "UNRECOVERABLE",
   "legacy_compiler_rule_count": 26,
   "stage": "FORMAL_RELEASE",
-  "old_main_rollback_commit": "08a5b8b4369048b0ccaef3561e310b851e534a28",
+  "old_main_rollback_commit": "f646f538a73c1526a9e1c1590e6486e92211592b",
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
   "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
-    "version": "v7.0.5",
-    "profile_sha256": "90e8df088d899ff00dd3033d2a644372ae3052cf84ea4a0d476550c15ab22b8c"
+    "version": "v7.0.6",
+    "profile_sha256": "0b042aef3cb4ffc3d8093c6187c86b82965a4dcb23e495200fbcc1389466c054"
   },
   "runtime_change": {
-    "version": "v7.0.6",
+    "version": "v7.0.7",
     "runtime_semantics": "EXPLICIT_DECLARATIVE_RECIPE",
     "recipe_change_count": 1
   }
