@@ -27,7 +27,7 @@ class AppStoreIconTests(unittest.TestCase):
                 self.assertTrue(detail["artwork_url"].startswith("https://is"))
 
     def test_only_glass_frame_icons_are_cropped(self):
-        manifest = json.loads((ICONS / "sources.json").read_text(encoding="utf-8"))
+        manifest = json.loads((ICONS / "appstore_sources.json").read_text(encoding="utf-8"))
         for name in SIX:
             actual = manifest["icons"][name]["glass_edge_trim_pixels"]
             expected = {"GitHub":25, "ChatGPT":25, "Gemini":20}.get(name, 0)
