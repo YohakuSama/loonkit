@@ -99,9 +99,8 @@ def main() -> int:
     result = assess(json.loads(args.report.read_text(encoding="utf-8")),
                     json.loads(args.catalog.read_text(encoding="utf-8")))
     excluded = report.get("runtime_groups_not_in_legacy_catalog", [])
-    summary = ("## Legacy 87-source coverage (not release approval)\\n"
-               f"- Current owners outside catalog: {', '.join(excluded) if excluded else 'none'}\\n"
-
+    summary = ("## Legacy 87-source coverage (not release approval)\n"
+               f"- Current owners outside catalog: {', '.join(excluded) if excluded else 'none'}\n"
                f"- Reviewed: {result['checked']}/{result['expected']}\n"
                f"- Raw snapshots: {result['snapshot_count']}/{result['expected']}\n"
                f"- All source lines classified: {'YES' if result['coverage_complete'] else 'NO'}\n"
