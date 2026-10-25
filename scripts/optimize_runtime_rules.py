@@ -270,6 +270,8 @@ def main():
                       "expensive_rule_count": report["expensive_rule_count"],
                       "dns_resolving_ip_rules": report["dns_resolving_ip_rules"],
                       "cross_policy_exact_collision_count": report["cross_policy_exact_collision_count"],
+                      "cross_policy_examples": report["cross_policy_examples"],
+                      "cross_policy_pairs": report["cross_policy_pairs"],
                       "top": sorted(((k, v["removed"], v["bytes_before"] - v["bytes_after"])
                                      for k, v in report["resources"].items()),
                                     key=lambda x: x[1], reverse=True)[:15]},
