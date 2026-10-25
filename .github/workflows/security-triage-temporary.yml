@@ -1,0 +1,21 @@
+name: Temporary CodeQL Alert Triage
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/v20261025r2/**'
+      - '.github/workflows/security-triage-temporary.yml'
+permissions:
+  contents: read
+  security-events: read
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print only alert classification and source location
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NO: ${{ github.event.pull_request.number }}
+        run: |
+          gh api "repos/$REPO/code-scanning/alerts?state=open&ref=refs/pull/$PR_NO/merge&per_page=100" --jq '.[] | [.number,.rule.id,.rule.security_severity_level,.most_recent_instance.location.path,.most_recent_instance.location.start_line] | @tsv'
