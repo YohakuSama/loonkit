@@ -60,15 +60,22 @@ class BetaUpstreamDeliveryTests(unittest.TestCase):
         source = {"id":"video-source", "group":"YouTube", "url":"https://raw.githubusercontent.com/owner/repo/main/video.list",
                   "sha256":"c"*64, "status":"PARSED_FOR_REVIEW"}
         catalog = {"sources":[{"id":source["id"], "group":"YouTube", "url":source["url"]}]}
-        meta = {"version":"v1.2.3-beta.1", "configuration_sha256":delivery.digest(profile), "upstream_overlays":{},
-                "acceptance":{"promotion":"BLOCKED"}, "source_group_counts":{"YouTube":1000}}
+        raw = b"# synthetic beta pinned rules\nDOMAIN-SUFFIX,microsoft.com\n"
+        resource_path = "rules/beta/filter.list"
+        meta = {"schema_version":2, "version":"v1.2.3-beta.1", "configuration_sha256":delivery.digest(profile), "upstream_overlays":{},
+                "acceptance":{"promotion":"BLOCKED"}, "source_group_counts":{"YouTube":1000},
+                "runtime_resources":[{"uri":delivery.RAW+"b"*40+"/"+resource_path,
+                    "commit":"b"*40,"path":resource_path,"policy":"AdBlock","tag":"Beta-AdBlock-Balanced",
+                    "enabled":"true","sha256":delivery.digest(raw),"matcher_count":1}]}
         rule = "DOMAIN,video-reviewed-example.test"
         plan = {"schema_version":1, "repository":delivery.REPOSITORY, "base_commit":"a"*40,
                 "version":"v1.2.3-beta.2", "base_configuration_sha256":delivery.digest(profile),
                 "runtime_baseline":True, "source_integrity_complete":True, "source_count":1, "sources":[source],
                 "groups":{"YouTube":{"rules":[rule], "provenance":{rule:[source["id"]]}}},
                 "full_diff_sha256":"d"*64, "created_at_utc":datetime.now(timezone.utc).isoformat().replace("+00:00","Z")}
-        return plan, FakeGitHub(profile, meta, catalog)
+        api = FakeGitHub(profile, meta, catalog)
+        api.files[resource_path] = raw
+        return plan, api
 
     def test_two_commits_pin_assets_before_importable_profile_and_dispatch_exact_ci(self):
         plan, api = self.fixture()
@@ -164,6 +171,22 @@ class BetaUpstreamDeliveryTests(unittest.TestCase):
         tree = next(data for path,data in api.writes if path == "/git/trees")
         self.assertIn("DOMAIN,prior-video.test", tree["tree"][0]["content"])
         self.assertIn("DOMAIN,video-reviewed-example.test", tree["tree"][0]["content"])
+
+    def test_beta_manifest_controls_routing_not_main(self):
+        plan, api = self.fixture()
+        # The synthetic beta-only AdBlock suffix is not part of the main profile.
+        rule = "DOMAIN,any.microsoft.com"
+        plan["groups"]["YouTube"] = {"rules": [rule], "provenance": {rule: ["video-source"]}}
+        with self.assertRaisesRegex(ValueError, "already covered"):
+            delivery.publish(plan, api)
+        self.assertFalse(api.writes)
+
+    def test_mismatched_pinned_beta_bytes_fail_before_publication(self):
+        plan, api = self.fixture()
+        api.files["rules/beta/filter.list"] += b"DOMAIN,unexpected.example\n"
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            delivery.publish(plan, api)
+        self.assertFalse(api.writes)
 
     def test_trusted_publisher_rejects_existing_and_regional_owners(self):
         for host in ('www.microsoft.com','servicewechat.com'):
