@@ -11,14 +11,16 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from release_v659 import (render, rebuilt_service, SERVICES,
+from release_v659 import (render as render_v659, rebuilt_service, SERVICES,
                           EXPECTED_COUNTS, PINNED_RULE_COMMIT)
 from beta_channel import content_rules, remote_entries
+from release_v6510 import render as render_v6510
 
 
 class TestFormalNativeRelease(unittest.TestCase):
     def test_live_profile_is_exact_patch_of_frozen_v658(self):
-        self.assertEqual((ROOT / "LoonKit.lcf").read_bytes(), render(ROOT))
+        self.assertEqual((ROOT / "build/baselines/v6.5.9/LoonKit.lcf").read_bytes(), render_v659(ROOT))
+        self.assertEqual((ROOT / "LoonKit.lcf").read_bytes(), render_v6510(ROOT))
         archived = (ROOT / "build/baselines/v6.5.8/LoonKit.lcf").read_text()
         self.assertEqual(
             sum("tag=Our-RegionalCN," in l for l in archived.splitlines()), 1)
@@ -55,7 +57,7 @@ class TestFormalNativeRelease(unittest.TestCase):
         meta = json.loads((ROOT / "build/release_manifest.json").read_text())
         self.assertEqual(meta["runtime_rule_count"], 36)
         self.assertEqual(meta["remote_rule_count"], 196486)
-        self.assertEqual(meta["label"], "v6.5.9")
+        self.assertEqual(meta["label"], "v6.5.10")
         self.assertNotIn("Our-RegionalCN",
                          {r["tag"] for r in meta["runtime_resources"]})
 
