@@ -1,0 +1,13 @@
+# LoonKit v6.5.5-beta.4 immutable beta overlay; generated from rules/beta/policy_overrides.json
+DOMAIN-SUFFIX,reddit.com
+DOMAIN-SUFFIX,redd.it
+DOMAIN-SUFFIX,reddit.app.link
+DOMAIN-SUFFIX,redditblog.com
+DOMAIN-SUFFIX,reddithelp.com
+DOMAIN-SUFFIX,redditinc.com
+DOMAIN-SUFFIX,redditmail.com
+DOMAIN-SUFFIX,redditmedia.com
+DOMAIN-SUFFIX,redditspace.com
+DOMAIN-SUFFIX,redditstatic.com
+DOMAIN-SUFFIX,redditstatus.com
+DOMAIN-SUFFIX,reddituploads.com
