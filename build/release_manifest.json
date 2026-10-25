@@ -713,9 +713,23 @@
   "maintainer_approval": "OWNER_REQUESTED_PUBLICATION_2026_10_25",
   "device_test": "NOT_RECORDED",
   "publication": {
-    "status": "PENDING_EXACT_PR_HEAD_CI",
+    "status": "VERIFIED_ON_MAIN",
     "rollback_main_commit_sha": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
-    "published_main_commit_sha": null
+    "published_main_commit_sha": "3366ee77d3e1ee44788e60ba1381e976406f4596",
+    "release_pull_request": "https://github.com/YohakuSama/loonkit/pull/132",
+    "reviewed_pr_head_sha": "74db9fad4e8bc05ee1641684e2005ec26b7ea166",
+    "pr_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157234552",
+    "main_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157438384",
+    "raw_profile_sha256": "3995be763a1ee52f70fca9b86a303c2842c559fae8c45cefa72f286c6a741715",
+    "beta_sync_pull_request": "https://github.com/YohakuSama/loonkit/pull/131",
+    "beta_sync_commit_sha": "55a5e8fdf69b07dd934eae44e25014e9e320abb0",
+    "beta_ci_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157430514",
+    "upstream_review_run_url": "https://github.com/YohakuSama/loonkit/actions/runs/40157438559",
+    "upstream_review_stage_conclusion": "success",
+    "upstream_review_result": "SOURCE_INTEGRITY_COMPLETE_NO_ROUTINE_ADDITIONS",
+    "publisher_integration_status": "BLOCKED_BY_DISABLED_ACTIONS_PR_SETTING",
+    "publisher_integration_http_status": 403,
+    "scheduled_workflow_conclusion": "failure"
   },
   "service_roots": {
     "Spotify": [
@@ -813,7 +827,7 @@
   "source_snapshot_commit": "d405e4be28c447b6e57a4790e965c89f342d6dd6",
   "upstream_historical_lineage": "UNRECOVERABLE",
   "legacy_compiler_rule_count": 26,
-  "stage": "REVIEWED_RELEASE_PENDING_CI",
+  "stage": "VERIFIED_PUBLISHED",
   "old_main_rollback_commit": "a67828e6efbe6c4f6e19be4d78abfe28b1cb2953",
   "device_test_evidence": "docs/DEVICE_TEST_STATUS.md",
   "approved_runtime_directives_sha256": "40b2e553ca2b45f495ab05a270b35b1a0c075cc1be91971fc8a42af9dd8e725b",

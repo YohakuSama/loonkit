@@ -12,7 +12,7 @@
 | 构建与资源清单 | build/beta_manifest.json |
 | 验收项目 | [设备测试矩阵](./BETA_DEVICE_MATRIX.md) |
 | 更新机制 | [上游更新](./BETA_UPSTREAM_AUTOMATION.md) |
-| 回滚 | [固定正式配置](https://raw.githubusercontent.com/YohakuSama/loonkit/a67828e6efbe6c4f6e19be4d78abfe28b1cb2953/LoonKit.lcf) |
+| 回滚 | [固定正式配置](https://raw.githubusercontent.com/YohakuSama/loonkit/3366ee77d3e1ee44788e60ba1381e976406f4596/LoonKit.lcf) |
 
 广告拦截默认启用；停用 Beta-AdBlock-Balanced 远程规则可恢复服务原有分流。
 
