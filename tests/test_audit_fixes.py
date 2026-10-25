@@ -85,6 +85,8 @@ class AuditFixTests(unittest.TestCase):
                        'DOMAIN,copilot-telemetry-service.githubusercontent.com,AI',
                        'DOMAIN,copilot-telemetry.githubusercontent.com,AI',
                        'DOMAIN,copilot-workspace.githubnext.com,AI',
+                       'DOMAIN,trae-api-sg.mchost.guru,AI',
+                       'DOMAIN,trae-api-us.mchost.guru,AI',
                      }],
                     name)
                 self.assertEqual(sum(x == 'GEOIP,CN,DIRECT,no-resolve' for x in new_lines),1)

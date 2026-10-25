@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "label": "v7.0.3",
+  "label": "v7.0.4",
   "profile_sha256": {
-    "LoonKit.lcf": "bf68380929f713989251e68a8f82f9a256486e89aae31882405f000bb1ce3616"
+    "LoonKit.lcf": "5f7bc195ece653b41bba95e1df2efc9f05d2a569b66c963f25d7551c195193bc"
   },
   "runtime_resources": [
     {
@@ -802,7 +802,7 @@
   "promoted_beta_asset_commit": "1b54e079486a06a5cfff5c5f03016628a52a7701",
   "reviewed_recipe": "rules/reviewed/v6.5.8/decisions.json",
   "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
-  "maintainer_approval": "USER_REQUESTED_V703_FORMAL_PUBLICATION_2026_10_25",
+  "maintainer_approval": "USER_REQUESTED_V704_ROUTING_FIXES_2026_10_25",
   "device_test": "NOT_CLAIMED",
   "publication": {
     "status": "VERSIONED_RELEASE",
@@ -909,16 +909,16 @@
   "device_test_evidence": "docs/NATIVE_ONLY_GEOIP_WORKAROUND.md",
   "approved_runtime_directives_sha256": "a19f16d39960b9f573bcbf0478ec6ec46818e7e0ce9c83ad14d0017f30ef3904",
   "previous_release": {
-    "version": "v7.0.0",
-    "profile_sha256": "a5c0fb40987bf8079ed84167702593d5dd8ce631a03e3df704be09e3578d87b0",
-    "commit": "04b7f0712ba9c48945397ac8e865ef7ecd9c0859"
+    "version": "v7.0.3",
+    "profile_sha256": "bf68380929f713989251e68a8f82f9a256486e89aae31882405f000bb1ce3616",
+    "commit": "14463815ef33deb122e107555f6327089850db9b"
   },
   "runtime_change": {
-    "version": "v7.0.3",
-    "runtime_semantics": "SERVICE_CLASSIFICATION_UPDATE",
-    "new_policy_groups": 6,
-    "new_subscriptions": 7,
+    "version": "v7.0.4",
+    "runtime_semantics": "SERVICE_POLICY_DIRECT_OPTIONS_AND_TRAE_AI_ROUTING",
+    "new_policy_groups": 0,
+    "new_subscriptions": 0,
     "dns_tun": "UNCHANGED",
-    "adblock": "UNCHANGED"
+    "adblock": "DIRECT_OPTION_ADDED"
   }
 }

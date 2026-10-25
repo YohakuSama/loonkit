@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "version": "v7.0.4",
+  "decision": "OWNER_REQUESTED_FORMAL_PUBLICATION",
+  "release_profile_sha256": "5f7bc195ece653b41bba95e1df2efc9f05d2a569b66c963f25d7551c195193bc",
+  "former_version": "v7.0.3",
+  "former_profile_sha256": "bf68380929f713989251e68a8f82f9a256486e89aae31882405f000bb1ce3616",
+  "real_device_test": "NOT_ATTESTED",
+  "ruleset_count": 43,
+  "strategy_group_count": 39
+}

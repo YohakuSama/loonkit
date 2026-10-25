@@ -47,8 +47,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: Audit unified routing candidate and cross-policy coverage
         run: python3 scripts/routing_candidate_audit.py --check
-      - name: Verify v7.0.3 formal service routing and immutable release
-        run: python3 scripts/release_v703.py --check
+      - name: Verify v7.0.4 service routing and immutable resources
+        run: python3 scripts/release_v704.py --check
       - name: Upstream sample routes and domestic AI inventory
         run: python3 scripts/audit_upstream_703.py
       - name: Audit v7.0.2 scoped LSR resources and icon directory

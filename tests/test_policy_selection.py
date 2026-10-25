@@ -73,7 +73,7 @@ class PolicySelectionTests(unittest.TestCase):
                 pattern = self.filters[name].split('FilterKey = "', 1)[1].rstrip('"')
                 matched = [node for node in nodes if re.search(pattern, node)]
                 self.assertEqual(matched, nodes, (size, name))
-        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v7.0.3")
+        self.assertEqual(self.profile.splitlines()[0], "# LoonKit v7.0.4")
 
     def test_auto_prioritizes_latency_and_fallback_uses_order(self):
         # Confirm group strategy semantics; Loon makes actual runtime decisions.

@@ -1,6 +1,6 @@
 # 节点选择与自动故障切换
 
-通过 `Proxy`、`Auto` 和 `Fallback` 选择线路，使用筛选器调整候选节点。
+通过 `Proxy`、`Auto` 和 `Fallback` 选择线路，使用筛选器调整候选节点。自动测速只衡量目标地址的可达性与延迟，不保证指定地区或服务解锁。
 
 ## 策略组逻辑
 
@@ -24,7 +24,7 @@
 
 | 参数 | 配置 | 作用 |
 | --- | --- | --- |
-| `proxy-test-url` | `http://cp.cloudflare.com/generate_204` | Loon 原生节点列表测速 |
+| `proxy-test-url` | `http://www.bing.com` | Loon 原生节点列表测速 |
 | 自动策略 `url` | 同上 | 统一 Auto 与 Fallback 的探测目标 |
 | `Auto interval` | 600 秒 | 适用于少量和较多节点的定期优选 |
 | `Auto tolerance` | 60 毫秒 | 减少微小抖动导致的频繁切换 |
@@ -32,6 +32,6 @@
 | `Fallback max-timeout` | 2200 毫秒 | 对抖动保留余量，同时减少高延迟节点被判为可用 |
 | `test-timeout` | 5 秒 | 原生测速超时上限 |
 
-节点较多时，收窄自动策略的候选列表可减少每轮探测数量。
+节点较多时，收窄自动策略的候选列表可减少每轮探测数量。`Auto_Filter` 建议仅包含常用且能访问目标服务的节点；`Fallback_Filter` 建议按主备优先级排序。地区受限服务不应仅依靠测速判断可用性。
 
 参考：[Loon 节点筛选](https://nsloon.app/docs/Node/nodefilter/) · [Loon 策略组](https://nsloon.app/docs/Policy/policygroup/) · [维护指南](./MAINTAINING.md)

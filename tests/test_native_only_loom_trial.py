@@ -16,6 +16,7 @@ from release_v659 import (render as render_v659, rebuilt_service, SERVICES,
 from beta_channel import content_rules, remote_entries
 from release_v6510 import render as render_v6510
 from release_v700 import render as render_v700
+from release_v704 import render as render_v704
 
 
 class TestFormalNativeRelease(unittest.TestCase):
@@ -24,7 +25,7 @@ class TestFormalNativeRelease(unittest.TestCase):
         self.assertEqual((ROOT / "build/baselines/v6.5.10/LoonKit.lcf").read_bytes(), render_v6510(ROOT))
         self.assertEqual((ROOT / "build/baselines/v7.0.0/LoonKit.lcf").read_bytes(), render_v700(ROOT))
         self.assertEqual((ROOT / "LoonKit.lcf").read_bytes(),
-                         (ROOT / "build/candidates/v7.0.3/LoonKit.lcf").read_bytes())
+                         render_v704((ROOT / "build/candidates/v7.0.3/LoonKit.lcf").read_bytes()))
         archived = (ROOT / "build/baselines/v6.5.8/LoonKit.lcf").read_text()
         self.assertEqual(
             sum("tag=Our-RegionalCN," in l for l in archived.splitlines()), 1)
@@ -65,7 +66,7 @@ class TestFormalNativeRelease(unittest.TestCase):
         meta = json.loads((ROOT / "build/release_manifest.json").read_text())
         self.assertEqual(meta["runtime_rule_count"], 43)
         self.assertEqual(meta["remote_rule_count"], sum(x["matcher_count"] for x in meta["runtime_resources"]))
-        self.assertEqual(meta["label"], "v7.0.3")
+        self.assertEqual(meta["label"], "v7.0.4")
         self.assertNotIn("Our-RegionalCN",
                          {r["tag"] for r in meta["runtime_resources"]})
 

@@ -1,5 +1,12 @@
 # 更新记录
 
+## v7.0.4 · 2026-10-25
+
+- Apple、Microsoft、Bilibili、Line、Speedtest 策略组新增 `DIRECT` 并默认直连，保留原代理和自动节点选项；`AdBlock` 新增直连放行选项，仍默认拦截。
+- 将 TRAE 的新加坡和美国 API 域名显式归入 AI 策略，避免受 TikTok 分组或国内兜底规则影响；远程规则继续引用经校验的 v7.0.3 不可变资源。
+- 保留 GitHub Raw 的现有代理优先行为以及默认全节点筛选，以免影响用户订阅；修正测速文档与现役 Bing 地址不一致的问题。
+- DNS、TUN、网络诊断插件、远程规则内容及其他服务策略保持不变；设备实际连接需在 Loon 中验证。
+
 ## v7.0.3 · 2026-10-25
 
 - 新增 GitHub、ChatGPT、Gemini、Claude、Speedtest、Cloudflare 六个服务策略组；保留 Proxy、Auto、Fallback 和原有全部策略，不增加地区节点组。
