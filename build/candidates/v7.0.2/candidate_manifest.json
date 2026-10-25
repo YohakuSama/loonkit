@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "channel": "routing-candidate",
+  "version": "v7.0.2",
+  "base_version": "v7.0.1",
+  "asset_commit": "15969a22e714d3ed2206e6a54554384aded27bd4",
+  "config_path": "build/candidates/v7.0.2/LoonKit.lcf",
+  "rule_directory": "rules/releases/v7.0.2",
+  "icon_directory": "icons",
+  "policy_group_count": 39,
+  "remote_rule_count": 42,
+  "rule_sets": [
+    {
+      "path": "rules/releases/v7.0.2/AdBlockBalanced.lsr",
+      "policy": "AdBlock",
+      "tag": "Our-AdBlock-Balanced",
+      "blob_sha": "718c03af231d20a1a09027e14fffc3b75d62fef6"
+    },
+    {
+      "path": "rules/releases/v7.0.2/DomesticCore.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-DomesticCore",
+      "blob_sha": "2222be32ac81683764b4eb3f562b2c6b8fd84931"
+    },
+    {
+      "path": "rules/releases/v7.0.2/DomesticSupplement.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-DomesticSupplement",
+      "blob_sha": "51a816f1e4fa0ecc3578b4b54c5c3577e915fe18"
+    },
+    {
+      "path": "rules/releases/v7.0.2/SteamCN.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-SteamCN",
+      "blob_sha": "06f41ce9e817cac23ffa0fcd3ad13a68d3dd8a69"
+    },
+    {
+      "path": "rules/releases/v7.0.2/ChatGPT.lsr",
+      "policy": "ChatGPT",
+      "tag": "Our-ChatGPT",
+      "blob_sha": "766216fa085070847a4cc0de71e4ebad0ca8bdff"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Gemini.lsr",
+      "policy": "Gemini",
+      "tag": "Our-Gemini",
+      "blob_sha": "52c819f7c1373c875801297e2168e3c5a482974f"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Claude.lsr",
+      "policy": "Claude",
+      "tag": "Our-Claude",
+      "blob_sha": "110cc857c6a040ce30da434b8aeb2cc03aa6b557"
+    },
+    {
+      "path": "rules/releases/v7.0.2/AIScoped.lsr",
+      "policy": "AI",
+      "tag": "Our-AIScoped",
+      "blob_sha": "07bc7adaaec10e8fca3fd458ac2484e6e6de4dba"
+    },
+    {
+      "path": "rules/releases/v7.0.2/GitHub.lsr",
+      "policy": "GitHub",
+      "tag": "Our-GitHub",
+      "blob_sha": "b4c9af37032aa78becc8de29fef9011acf4352b5"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Speedtest.lsr",
+      "policy": "Speedtest",
+      "tag": "Our-Speedtest",
+      "blob_sha": "bf7e1fb3da3a5224d7a56b4d76052fba6f4585fd"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Cloudflare.lsr",
+      "policy": "Cloudflare",
+      "tag": "Our-Cloudflare",
+      "blob_sha": "ee304493bd0eafd52a3774fdbaaba77ae1f731e2"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Spotify.lsr",
+      "policy": "Spotify",
+      "tag": "Our-Service-Spotify",
+      "blob_sha": "a5102be6d8bf870fdd99552f831ff055cbe9f69b"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Twitch.lsr",
+      "policy": "Twitch",
+      "tag": "Our-Service-Twitch",
+      "blob_sha": "0ca379df704eb501d1c8bf3f5b45d9ef602c1c2b"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-BBC.lsr",
+      "policy": "BBC",
+      "tag": "Our-Service-BBC",
+      "blob_sha": "d66b825fe1811a7bbd69d2ec319746aeea5e39c7"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Line.lsr",
+      "policy": "Line",
+      "tag": "Our-Service-Line",
+      "blob_sha": "9193999618cf020c3bad209be958a7e29d5d18f6"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Reddit.lsr",
+      "policy": "Reddit",
+      "tag": "Our-Service-Reddit",
+      "blob_sha": "22201ab69819e6500cf6eb8ac1f1f86731356021"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Linkedin.lsr",
+      "policy": "Linkedin",
+      "tag": "Our-Service-Linkedin",
+      "blob_sha": "97083e49bc4b58a4bced5b9c1b46a25e130dae27"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Service-Abema.lsr",
+      "policy": "Abema",
+      "tag": "Our-Service-Abema",
+      "blob_sha": "d2f2811ec4bb601894b0351d404ed5b6b2d7e9c9"
+    },
+    {
+      "path": "rules/releases/v7.0.2/SharedInfrastructure.lsr",
+      "policy": "Proxy",
+      "tag": "Our-SharedInfrastructure",
+      "blob_sha": "f360d459296ec0f34969b6845bf79b78d6ecc17d"
+    },
+    {
+      "path": "rules/releases/v7.0.2/AppleOTA.lsr",
+      "policy": "Apple",
+      "tag": "Our-AppleOTA",
+      "blob_sha": "779089755b97d95734d18a63761e85c66638cf4b"
+    },
+    {
+      "path": "rules/releases/v7.0.2/SteamGlobal.lsr",
+      "policy": "Steam",
+      "tag": "Our-SteamGlobal",
+      "blob_sha": "1c328941a43d0a9b1f44cd65556de690ae0cb9ff"
+    },
+    {
+      "path": "rules/releases/v7.0.2/YouTube.lsr",
+      "policy": "YouTube",
+      "tag": "Our-YouTube",
+      "blob_sha": "948bd5c5c47a12292ee4cbbb5ce832c4f34dc845"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Netflix.lsr",
+      "policy": "Netflix",
+      "tag": "Our-Netflix",
+      "blob_sha": "52b26df5df58b5c68f897a0e21194faa580c8447"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Disney.lsr",
+      "policy": "Disney",
+      "tag": "Our-Disney",
+      "blob_sha": "ffd5cc54791e785cd304e13d8165603bf249a171"
+    },
+    {
+      "path": "rules/releases/v7.0.2/PrimeVideo.lsr",
+      "policy": "PrimeVideo",
+      "tag": "Our-PrimeVideo",
+      "blob_sha": "7ccd47dc59d8096b67724d1e47c4d426983ab6b8"
+    },
+    {
+      "path": "rules/releases/v7.0.2/TikTok.lsr",
+      "policy": "TikTok",
+      "tag": "Our-TikTok",
+      "blob_sha": "6b194c82eff5a63254e9fbf1a2b8f086e8ed59e5"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Bilibili.lsr",
+      "policy": "Bilibili",
+      "tag": "Our-Bilibili",
+      "blob_sha": "5b1d0340d2282082f5f41f956d01ea3646937b6b"
+    },
+    {
+      "path": "rules/releases/v7.0.2/AnimeCrazy.lsr",
+      "policy": "動畫瘋",
+      "tag": "Our-AnimeCrazy",
+      "blob_sha": "199e71514196f1c9df2babb4808b372680a5d660"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Dazn.lsr",
+      "policy": "Dazn",
+      "tag": "Our-Dazn",
+      "blob_sha": "976259f8e60003338c49884d5fcd1d0e3ba72e64"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Telegram.lsr",
+      "policy": "Telegram",
+      "tag": "Our-Telegram",
+      "blob_sha": "b91fcce43a48128d0e4dafa15361f73ad6451504"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Whatsapp.lsr",
+      "policy": "Whatsapp",
+      "tag": "Our-Whatsapp",
+      "blob_sha": "eb8c0013c1d85ff07863ed6c7c71a615c13ee9c5"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Instagram.lsr",
+      "policy": "Instagram",
+      "tag": "Our-Instagram",
+      "blob_sha": "b63555cb3e9a3cae797fd0dd1f8a50c3d2ecbfc0"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Facebook.lsr",
+      "policy": "Facebook",
+      "tag": "Our-Facebook",
+      "blob_sha": "eb436bbae841cb4058b82997dc217e8d24f74df5"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Twitter.lsr",
+      "policy": "Twitter",
+      "tag": "Our-Twitter",
+      "blob_sha": "c61448388c1735e628b4c1367106037a9d7ea151"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Discord.lsr",
+      "policy": "Discord",
+      "tag": "Our-Discord",
+      "blob_sha": "05bb9312c9a71b08f5c79b1e51c453720106315b"
+    },
+    {
+      "path": "rules/releases/v7.0.2/HBO.lsr",
+      "policy": "HBO",
+      "tag": "Our-HBO",
+      "blob_sha": "ff13c179f759be8af05881c4c4832d411bc084be"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Google.lsr",
+      "policy": "Google",
+      "tag": "Our-Google",
+      "blob_sha": "63d2b4a6b775ad2849254d0a1037e47b910943bb"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Microsoft.lsr",
+      "policy": "Microsoft",
+      "tag": "Our-Microsoft",
+      "blob_sha": "8b4aa2f4264a123739560dd3a72f8a919d4ba098"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Apple.lsr",
+      "policy": "Apple",
+      "tag": "Our-Apple",
+      "blob_sha": "b30e4c4b0d265316c207a622d406f8041d314a98"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Steam.lsr",
+      "policy": "Steam",
+      "tag": "Our-Steam",
+      "blob_sha": "384580b4726918314039dcb5674debbdf3ad662a"
+    },
+    {
+      "path": "rules/releases/v7.0.2/Paypal.lsr",
+      "policy": "Paypal",
+      "tag": "Our-Paypal",
+      "blob_sha": "576ae7e2d9e845db7d5e0de46ddcb37a30fd6d2f"
+    },
+    {
+      "path": "rules/releases/v7.0.2/ChinaDirect.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-ChinaDirect-Scoped",
+      "blob_sha": "e40da8096f249ea3cc992f4510f29b0c755dd77b"
+    }
+  ],
+  "icon_paths": [
+    {
+      "path": "icons/Abema.png",
+      "blob_sha": "993b3ba9eb822e095c0db3e6bf0c1be1f1999f66"
+    },
+    {
+      "path": "icons/AdBlock.png",
+      "blob_sha": "32c686122f0da0c1a0342d96fac60fa8fea05b53"
+    },
+    {
+      "path": "icons/AI.png",
+      "blob_sha": "b89c41fccc0e6814e06340ba353a5f54b0f8fcef"
+    },
+    {
+      "path": "icons/AnimeCrazy.png",
+      "blob_sha": "418ecb462cbbbd04d2a5c66cb51b005672af40b9"
+    },
+    {
+      "path": "icons/Apple.png",
+      "blob_sha": "951aac9379bc7ffd1960be6740e9e3c8c8dc15d1"
+    },
+    {
+      "path": "icons/Auto.png",
+      "blob_sha": "f17262803b3cc1c81c6ef37924b3afe141f1f555"
+    },
+    {
+      "path": "icons/BBC.png",
+      "blob_sha": "5cefe9031bdad979baf27d584642dbbaf262a589"
+    },
+    {
+      "path": "icons/Bilibili.png",
+      "blob_sha": "f8c6af92b0705021d745e61202aa2c439b3d329f"
+    },
+    {
+      "path": "icons/ChatGPT.png",
+      "blob_sha": "e0f024155f1dd8095dd462e2f1b8aa25d725f6ee"
+    },
+    {
+      "path": "icons/Claude.png",
+      "blob_sha": "0065684b6054ab63a8765933d758851811c9929b"
+    },
+    {
+      "path": "icons/Cloudflare.png",
+      "blob_sha": "a0cc6fef5ce47edecf733fe6fd4d6e0a6b0e9a77"
+    },
+    {
+      "path": "icons/Console.png",
+      "blob_sha": "cabb86938bda50e7f9d7800ab20c97d3887cbd0d"
+    },
+    {
+      "path": "icons/Dazn.png",
+      "blob_sha": "ac00415dbd0d9a2a7e3d2e98f172a907e7953620"
+    },
+    {
+      "path": "icons/Discord.png",
+      "blob_sha": "c653a26a68e63f893a62288d59c970ebc48f644c"
+    },
+    {
+      "path": "icons/Disney.png",
+      "blob_sha": "c04990bc8fc9b9c062e4cce37e3f40c99a89175d"
+    },
+    {
+      "path": "icons/Facebook.png",
+      "blob_sha": "166012f57e5e1b2f352984cb383e882dd88cfbbe"
+    },
+    {
+      "path": "icons/Fallback.png",
+      "blob_sha": "22d41e5b57eb2b668ae0727203bd4e6173651cfb"
+    },
+    {
+      "path": "icons/Final.png",
+      "blob_sha": "fc73587361f8af02c678d6054acf6af228932602"
+    },
+    {
+      "path": "icons/Gemini.png",
+      "blob_sha": "5ef3c66ef768b90f02d009235358a64fc90c8067"
+    },
+    {
+      "path": "icons/GitHub.png",
+      "blob_sha": "ee796bd154c4f876a7a23130ec80d540bccbfb1a"
+    },
+    {
+      "path": "icons/Google.png",
+      "blob_sha": "3a6f3f66760ef2774aed0ab2e4c1336c88c264be"
+    },
+    {
+      "path": "icons/HBO.png",
+      "blob_sha": "e027bb5c9b05eadb9eaf934322dd4619d7c38dc6"
+    },
+    {
+      "path": "icons/Instagram.png",
+      "blob_sha": "6b1d83c24fd90551abbec9b5f19a4efd5a20b759"
+    },
+    {
+      "path": "icons/Line.png",
+      "blob_sha": "3c41426c63e5457e573cece4dcbb321d97157248"
+    },
+    {
+      "path": "icons/Linkedin.png",
+      "blob_sha": "713ef5cc43985bfd0e1f0aaf0791ad07b9aa1f0b"
+    },
+    {
+      "path": "icons/Microsoft.png",
+      "blob_sha": "1c57c558bbae7d86fc84e2a6a898fdb4ac832481"
+    },
+    {
+      "path": "icons/Netflix.png",
+      "blob_sha": "3f910915612f7716da1b27d997c8d6976c5de590"
+    },
+    {
+      "path": "icons/Paypal.png",
+      "blob_sha": "b4c5e2a4310713454b528929b904d7a21fa454c2"
+    },
+    {
+      "path": "icons/PrimeVideo.png",
+      "blob_sha": "ee95dc47a1016995741812633d78ad17933382cb"
+    },
+    {
+      "path": "icons/Proxy.png",
+      "blob_sha": "d48cc70cfc78690b7159bac176189c2925ccbfcd"
+    },
+    {
+      "path": "icons/Reddit.png",
+      "blob_sha": "0a6374862dba24c20e723eaa610c3ae5cf5a6646"
+    },
+    {
+      "path": "icons/Speedtest.png",
+      "blob_sha": "847e338b57c3ead29cedbb98864b3d557b05881d"
+    },
+    {
+      "path": "icons/Spotify.png",
+      "blob_sha": "8b02ab7cbb89338897ddf8192d86e0f7d0e7f662"
+    },
+    {
+      "path": "icons/Steam.png",
+      "blob_sha": "08dbebc94abd160576e9e99d47ed1a30040194a7"
+    },
+    {
+      "path": "icons/Telegram.png",
+      "blob_sha": "b0ee496e44dd8dff51b7f2795e4b32d09f61d0e7"
+    },
+    {
+      "path": "icons/TikTok.png",
+      "blob_sha": "944fd55a33d3f58d5fb1d5777d8d56f4bdf16db1"
+    },
+    {
+      "path": "icons/Twitch.png",
+      "blob_sha": "ce17c406e23171d14190c49a0ae16483d5f18409"
+    },
+    {
+      "path": "icons/Twitter.png",
+      "blob_sha": "ea0b30e98e4a1bcdb0225fb673bf6e553dda9094"
+    },
+    {
+      "path": "icons/Whatsapp.png",
+      "blob_sha": "d02ce968a715435c7b0d011a305b581ed300e6ff"
+    },
+    {
+      "path": "icons/YouTube.png",
+      "blob_sha": "e660f0a7c52cd7eaf1bf6d088da663abb1359647"
+    }
+  ]
+}
