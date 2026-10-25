@@ -1,4 +1,4 @@
-# LoonKit v6.5.9
+# LoonKit v6.5.10
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -15,7 +15,7 @@ disable-stun = true
 udp-fallback-mode = REJECT
 domain-reject-mode = DNS
 dns-reject-mode = LOOPBACKIP
-proxy-test-url = http://cp.cloudflare.com/generate_204
+proxy-test-url = http://www.bing.com
 internet-test-url = http://wifi.vivo.com.cn/generate_204
 test-timeout = 5
 allow-wifi-access = false
@@ -31,8 +31,8 @@ Fallback_Filter = NameRegex, FilterKey = ".*"
 
 [Proxy Group]
 Proxy = select,Auto,Fallback,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Proxy.png
-Auto = url-test,Auto_Filter,url = http://cp.cloudflare.com/generate_204,interval = 600,tolerance = 60,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Auto.png
-Fallback = fallback,Fallback_Filter,url = http://cp.cloudflare.com/generate_204,interval = 900,max-timeout = 2200,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Fallback.png
+Auto = url-test,Auto_Filter,url = http://www.bing.com,interval = 600,tolerance = 60,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Auto.png
+Fallback = fallback,Fallback_Filter,url = http://www.bing.com,interval = 900,max-timeout = 2200,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Fallback.png
 AdBlock = select,REJECT,Proxy,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/AdBlock.png
 Final = select,Proxy,Auto,Fallback,DIRECT,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Final.png
 
