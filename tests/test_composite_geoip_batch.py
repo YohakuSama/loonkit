@@ -121,7 +121,7 @@ class TestCompositeGeoIPBatch(unittest.TestCase):
         # Nothing after Remote Rule is changed; General, Groups and other
         # profile directives before Remote Rule are also byte-for-byte equal.
         self.assertEqual(
-            self.stable.split("[Remote Rule]", 1)[0].splitlines()[2:],
+            self.stable.split("[Remote Rule]", 1)[0].splitlines()[1:],
             self.candidate.split("[Remote Rule]", 1)[0].splitlines()[3:],
         )
         self.assertEqual(
