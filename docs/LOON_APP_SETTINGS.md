@@ -1,68 +1,44 @@
-# LoonKit · App 设置与更新指南
+# LoonKit · 导入、托管与 App 设置
 
-> 对应正式版 **v7.0.8**。本文是 LoonKit 的推荐操作，不代表 Loon 对所有配置的通用要求。UI 文案随 Loon 版本可能微调；先备份原配置与节点信息。
+本文依据 LoonKit **v7.0.9** 配置和用户提供的 Loon App 实际截图整理。不同 Loon 版本的按钮位置可能调整，**不再使用未经截图证实的「长按 → 更新策略」路径**。
 
-## 1. 第一次导入：选「全覆盖更新」
+## 首次完整部署
 
-1. 用 [一键导入](https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf) 唤起 Loon，或进入「配置 → 配置文件」通过 URL 导入 `https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf`。
-2. **首次部署 LoonKit 时，在导入 / 更新设置里开启「全覆盖更新」**，按完整基线安装策略组、规则与插件。
-3. 确认当前启用 `LoonKit.lcf`，再添加个人节点或节点订阅；依次刷新远程规则、插件等外部资源。
+1. 在 Loon 底部 **配置** 标签页找到 **所有配置文件**。
+2. 点击右上角 **＋**，选择 **从链接导入**，填写 [正式版配置 URL](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)。
+3. 打开 **托管**。开启后应出现 **更新频率** 与 **全覆盖更新**；可按需设置频率（截图示例为每隔 7 天）。
+4. 首次部署时选择 **全覆盖更新** 并确认。请注意，配置会覆盖原有本地节点、证书等项目；务必在此前导出备份。
+5. 确认当前应用 `LoonKit.lcf`；再导入个人节点订阅并为各策略组选路。
 
-**为什么先备份？** 当前配置的 `[Proxy]`、`[Remote Proxy]` 为空；全覆盖导入可能替换原配置、已有节点订阅和部分本地选项。对于已经高度自定义的 Loon，建议先导出备份并理解覆盖后果，而不是在现有个人配置上直接尝试。
+> 当前主配置 `[Proxy]` 与 `[Remote Proxy]` 均未预设节点。已有大量个人设置的用户应先确认恢复方案，避免覆盖不可恢复的数据。
 
-## 2. 日常更新：关闭「全覆盖更新」
+## 日常托管更新
 
-导入完成并添加个人订阅后：
+- 初次完成之后，**关闭全覆盖更新**，由个人需求决定更新频率。
+- 在用户提供的现版本截图中，**长按配置文件菜单是「应用、编辑、重命名、启用 iCloud、导出、删除」**，没有「更新策略」。因此，不能把「长按 → 更新策略」作为准确路径。若需要修改托管设置，应检查当前配置的远程管理/编辑入口，或重新进入对应的「从链接导入」选项，避免不经备份就覆盖原配置。
+- 配置文件更新与远程插件/规则刷新不完全相同；主配置更新后应检查远程规则和插件版本。
+- iOS 不保证 Loon 在后台按指定时刻执行所有更新。更新频率反映检查策略，不等于云端强制推送。
+- 如果新版升级修改了策略结构，先阅读 [发布说明](./RELEASE_NOTES_v7.0.9.md) 并备份，再按需重新全覆盖。
 
-1. 打开 Loon「**配置 → 配置文件**」。
-2. **长按 `LoonKit.lcf` → 更新策略**。
-3. 按个人需求设置**更新频率**，**关闭「全覆盖更新」**并保存。
-4. 今后在 `LoonKit.lcf` 条目更新配置；主配置有变更时，检查并刷新远程规则与插件。
+## DNS 查询回落
 
-日常关闭全覆盖可减少覆盖本地调整的风险，但不保证保留每一项编辑。**若版本更新修改了策略结构或其他基础字段，先备份并阅读发行说明，必要时再全覆盖导入。** 定时资源更新的执行时间受 App 运行状态影响，不保证 iOS 后台准点执行。
+**配置 / 设置 → DNS → DNS 服务器 → 查询回落 → 关闭**（隐私优先时推荐）。
 
-## 3. DNS 查询回落：明确位置与取舍
+真实截图中的「查询回落」和旧文档中的「加密 DNS 失败回退到普通 DNS」属于同类功能。关闭后避免 DoH 失败直接回落普通 UDP DNS；加密解析器不能连接时可能解析失败。截图里的「DoH 流量模式 DIRECT」表示 DoH 本身的路由选择，不等于允许普通 DNS 回落。
 
-**设置 → DNS → DNS 服务器 → 查询回落 → 关闭**（隐私优先建议）。
+见 [DNS 设置与核验](./DNS_PRIVACY.md)。
 
-这项 App 开关不是 `LoonKit.lcf` 内可替代设置的字段。LoonKit 使用：
+## 其它功能的适用条件
 
-```ini
-dns-server = 223.5.5.5,223.6.6.6
-doh-server = https://dns.alidns.com/dns-query
-hijack-dns = *:53
-```
-
-根据 [Loon 官方 DNS 文档](https://nsloon.app/docs/DNS/)，加密 DNS 失败时通常会回落普通 DNS。关闭后可阻止这一路径将请求退回普通 DNS，**但也意味着 DoH 不可用时可能无法解析**。是否开启应在隐私与可用性间自行选择；同时应注意，`hijack-dns = *:53` 针对指定的 UDP DNS 目标，不意味着所有 App 的 DoH/DoT 都被拦截。
-
-逐项验证的方法见 [DNS 与隐私](./DNS_PRIVACY.md)。
-
-## 4. 其他建议
-
-| 设置 | 推荐值与理由 |
+| 项目 | 对本配置的建议 |
 | :--- | :--- |
-| 流量模式 | **规则分流**，确保服务策略组参与匹配。 |
-| `Proxy` | 导入节点后选择主要可用线路；项目不提供节点。 |
-| `Auto_Filter` | 手动控制自动测速候选，不必让所有节点参与每轮测速。 |
-| `Fallback_Filter` | 按主备优先顺序排列，Fallback 取第一个可用候选，并非第二快。 |
-| 节点测速 | 配置使用 `http://www.bing.com`；独立直连检测为 `http://wifi.vivo.com.cn/generate_204`。 |
-| 域名拦截 | 当前是 `domain-reject-mode = DNS`、`dns-reject-mode = LOOPBACKIP`，无需重复写配置。 |
-| TUN Only | 如果需要更完整的 DNS 阶段拦截，可依据网络环境评估；不是必须对所有设备强制切换的万能方案。 |
-| MitM | **网络诊断插件不依赖 MitM**。其他插件若明确需要，再按要求配置证书、主机名与权限。 |
-| Wi-Fi 共享 | 当前 `allow-wifi-access = false`，保持关闭，除非确实需要局域网设备接入。 |
+| **规则分流** | 推荐启用，避免全局直连绕过预期分流。 |
+| **`Proxy` / `Auto` / `Fallback`** | 添加自己的节点订阅，并分别为自动测速与备用组筛选候选。 |
+| **脚本与插件** | 使用网络辅助时确认启用。脚本用于执行实际诊断。 |
+| **MitM / 复写** | 网络诊断插件不依赖它们；其他插件确有要求时再配置。 |
+| **DNS 域名拦截** | 当前为 `DNS + LOOPBACKIP`，不是「查询回落」。 |
+| **TUN Only、QUIC、IPv6、UDP** | 按实际网络、节点协议与应用兼容性调整，不照搬旧知识库截图一律开启。 |
 
-**补充：Paypal 默认使用 `Proxy`，并不是默认直连。**
+默认策略组中 Apple、Microsoft、Bilibili、Line、Speedtest 优先 DIRECT；**Paypal 默认使用 `Proxy`**。当前 `disable-stun = true` 与 `udp-fallback-mode = REJECT` 会限制某些 UDP/STUN 场景，请先查请求记录而非盲改整套规则。
 
-**服务组默认：** `Apple`、`Microsoft`、`Bilibili`、`Line`、`Speedtest` 优先 `DIRECT`；`Paypal` 优先 `Proxy`。策略组选项与最终命中规则应分别核对。
-
-**兼容性：** `ip-mode = dual`、`ipv6-vif = auto` 保留双栈能力；`disable-stun = true`、`udp-fallback-mode = REJECT` 保护特定场景，但可能影响 WebRTC、语音和 UDP 游戏。先核对请求记录与节点 UDP 能力，不建议为排查某一个应用而全局取消保护。
-
-## 5. 参考
-
-- [Loon 官方 Scheme / 配置导入](https://nsloon.app/docs/Scheme/)
-- [Loon 官方 DNS 行为](https://nsloon.app/docs/DNS/)
-- [Loon 官方通用配置参数](https://nsloon.app/docs/General/)
-- [Loon 配置导入参考](https://wiki.repcz.link/loon/profile/)
-- [Loon 资源自动更新参考](https://wiki.repcz.link/loon/more-set/)
-
-[图解：完整设置位置](./SETUP_GUIDE.md) · [返回项目首页](../README.md) · [节点筛选](./NODE_SELECTION.md) · [DNS 验证](./DNS_PRIVACY.md) · [诊断插件](./NETWORK_DIAGNOSTICS.md)
+[返回 README](../README.md) · [节点选择](./NODE_SELECTION.md) · [官方 URL Scheme](https://nsloon.app/docs/Scheme/)

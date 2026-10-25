@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="180" height="54" viewBox="0 0 180 54" role="img" aria-label="获取配置文件">
-<rect x="1" y="1" width="178" height="52" rx="11" fill="#F7F8F8" stroke="#BFC8D1" stroke-width="1.6"/>
-<g stroke="#354153" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16h15l5 5v18H22V16Z"/><path d="M37 16v6h5"/><path d="M27 29h10M27 34h10"/></g>
-<text x="53" y="34" font-family="Noto Sans CJK SC,PingFang SC,Microsoft YaHei,Arial,sans-serif" font-weight="650" font-size="16" fill="#283347">获取配置文件</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164 52" width="164" height="52" role="img" aria-label="获取配置">
+<rect x="0.75" y="0.75" width="162.5" height="50.5" rx="10" fill="#FFFFFF" stroke="#A5ADBC" stroke-width="1.5"/>
+<path d="M22 13h14l6 6v19H22zM36 13v6h6M27 27h10M27 32h9" fill="none" stroke="#414B60" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="55" y="32" fill="#222736" font-family="-apple-system,'PingFang SC','Microsoft YaHei',Arial,sans-serif" font-size="16" font-weight="700">获取配置</text>
 </svg>
