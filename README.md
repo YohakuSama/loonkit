@@ -18,9 +18,9 @@ LoonKit 为常用网站、AI、流媒体和社交服务提供分流、广告拦�
 
 ## VPN 反复断开 / 自动重连排查
 
-如果 Loon 导入本项目配置后出现 VPN 自动关闭并重新连接，可先使用 **[Safe Routing 配置](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** 进行稳定性对比测试（[查看文件](./LoonKit.Safe.lcf)）。此版本用普通域名/IP 匹配规则替换了 `Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal` 六个高密度复合规则集。保留原始 v6.5.8 正式配置不变。
+如果 Loon 导入本项目配置后出现 VPN 自动关闭并重新连接，可先使用 **[Safe Routing 配置](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.Safe.lcf)** 进行稳定性对比测试（[查看文件](./LoonKit.Safe.lcf)）。此版本暂时**不加载** `Our-RegionalCN`、`Our-AppleOTA`、`Our-Bilibili`、`Our-Microsoft`、`Our-Apple`、`Our-Paypal` 六个高密度复合规则集，**不新增任何直连规则**。未被其他域名规则命中的大陆 IP 由 `GEOIP,CN,DIRECT` 处理，其余走 `FINAL`；原始 v6.5.8 正式配置不变。
 
-**注意**：这是待实机验证的应急配置，不保证重连一定由复合规则引起；地区分流改为静态域名判断，Apple OTA 始终直连，行为与原版不完全相同。详见 [适用范围、差异及测试方法](./docs/SAFE_ROUTING.md)。
+**注意**：这是待实机验证的排障配置，不保证重连一定由复合规则引起。六个服务原有专属分流在该配置中暂停，部分请求将改为 GeoIP 或 Final 策略。域名规则优先级高于 IP 规则，详情与 DNS 检查方法见 [适用范围与 A/B 测试](./docs/SAFE_ROUTING.md)。
 
 ## 快速开始
 
