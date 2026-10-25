@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.3
         with:
           python-version: '3.12'
       - name: Verify reproducible formal release
@@ -31,8 +31,8 @@ jobs:
             LoonKit.lcf
             build/release_manifest.json
             build/release_spec.json
-            release/SHA256SUMS.v7.0.0
-            docs/RELEASE_CHECKSUM_v7.0.0.md
+            release/SHA256SUMS.v7.0.3
+            docs/RELEASE_CHECKSUM_v7.0.3.md
           retention-days: 30
           if-no-files-found: error
 
@@ -49,7 +49,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.3
         with:
           python-version: '3.12'
       - name: Gate on current exact main commit
@@ -59,33 +59,33 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           test "$(gh api repos/${{ github.repository }}/branches/main --jq .commit.sha)" = "$EXPECTED_SHA"
-          test "$(python3 -c "import json;print(json.load(open('build/release_spec.json'))['stable_release_version'])")" = 'v7.0.0'
-          test "$(head -n 1 LoonKit.lcf)" = '# LoonKit v7.0.0'
+          test "$(python3 -c "import json;print(json.load(open('build/release_spec.json'))['stable_release_version'])")" = 'v7.0.3'
+          test "$(head -n 1 LoonKit.lcf)" = '# LoonKit v7.0.3'
       - name: Validate publishable bytes and pinned resources
         run: |
           python3 scripts/verify_release.py --check --remote
           python3 scripts/reviewed_release.py --check
           python3 scripts/license_audit.py --check
-          sha256sum -c release/SHA256SUMS.v7.0.0
+          sha256sum -c release/SHA256SUMS.v7.0.3
       - name: Create immutable version tag and published release
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          if gh release view v7.0.0 >/dev/null 2>&1; then
-            test "$(gh api repos/${{ github.repository }}/git/ref/tags/v7.0.0 --jq .object.sha)" = "$EXPECTED_SHA"
+          if gh release view v7.0.3 >/dev/null 2>&1; then
+            test "$(gh api repos/${{ github.repository }}/git/ref/tags/v7.0.3 --jq .object.sha)" = "$EXPECTED_SHA"
             exit 0
           fi
-          if gh api repos/${{ github.repository }}/git/ref/tags/v7.0.0 >/dev/null 2>&1; then
-            echo 'v7.0.0 tag already exists without a published release; refusing to overwrite.'
+          if gh api repos/${{ github.repository }}/git/ref/tags/v7.0.3 >/dev/null 2>&1; then
+            echo 'v7.0.3 tag already exists without a published release; refusing to overwrite.'
             exit 1
           fi
-          gh release create v7.0.0 \
+          gh release create v7.0.3 \
             LoonKit.lcf \
-            release/SHA256SUMS.v7.0.0 \
+            release/SHA256SUMS.v7.0.3 \
             build/release_manifest.json \
             build/release_spec.json \
             --target "$EXPECTED_SHA" \
-            --title 'LoonKit v7.0.0' \
-            --notes-file docs/RELEASE_NOTES_v7.0.0.md \
+            --title 'LoonKit v7.0.3' \
+            --notes-file docs/RELEASE_NOTES_v7.0.3.md \
             --latest
