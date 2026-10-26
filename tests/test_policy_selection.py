@@ -153,6 +153,12 @@ class PolicySelectionTests(unittest.TestCase):
             self.assertIn("RULE", doc)
         self.assertIn("海外 DoH", dns)
         self.assertIn("查询回落", dns)
+        # README must tell users what to do, not merely name the separate switch.
+        self.assertIn("DNS 查询回落（隐私优先建议关闭）", readme)
+        self.assertIn("DNS 服务器 → 查询回落 → 关闭", readme)
+        self.assertIn("加密 DNS 查询失败时不会自动回落至普通 DNS", readme)
+        self.assertIn("可能出现域名解析失败", readme)
+        self.assertIn("独立于「DoH 流量模式」", readme)
         self.assertIn("Paypal 默认使用 `Proxy`", app)
         self.assertIn("disable-stun = true", app)
         self.assertIn("udp-fallback-mode = REJECT", app)
