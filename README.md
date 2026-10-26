@@ -32,7 +32,7 @@
 <p align="center">
   <a href="https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf">获取配置地址</a> ·
   <a href="#快速开始">快速开始</a> ·
-  <a href="./docs/SETUP_GUIDE.md">完整指南</a>
+  <a href="./docs/SETUP_GUIDE.md">首次导入</a>
 </p>
 
 当前版本：**v7.0.10** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
@@ -101,10 +101,12 @@ LoonKit 不内置个人节点。请添加自己的节点订阅，并检查 `Prox
 
 ## 文档导航
 
-**使用指南** · [导入与设置](./docs/SETUP_GUIDE.md) · [配置托管](./docs/LOON_APP_SETTINGS.md) · [节点选择](./docs/NODE_SELECTION.md) · [DNS 设置](./docs/DNS_PRIVACY.md)
+以下文档按任务分工，详细步骤和技术解释集中在对应页面，不需要逐篇重复阅读。
 
-**规则与诊断** · [规则分类](./rules/README.md) · [网络辅助](./docs/NETWORK_DIAGNOSTICS.md) · [插件源码](./release/Network_Diagnostics.plugin)
+**使用指南** · [首次导入与验收](./docs/SETUP_GUIDE.md) · [托管、更新与覆盖风险](./docs/LOON_APP_SETTINGS.md) · [节点筛选与测速](./docs/NODE_SELECTION.md) · [DNS 与 DoH 故障定位](./docs/DNS_PRIVACY.md)
 
-**项目维护** · [更新日志](./docs/CHANGELOG.md) · [发布说明](./docs/RELEASE_NOTES_v7.0.10.md) · [版本校验](./docs/RELEASE_CHECKSUM_v7.0.10.md) · [维护指南](./docs/MAINTAINING.md)
+**规则与诊断** · [规则命中与策略归属](./rules/README.md) · [诊断结果解读](./docs/NETWORK_DIAGNOSTICS.md) · [插件定义文件](./release/Network_Diagnostics.plugin) · [诊断公共源码](./src/diagnostics/common.js)
+
+**项目维护** · [历史变更记录](./docs/CHANGELOG.md) · [当前版发布说明](./docs/RELEASE_NOTES_v7.0.10.md) · [当前版 SHA256](./docs/RELEASE_CHECKSUM_v7.0.10.md) · [构建、校验与发布流程](./docs/MAINTAINING.md)
 
 <sub>[Issues](https://github.com/YohakuSama/loonkit/issues) · [Security](./SECURITY.md) · [Third-party notices](./docs/THIRD_PARTY_NOTICES.md) · [GPL-2.0-only](./LICENSE)</sub>

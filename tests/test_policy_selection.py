@@ -132,9 +132,12 @@ class PolicySelectionTests(unittest.TestCase):
 
     def test_living_user_docs_track_current_app_behavior(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        setup = (ROOT / "docs/SETUP_GUIDE.md").read_text(encoding="utf-8")
         nodes = (ROOT / "docs/NODE_SELECTION.md").read_text(encoding="utf-8")
         dns = (ROOT / "docs/DNS_PRIVACY.md").read_text(encoding="utf-8")
         app = (ROOT / "docs/LOON_APP_SETTINGS.md").read_text(encoding="utf-8")
+        rules_doc = (ROOT / "rules/README.md").read_text(encoding="utf-8")
+        diagnostics_doc = (ROOT / "docs/NETWORK_DIAGNOSTICS.md").read_text(encoding="utf-8")
         plugin = get_section(self.profile, "Plugin")
         self.assertNotIn("网络切换提醒", readme)
         self.assertEqual(plugin.count(".plugin, enabled=true"), 1)
@@ -143,23 +146,33 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertIn("http://www.bing.com", readme)
         self.assertIn("http://www.bing.com", nodes)
         self.assertIn("第一个可用节点", nodes)
+        # Each navigation destination should own one task rather than repeat a setup checklist.
+        self.assertIn("从空配置到可以使用", setup)
+        self.assertIn("首次安装与验收", setup)
+        self.assertIn("配置托管、更新与覆盖风险", app)
+        self.assertIn("三项检测的区别", diagnostics_doc)
+        self.assertIn("分流规则：匹配范围与策略归属", rules_doc)
         self.assertIn("DNS 服务器", app)
+        self.assertNotIn("DoH 流量模式", setup)
+        self.assertNotIn("223.5.5.5", app)
         self.assertIn("加密 DNS 失败回退到普通 DNS", dns)
         self.assertIn("不能单靠一个开关判断整个设备的 DNS 路径", dns)
-        # Keep user-facing guidance aligned with the actual default resolver and App mode.
-        for doc in (readme, dns, app):
+        # Resolver and routing specifics belong to the DNS reference, not the update guide.
+        for doc in (readme, dns):
             self.assertIn("AliDNS", doc)
             self.assertIn("ECS", doc)
             self.assertIn("RULE", doc)
         self.assertIn("海外 DoH", dns)
         self.assertIn("查询回落", dns)
-        # README must tell users what to do, not merely name the separate switch.
         self.assertIn("DNS 查询回落（隐私优先建议关闭）", readme)
         self.assertIn("DNS 服务器 → 查询回落 → 关闭", readme)
         self.assertIn("加密 DNS 查询失败时不会自动回落至普通 DNS", readme)
         self.assertIn("可能出现域名解析失败", readme)
         self.assertIn("独立于「DoH 流量模式」", readme)
-        self.assertIn("Paypal 默认使用 `Proxy`", app)
+        # The navigation calls the .plugin an entry definition, not editable source.
+        self.assertIn("[插件定义文件](./release/Network_Diagnostics.plugin)", readme)
+        self.assertIn("[诊断公共源码](./src/diagnostics/common.js)", readme)
+        self.assertIn("Paypal 默认使用 `Proxy`", rules_doc)
         self.assertIn("disable-stun = true", app)
         self.assertIn("udp-fallback-mode = REJECT", app)
 

@@ -57,6 +57,12 @@ python3 scripts/test_suites.py all
 
 诊断测试从正式配置和资源锁解析实际插件、脚本及摘要，不写死版本目录。CI 还在隔离 Git 副本中连续模拟两次升级。设备体验仍由维护者在 Loon 实机验证；自动化结果仅代表相应的离线或远程资源检查。
 
+## 只修改文档时
+
+README、操作指南、规则说明或诊断说明的文字更新**不需要启动下一版本生成器**。在独立分支修改相应 Markdown，并同步调整直接依赖这些文案的回归测试；运行 `python3 scripts/check_readme_presentation.py` 和 `python3 scripts/test_suites.py current`，由 CI 验证链接及现役配置契约。
+
+将仅文档的 PR 合并到 `main` 后，Production CI 仍会运行，继而触发发布工作流；现行发布流程若检测到对应版本的 GitHub Release 已存在，会跳过重复发布。**不要因为一次文档合并而创建新 tag、覆盖既有 Release 或改动资源摘要**。具体历史发布内容以各版本的 Release Notes、SHA256 和 Git tag 为准，不回写历史发布产物。
+
 ## 创建下一版本
 
 在干净 Git 工作树运行：
