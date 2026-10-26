@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="336" viewBox="0 0 960 336" role="img" aria-label="LoonKit: rule-based routing configuration for Loon">
+ <title>LoonKit</title>
+ <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.05" fill="#344258"/></pattern></defs>
+ <rect x=".5" y=".5" width="959" height="335" rx="24" fill="#111825" stroke="#364156"/>
+ <path d="M0 92H960" stroke="#364156" opacity=".28"/>
+ <text x="58" y="58" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="16" letter-spacing="2.5" font-weight="600">LOON  /  CONFIGURATION</text>
+ <text x="54" y="190" fill="#F7F9FC" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="86" font-weight="750" letter-spacing="-3">LoonKit</text>
+ <rect x="58" y="218" width="34" height="4" rx="2" fill="#8CA5F8"/>
+ <text x="58" y="268" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="27" font-weight="500">Rule-based routing for Loon</text>
+ <path d="M519 77V283" stroke="#364156"/>
+ <rect x="547" y="74" width="376" height="212" rx="17" fill="url(#dots)"/>
+ <rect x="562" y="101" width="336" height="176" rx="14" fill="#192334" stroke="#324158"/>
+ <text x="585" y="129" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="13" letter-spacing="1.8">ROUTE SELECTION</text>
+ <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.3">
+  <path d="M597 194H676" stroke="#F7F9FC"/>
+  <path d="M676 194C706 194 707 153 736 153H749" stroke="#8CA5F8"/>
+  <path d="M676 194H749" stroke="#B8C4D6"/>
+  <path d="M676 194C706 194 707 235 736 235H749" stroke="#B8C4D6"/>
+ </g>
+ <circle cx="597" cy="194" r="6.5" fill="#F7F9FC"/><circle cx="676" cy="194" r="6.5" fill="#8CA5F8"/>
+ <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="15" font-weight="650" letter-spacing=".5">
+  <rect x="749" y="135" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="153" r="4" fill="#8CA5F8"/><text x="779" y="158" fill="#EAF1FF">DIRECT</text>
+  <rect x="749" y="176" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="194" r="4" fill="#8CA5F8"/><text x="779" y="199" fill="#EAF1FF">AUTO</text>
+  <rect x="749" y="217" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="235" r="4" fill="#8CA5F8"/><text x="779" y="240" fill="#EAF1FF">PROXY</text>
+ </g>
+</svg>
