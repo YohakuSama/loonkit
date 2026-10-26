@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 214 50" width="214" height="50" role="img" aria-label="一键导入 Loon"><title>一键导入 Loon</title>
-<rect x=".5" y=".5" width="213" height="49" rx="10" fill="#809AF7"/>
-<path d="M22 15v17m-5-5 5 5 5-5M16 37h12" fill="none" stroke="#121827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="46" y="31.5" font-size="17" font-weight="650" fill="#121827" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif">一键导入 Loon</text>
-<path d="m189 20 5 5-5 5" fill="none" stroke="#121827" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 214 48" width="214" height="48" role="img" aria-label="一键导入 Loon"><title>一键导入 Loon</title><rect x=".5" y=".5" width="213" height="47" rx="10" fill="#A2B7FF"/><path d="M23 12v18m-6-6 6 6 6-6M17 35h12" fill="none" stroke="#152036" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><text x="45" y="30.5" fill="#152036" font-size="17" font-weight="650" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">一键导入 Loon</text><path d="m189 19 5 5-5 5" fill="none" stroke="#152036" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
