@@ -1,26 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="336" viewBox="0 0 960 336" role="img" aria-label="LoonKit: rule-based routing configuration for Loon">
- <title>LoonKit</title>
- <defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.05" fill="#344258"/></pattern></defs>
- <rect x=".5" y=".5" width="959" height="335" rx="24" fill="#111825" stroke="#364156"/>
- <path d="M0 92H960" stroke="#364156" opacity=".28"/>
- <text x="58" y="58" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="16" letter-spacing="2.5" font-weight="600">LOON  /  CONFIGURATION</text>
- <text x="54" y="190" fill="#F7F9FC" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="86" font-weight="750" letter-spacing="-3">LoonKit</text>
- <rect x="58" y="218" width="34" height="4" rx="2" fill="#8CA5F8"/>
- <text x="58" y="268" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="27" font-weight="500">Rule-based routing for Loon</text>
- <path d="M519 77V283" stroke="#364156"/>
- <rect x="547" y="74" width="376" height="212" rx="17" fill="url(#dots)"/>
- <rect x="562" y="101" width="336" height="176" rx="14" fill="#192334" stroke="#324158"/>
- <text x="585" y="129" fill="#B8C4D6" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="13" letter-spacing="1.8">ROUTE SELECTION</text>
- <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.3">
-  <path d="M597 194H676" stroke="#F7F9FC"/>
-  <path d="M676 194C706 194 707 153 736 153H749" stroke="#8CA5F8"/>
-  <path d="M676 194H749" stroke="#B8C4D6"/>
-  <path d="M676 194C706 194 707 235 736 235H749" stroke="#B8C4D6"/>
- </g>
- <circle cx="597" cy="194" r="6.5" fill="#F7F9FC"/><circle cx="676" cy="194" r="6.5" fill="#8CA5F8"/>
- <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif" font-size="15" font-weight="650" letter-spacing=".5">
-  <rect x="749" y="135" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="153" r="4" fill="#8CA5F8"/><text x="779" y="158" fill="#EAF1FF">DIRECT</text>
-  <rect x="749" y="176" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="194" r="4" fill="#8CA5F8"/><text x="779" y="199" fill="#EAF1FF">AUTO</text>
-  <rect x="749" y="217" width="126" height="36" rx="8" fill="#111825" stroke="#324158"/><circle cx="766" cy="235" r="4" fill="#8CA5F8"/><text x="779" y="240" fill="#EAF1FF">PROXY</text>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="308" viewBox="0 0 960 308" role="img" aria-label="LoonKit - Routing configuration for Loon">
+<title>LoonKit — Routing configuration for Loon</title>
+<rect x=".75" y=".75" width="958.5" height="306.5" rx="22" fill="#121A28" stroke="#354259" stroke-width="1.5"/>
+<text x="58" y="53" fill="#B6C2D3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="16" font-weight="600" letter-spacing="2.4">LOON / CONFIGURATION</text>
+<text x="52" y="177" fill="#F6F8FC" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="90" font-weight="750" letter-spacing="-3">LoonKit</text>
+<rect x="58" y="195" width="37" height="4" rx="2" fill="#9AB0FF"/>
+<text x="58" y="241" fill="#B6C2D3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="25" font-weight="500">Rule-based routing for Loon</text>
+<path d="M523 64V267" stroke="#354259" stroke-width="1.5"/>
+<rect x="550" y="62" width="365" height="212" rx="16" fill="#1B2739" stroke="#354259"/>
+<text x="579" y="100" fill="#B6C2D3" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="15" letter-spacing="1.6" font-weight="600">ROUTE CONTROL</text>
+<g fill="none" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M592 187H680" stroke="#F6F8FC"/>
+<path d="M680 187C709 187 715 147 752 147H769" stroke="#9AB0FF"/>
+<path d="M680 187H769" stroke="#7789A0"/>
+<path d="M680 187C709 187 715 227 752 227H769" stroke="#7789A0"/>
+</g>
+<circle cx="592" cy="187" r="7" fill="#F6F8FC"/><circle cx="680" cy="187" r="7" fill="#9AB0FF"/>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="16" font-weight="650" letter-spacing=".4">
+<rect x="770" y="130" width="122" height="34" rx="7" fill="#253653"/>
+<rect x="770" y="170" width="122" height="34" rx="7" fill="#182235"/>
+<rect x="770" y="210" width="122" height="34" rx="7" fill="#182235"/>
+<circle cx="788" cy="147" r="4" fill="#9AB0FF"/><text x="800" y="152" fill="#F6F8FC">DIRECT</text>
+<circle cx="788" cy="187" r="4" fill="#7789A0"/><text x="800" y="192" fill="#F6F8FC">AUTO</text>
+<circle cx="788" cy="227" r="4" fill="#7789A0"/><text x="800" y="232" fill="#F6F8FC">PROXY</text>
+</g>
 </svg>
