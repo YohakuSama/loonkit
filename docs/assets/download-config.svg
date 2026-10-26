@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164 52" width="164" height="52" role="img" aria-label="获取配置">
-<rect x="0.75" y="0.75" width="162.5" height="50.5" rx="10" fill="#FFFFFF" stroke="#A5ADBC" stroke-width="1.5"/>
-<path d="M22 13h14l6 6v19H22zM36 13v6h6M27 27h10M27 32h9" fill="none" stroke="#414B60" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="55" y="32" fill="#222736" font-family="-apple-system,'PingFang SC','Microsoft YaHei',Arial,sans-serif" font-size="16" font-weight="700">获取配置</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 44" width="148" height="44" role="img" aria-label="获取配置地址">
+<title>获取配置地址</title>
+<rect x="0.75" y="0.75" width="146.5" height="42.5" rx="9" fill="#FFFFFF" stroke="#C9D1DC" stroke-width="1.5"/>
+<path d="M21 13h13l5 5v14H21zM34 13v5h5M25 24h10M25 28h8" fill="none" stroke="#192332" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="49" y="27" fill="#192332" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif" font-size="14" font-weight="600">获取配置地址</text>
 </svg>

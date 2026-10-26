@@ -1,78 +1,78 @@
 # 维护与发布
 
-正式入口为 `main/LoonKit.lcf`；个人测试入口为 `beta` 分支的 `beta/LoonKit.lcf`。
-新版本统一使用通用构建引擎，无需新增版本专用脚本或 Workflow。
+正式入口为 main 分支的 `LoonKit.lcf`；个人测试入口为 beta 分支的 `beta/LoonKit.lcf`。
 
-## 当前构建
+## 配置与资源
 
-- `build/release_spec.json`：当前版本、固定资源提交及历史配置 SHA256 台账。
-- `build/release_recipe.json`：当前配置的只读基线、SHA256 和逐项变更配方。
-- `scripts/release_engine.py`：版本无关的字节确定性构建与校验。
-- `build/release_manifest.json`：现役规则的 URL、策略、顺序、数量与摘要。
-- `scripts/verify_release.py`：当前发布的完整性检查入口。
-- `rules/releases/`：正式版、Beta 及其生成输入仍依赖的完整规则。
-- `.github/workflows/release.yml`：读取当前版本和准确提交，在正式 CI 通过后发布。
+- `build/profile.json`：正式配置的唯一结构化源，包含策略组、规则顺序、固定资源 URL 与服务登记。
+- `build/release_spec.json`：当前版本和历史配置摘要台账。
+- `scripts/profile_model.py`：模型验证与确定性渲染。
+- `scripts/release_engine.py`：由模型生成配置、资源清单及当前 checksum。
+- `build/release_manifest.json`：自动生成的现役规则顺序、归属、数量及摘要。
+- `build/runtime.lock.json`：配置 → 插件 → 脚本及规则、图标的完整固定依赖图。
+- `build/sources.lock.json`：独立保留的历史编译输入证明。
+
+修改配置时编辑模型，资源必须先发布到固定 Git commit。生成器在写入前检查未定义策略、重复名称、循环引用、FINAL 与宽泛规则顺序：
+
+```bash
+python3 scripts/release_engine.py --write
+# 仅在审阅资源变更后显式更新依赖证据
+python3 scripts/runtime_assets.py --write
+python3 scripts/verify_release.py --check --remote
+```
+
+生成的 manifest 无需手工维护。只读检查不会更新配置、清单或资源锁。
+
+## 诊断源码与构建
+
+可编辑源码位于 `src/diagnostics/`：
+
+- `common.js` 统一节点上下文、策略组解析及请求处理。
+- `node.js`、`network.js`、`media.js` 分别处理三项诊断。
+- `Network_Diagnostics.plugin` 定义面向用户的名称、说明与手动入口。
+
+`scripts/build_diagnostics.py` 将公共代码内联到三个独立脚本；客户端无需额外加载公共模块。输出固定使用 `release/diagnostics/` 和 `release/Network_Diagnostics.plugin`，日常维护无需新增日期目录。
+
+更新诊断按依赖顺序进行：
+
+1. 修改源码，运行 `python3 scripts/build_diagnostics.py --write --scripts-only`，提交源码和脚本输出。
+2. 将该脚本提交填入 `build/diagnostics.json` 的 `script_commit`，运行 `python3 scripts/build_diagnostics.py --write`，再提交插件。
+3. 将插件提交 URL 填入配置模型，重新生成配置并审阅更新资源锁。
+4. 运行完整校验与诊断回归。
+
+两次资源提交用于避免配置或插件引用其尚未存在的自身提交。所有正式资源均固定到 40 位 commit，禁止使用 main、分支名或浮动标签。
 
 ## 验证
 
 ```bash
 python3 scripts/source_lock.py --check
-python3 scripts/release_engine.py --check
+python3 scripts/build_diagnostics.py --check
 python3 scripts/verify_release.py --check --remote
 python3 scripts/license_audit.py --check
 python3 scripts/test_suites.py current
-node --test tests/diagnostics.test.cjs tests/diagnostics.retry.test.cjs
+node --test tests/diagnostics*.test.cjs
 # 包含 Beta 的完整维护回归
 python3 scripts/test_suites.py all
 ```
 
-正式 CI 检查当前配置、来源锁、策略与许可证，并在隔离 Git 副本中连续模拟两次版本升级。
-`maintenance-audit.yml` 对规则、构建及维护代码修改运行完整生产/Beta 回归，并每周检查固定远程资源、历史 Beta URL 与许可证证据。
-Beta 分支继续由 `beta-ci.yml` 校验。
+诊断测试从正式配置和资源锁解析实际插件、脚本及摘要，不写死版本目录。CI 还在隔离 Git 副本中连续模拟两次升级。设备体验仍由维护者在 Loon 实机验证；自动化结果仅代表相应的离线或远程资源检查。
 
 ## 创建下一版本
 
-在干净的 Git 工作树运行：
+在干净 Git 工作树运行：
 
 ```bash
-python3 scripts/release_engine.py --start-next v7.0.10
+python3 scripts/release_engine.py --start-next v7.0.11
 ```
 
-命令先完整预检，再将前一正式配置保存为 `build/baselines/generated/<旧版本>/LoonKit.lcf`，
-更新版本号、历史摘要台账、README、配方和当前校验文件。现有规则 URL、DNS/TUN、插件及策略组沿用原值。
+命令预检当前发布，记录前一版本摘要，并生成下一版配置、清单、checksum 与发布说明。配置模型和资源引用继续使用原值，不生成旧配置基线或新维护脚本。随后补充发布说明并执行上述验证。
 
-修改分流策略时，只编辑 `build/release_recipe.json` 的 `changes` 数组。
-每个 `find`/`replace` 修改的旧字符串必须在当前中间结果中恰好出现一次，然后运行：
+普通写入异常会回滚；多文件更新不具备断电级原子性，以通过 CI 的 Git commit 为发布单位。已有版本标签和 Release 不重复改写。
 
-```bash
-python3 scripts/release_engine.py --write
-python3 scripts/release_engine.py --check
-python3 scripts/verify_release.py --check --remote
-```
+## 历史兼容
 
-`--write` 刷新当前配置、Manifest 中的配置 SHA256 与当前 checksum 文档；上游规则更新仍需单独审阅并冻结资源提交。
-普通写入异常会回滚，多文件写入不具备断电级原子性，发布以通过 CI 的 Git commit 为准。
-已存在的版本标签和 Release 不重复改写。仓库维护变更保持当前发布版本号。
+旧正式版本通过 Git tag/commit 恢复，例如 `git show v7.0.9:LoonKit.lcf`。历史客户端的固定 Raw URL 保留在原提交中。
 
-## 保留范围与历史恢复
-
-工作树只保留现役用途：当前构建基线、Beta 的基础配置和资源、可复现输入、来源锁与许可证证据。
-旧候选配置、重复规则、一次性发布/迁移脚本及其专用测试已移除；通用校验器只检查当前发布。
-
-历史 SHA256 集中保存在 `build/release_spec.json` 的 `historical_profile_sha256`。
-工作树必须保留当前版本的 checksum 文档与 `release/SHA256SUMS.<版本>`；旧版本的成对校验文件可从工作树移除。
-如旧文件仍存在，验证器会继续核对其版本与台账摘要，并拒绝不完整或未知版本的文件。
-
-旧发布的完整配置、脚本、文档和规则从原 Git tag/commit 恢复。例如：
-
-```bash
-git show v7.0.8:LoonKit.lcf
-```
-
-检查旧发布流程时，应检出对应标签后使用该版本自带的验证器。
-清理只删除工作树副本，既有 Git 历史、标签和固定提交 Raw URL 保留。
-日期或目录名不能单独作为删除依据：`rules/inputs/`、Beta 的旧版本目录及许可证材料仍有现役引用。
-
-设备体验由维护者自行验证，自动化检查证明离线构建与已定义的策略回归。
+工作树仍保留 Beta、历史编译输入、许可证证明及独立规则回归实际使用的基线；已替代的正式配置补丁、生成基线和旧诊断副本已移除。历史输入证明与当前运行资源锁各自记录明确范围。
 
 [更新记录](./CHANGELOG.md) · [规则审阅](./RULE_SAFETY.md) · [第三方许可](./THIRD_PARTY_NOTICES.md)

@@ -47,5 +47,7 @@
     "decision_document": null,
     "decision_sha256": null,
     "permission_basis": null
-  }
+  },
+  "candidate_manifest_path": "build/baselines/v6.5.4/release_manifest.json",
+  "candidate_manifest_sha256": "506bbdc68d18073d778fdc5b2a74e19b145c508f98625611a0cf8b2f4868e5ed"
 }

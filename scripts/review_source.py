@@ -95,7 +95,7 @@ def main():
         # published rules or critical metadata by supplying --report manually.
         target=a.report.resolve()
         protected=tuple((ROOT/p).resolve() for p in
-                        ("rules","build","scripts","tests","release",".github","docs","icons","plugins"))
+                        ("rules","build","scripts","tests","release",".github","docs","icons","plugins","src"))
         if any(target.is_relative_to(p) for p in protected) or target in {
             (ROOT/"LoonKit.lcf").resolve(),(ROOT/"LoonKit.PrivacyDNS.lcf").resolve(),
             (ROOT/"build/release_manifest.json").resolve(),

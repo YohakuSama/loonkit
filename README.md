@@ -1,222 +1,82 @@
-<p align="center">
-  <img src="./docs/assets/loonkit-mark.svg" width="84" alt="LoonKit" />
-</p>
+# LoonKit
 
-<h1 align="center">LoonKit</h1>
+**为 Loon 准备的规则分流配置。**
 
-<p align="center">
-  <strong>让每一条连接，都有清晰的去向。</strong><br />
-  适用于 Loon 的规则分流配置与节点诊断工具箱。
-</p>
+根据不同服务选择连接线路：国内常用服务优先直连，AI、开发平台、流媒体与社交应用可以分别指定策略。配置还包含节点选择、广告过滤与网络排查工具。
 
-<p align="center">
-  <a href="./docs/CHANGELOG.md"><img src="https://img.shields.io/badge/release-v7.0.9-17181c?style=flat-square" alt="v7.0.9" /></a>
-  <a href="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml"><img src="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0--only-17181c?style=flat-square" alt="GPL-2.0-only" /></a>
-</p>
+[**在 Loon 中导入配置 →**](https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf) · [获取配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)
 
-<p align="center">
-  <a href="https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf"><img src="./docs/assets/import-loon.svg" width="222" alt="一键导入 LoonKit" /></a>
-  &nbsp;
-  <a href="https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf"><img src="./docs/assets/download-config.svg" width="164" alt="下载配置" /></a>
-</p>
+在已安装 Loon 的 iPhone / iPad 上使用 Safari 打开导入链接。**节点、订阅与代理账号需自行准备，本项目不提供。**
 
-<p align="center">
-  <sub>iPhone / iPad 上使用 Safari 打开。导入时请检查「托管」与「全覆盖更新」选项。</sub>
-</p>
-
-<p align="center">
-  <a href="#快速开始">快速开始</a> &nbsp;·&nbsp;
-  <a href="#插件与诊断">插件与诊断</a> &nbsp;·&nbsp;
-  <a href="#关键设置">关键设置</a> &nbsp;·&nbsp;
-  <a href="#常见问题">常见问题</a> &nbsp;·&nbsp;
-  <a href="#文档">文档</a>
-</p>
+当前版本：**v7.0.10** · [更新记录](./docs/CHANGELOG.md) · [构建状态](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
 
 ---
 
-当前版本：**v7.0.9**。
-
-LoonKit 将 AI、开发、流媒体、社交及国内常用服务的规则组织为独立策略组，配合广告管理、节点测速与原生诊断插件。项目 **不提供节点、机场订阅或代理账号**；请导入自己的节点并按需选路。
-
-<p align="center">
-  <strong>39</strong> 策略组　 ·　 <strong>43</strong> 远程规则　 ·　 <strong>3</strong> 网络诊断工具　 ·　 <strong>40</strong> 配套图标
-</p>
-
 ## 快速开始
 
-### 01 / 导入配置
-
-**第一次部署前，先备份原有配置及节点订阅。** 按你实际使用的 Loon 界面操作：
-
-1. 打开 Loon 底部 **「配置」→「所有配置文件」**，点击右上角 **「＋」→「从链接导入」**。
-2. 粘贴上方的 [`LoonKit.lcf` 配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)；或者直接点击顶部「一键导入」唤起 Loon。
-3. 打开 **「托管」**，按需设置 **「更新频率」**（例如每隔 7 天；并非必须固定值）。
-4. **首次完整部署时开启「全覆盖更新」**，确认导入。然后选择并应用 `LoonKit.lcf`。
-5. 再添加自己的节点订阅，在 `Proxy` 中选线路，按需刷新远程规则和插件。
+1. **备份现有配置。** 如果已经在使用 Loon，请先导出配置文件并保存节点订阅。
+2. **导入配置。** 点击上方的导入链接；若未唤起 Loon，在 App 内进入 **配置 → 所有配置文件 → ＋ → 从链接导入**，粘贴[配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)。
+3. **添加节点并选路。** 应用 `LoonKit.lcf` 后，导入自己的节点或订阅，在 `Proxy` 及对应服务策略组中选择线路。
+4. **按需开启托管。** 可设置更新频率。首次完整部署前确认覆盖范围；日常更新建议关闭「全覆盖更新」。
 
 > [!IMPORTANT]
-> 当前主配置的 `[Proxy]` 和 `[Remote Proxy]` 是空的。**全覆盖更新可能替换既有节点、订阅与本地配置。** 如果已有个人配置，请先导出备份。只有确认接受这些覆盖后果，才执行首次全覆盖。
+> `LoonKit.lcf` 的 `[Proxy]` 与 `[Remote Proxy]` 默认不包含个人节点。**「全覆盖更新」可能替换已有的节点、订阅及本地设置。** 只有完成备份并理解覆盖后果，才使用这一选项。
 
-### 02 / 设置日常更新
+[图文操作路径](./docs/SETUP_GUIDE.md) · [托管与更新说明](./docs/LOON_APP_SETTINGS.md)
 
-**「全覆盖更新」不是日常更新的推荐常开项。**
+## 功能
 
-- 在「从链接导入」界面，开启「托管」后会显示 **更新频率** 和 **全覆盖更新**。
-- 首次部署完成后，日常更新建议 **关闭全覆盖更新**，以降低覆盖个人设置的风险；大版本升级前应重新备份并阅读 [更新记录](./docs/CHANGELOG.md)。
-- 你提供的当前 Loon 截图显示：长按 `LoonKit.lcf` 出现 **应用、编辑、重命名、启用 iCloud、导出、删除** 等菜单，**没有「更新策略」项**。因此本页不再把「长按 → 更新策略」写成操作路径。更新托管参数时应以当前 App 的配置详情或导入选项为准。
-- 远程资源的定时更新需要考虑 Loon 的运行状态；iOS 后台不保证准点完成。
+- **规则分流** — 按服务类别组织策略，国内常用服务优先直连，其他服务可按需指定线路。
+- **节点选择** — 在 `Proxy` 中手动选路，也可使用 `Auto` 自动测速、`Fallback` 选择可用线路。
+- **广告管理** — `AdBlock` 策略支持 `REJECT`、`DIRECT` 或代理，按需要调整。
+- **网络辅助** — 查看选定节点的出口信息、连接状态与 DNS 结果，辅助定位网络问题。
 
-[导入与更新详细说明](./docs/LOON_APP_SETTINGS.md) · [新版界面对照](./docs/SETUP_GUIDE.md)
+调整线路时，优先修改对应的服务策略组；遇到问题时，再结合节点信息与请求记录定位。
 
-### 03 / 关闭 DNS 查询回落（隐私优先）
+## 日常使用
 
-进入 Loon 的 **配置 / 设置 → DNS → DNS 服务器 → 查询回落 → 关闭**。
+**调整线路**：在 Loon 的策略页选择服务策略组，改选 `DIRECT`、`Proxy`、`Auto` 或 `Fallback`。`Fallback` 按可用性和候选顺序选择节点，不等同于延迟排名第二的节点。
 
-你的真实截图显示这一开关位于「DNS 服务器」页面。关闭后能避免 **DoH 查询失败时通过普通 DNS 重试**；但如果 DoH 被当前网络阻断，域名解析可能失败。**这不等于保证全设备零 DNS 泄漏。**
+**排查连接**：在 **策略 → 选定节点 → ···** 中运行所需的诊断工具。出口信息与连接结果只反映当前测试条件，不应被当作永久性能或可用性保证。[网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md) · [插件源码](./release/Network_Diagnostics.plugin)
 
-当前配置使用 AliDNS DoH：`https://dns.alidns.com/dns-query`，并保留普通 DNS 地址用于对应场景。截图中的「DoH 流量模式 DIRECT」是 *DoH 请求的路由方式*，**不是「查询回落」开关**。
-
-[DNS 原理与检查](./docs/DNS_PRIVACY.md) · [Loon 官方 DNS 文档](https://nsloon.app/docs/DNS/)
-
-## 功能概览
-
-| 功能 | 当前提供的能力 |
-| :--- | :--- |
-| **Routing** | 国内常用服务优先直连，AI、Google、GitHub、流媒体与社交应用独立策略。 |
-| **Selection** | `Proxy`、`Auto`、`Fallback` 以及服务级节点选择。 |
-| **Filtering** | `AdBlock` 可选 `REJECT`、`DIRECT` 或 `Proxy`。 |
-| **Diagnostics** | 节点实际出口、网络与 DNS 检查、七项服务访问检测。 |
-| **Release** | 固定资源提交、构建清单、回滚基线和持续集成校验。 |
-
-## 插件与诊断
-
-LoonKit 的三项手动诊断均可从 **「策略 → 某个节点 → ···」** 菜单运行。下面是根据实际输出整理的**脱敏示例**；测试 IP 为保留示例地址，具体节点与结果随你的网络变化。
+**检查 DNS**：隐私优先时可在 Loon 的 **DNS → DNS 服务器** 中关闭「查询回落」，但加密 DNS 不可用时可能导致解析失败。该设置不能单独保证设备不存在 DNS 泄漏。[DNS 设置与核验](./docs/DNS_PRIVACY.md)
 
 <details>
-<summary><strong>节点信息</strong> — 入口与实际出口分开显示</summary>
+<summary>其他配置与兼容性说明</summary>
 
-```text
-节点：示例节点
-协议：Hysteria2
-入口：[已隐藏]
-
-【实际出口】
-出口 IP：198.51.100.10（示例地址）
-IP 版本：IPv4
-位置：Japan (JP) · Tokyo
-运营商：[已隐藏]
-ASN：[已隐藏]
-IP 网段：[已隐藏]
-
-【网络识别】
-机房 / 云：未检出
-VPN / 代理：未检出
-数据源：ipconfig.is
-```
-
-「未检出」只表示上游数据库没有检出对应标签，**不能据此宣称为住宅 IP 或真实家宽**。
+- 节点测速默认使用 `http://www.bing.com`；实际测速结果受网络状态和节点影响。
+- 自动选路与故障切换的候选范围可分别调整，见[节点选择说明](./docs/NODE_SELECTION.md)。
+- 网络辅助使用脚本功能，不需要仅为此安装 MitM 证书。
+- TUN、UDP、QUIC 与 IPv6 设置应结合实际设备和节点协议检查，不建议照搬他人的开关组合。
 
 </details>
-
-<details>
-<summary><strong>网络检测</strong> — 独立检查节点、直连与 DNS</summary>
-
-```text
-连接状态
-节点：正常 · 382 ms
-直连：正常 · 29 ms
-DNS：正常
-DNS 详情：解析成功 · DoH
-结论：节点连接正常
-```
-
-这里的数值仅来自你提供的示例截图，不代表所有节点的实际性能；插件的 DNS API 结果也不能证明其他 App 没有独立 DNS 请求。
-
-</details>
-
-<details>
-<summary><strong>解锁检测</strong> — 七项服务逐一给出访问状态</summary>
-
-```text
-可访问：7 / 7
-DAZN              可用
-Discovery+        可访问
-Paramount+        可用
-Disney+           可用
-Netflix           片源可访问
-ChatGPT           可用
-YouTube Premium   可用
-```
-
-只是某次节点的接口访问示例，**不是会员权益保证**，也不代表所有节点都会 7/7 成功。
-
-</details>
-
-**v7.0.9 修复重点：** 某些节点第一次握手较慢，旧版网络探测约 6.5 秒就可能超时，七项服务检测也曾同时高并发启动。新版增大请求预算、限制并发，并在**原选定节点**上对短时传输错误最多重试一次。不会绕到 DIRECT 或其他节点制造「成功」结果；真实地区限制、拒绝访问和重复超时仍会如实报告。此改动经过模拟测试，**在你的高延迟节点上的实机效果还需要复测**。
-
-[诊断插件源码](./release/v7.0.9/Network_Diagnostics.plugin) · [网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md) · [v7.0.9 更新说明](./docs/RELEASE_NOTES_v7.0.9.md)
-
-## 关键设置
-
-| 设置 | 建议 | 注意 |
-| :--- | :--- | :--- |
-| 运行模式 | **规则分流** | 全局直连会绕开预期的分流行为。 |
-| `Proxy` / 筛选器 | 添加自己的节点，设置 `Auto_Filter` 和 `Fallback_Filter` | `Fallback` 选择第一个可用节点，而非第二快的节点。 |
-| DNS 查询回落 | 隐私优先时**关闭** | DoH 故障可能导致解析失败；需自行权衡。 |
-| 托管更新 | 首次全覆盖，后续按需关闭全覆盖 | 具体入口以当前 App 展示为准。 |
-| 脚本与插件 | 运行诊断时保持启用 | 当前诊断功能使用 `[Script]`，**无需仅为此安装 MitM 证书**。 |
-| TUN / QUIC / UDP | 按实际需要选择 | 不建议照搬旧教程把所有高级开关都设成开启。 |
-
-目前节点测速统一使用 `http://www.bing.com`，独立直连测试为 `http://wifi.vivo.com.cn/generate_204`。当前主配置仍保留 `disable-stun = true`、`udp-fallback-mode = REJECT` 与双栈 IP；语音、游戏或 WebRTC 出现问题时，先核对节点 UDP 能力和 Loon 请求记录，再定向排查。
-
-[节点筛选](./docs/NODE_SELECTION.md) · [App 推荐设置](./docs/LOON_APP_SETTINGS.md)
 
 ## 常见问题
 
 <details>
-<summary><strong>一键导入无法唤起 Loon？</strong></summary>
+<summary>点击导入链接后没有打开 Loon</summary>
 
-请使用已安装 Loon 的 iPhone / iPad，尝试在 Safari 打开本页。仍无效时，按「配置 → 所有配置文件 → ＋ → 从链接导入」手动粘贴：
-
-```text
-https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
-```
-
-导入方式参考 [Loon 官方 Scheme](https://nsloon.app/docs/Scheme/)。
+先确认已安装 Loon，并尝试在 iPhone / iPad 的 Safari 中打开。也可以在 Loon 的「从链接导入」界面手动填写[配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf)。参见 [Loon 官方 URL Scheme](https://nsloon.app/docs/Scheme/)。
 
 </details>
 
 <details>
-<summary><strong>为什么节点能用，但插件第一次显示失败？</strong></summary>
+<summary>导入后没有可用节点</summary>
 
-可能是代理首次连接、DNS/TLS 握手、目标平台限流或短时网络抖动造成，不能单凭一次接口失败判定节点永久不可用。v7.0.9 增加同节点有限重试；若仍异常，请收集 Loon 脚本日志、请求时间和目标服务（**不要公开节点密钥或订阅链接**），提交 Issue。
+配置不内置节点或订阅。请添加自己的节点，并检查 `Proxy` 与其他策略组的线路选择。若使用了全覆盖更新，还应检查个人配置是否被替换。
 
 </details>
 
 <details>
-<summary><strong>首次覆盖后节点不见了？</strong></summary>
+<summary>节点可以连接，但某次诊断失败</summary>
 
-`LoonKit.lcf` 不内置任何私人节点或机场订阅。全覆盖可替换之前的本地内容，因此首次导入前应备份，完成后再添加个人订阅。
+初次握手、DNS/TLS 建连、临时网络波动等都可能影响结果。建议在同一节点复测，并核对 Loon 的请求记录与脚本日志。提交 [Issue](https://github.com/YohakuSama/loonkit/issues) 时，请移除节点密钥、订阅地址等敏感信息。
 
 </details>
 
 ## 文档
 
-| 上手与排查 | 维护与验证 |
-| :--- | :--- |
-| [真实界面导入与设置说明](./docs/SETUP_GUIDE.md) | [更新记录](./docs/CHANGELOG.md) |
-| [配置托管与 App 设置](./docs/LOON_APP_SETTINGS.md) | [v7.0.9 发布说明](./docs/RELEASE_NOTES_v7.0.9.md) |
-| [DNS 隐私与验证](./docs/DNS_PRIVACY.md) | [规则分类](./rules/README.md) |
-| [自动选路与 Fallback](./docs/NODE_SELECTION.md) | [维护指南](./docs/MAINTAINING.md) |
-| [网络检测与输出边界](./docs/NETWORK_DIAGNOSTICS.md) | [v7.0.9 SHA256](./docs/RELEASE_CHECKSUM_v7.0.9.md) |
-
----
-
-<p align="center">
-  <sub>Built for Loon. Designed for control.</sub><br />
-  <a href="https://github.com/YohakuSama/loonkit/issues">Issues</a> ·
-  <a href="./SECURITY.md">Security</a> ·
-  <a href="./docs/THIRD_PARTY_NOTICES.md">Third-party licenses</a> ·
-  <a href="./LICENSE">GPL-2.0-only</a>
-</p>
+- **安装与设置**：[导入指南](./docs/SETUP_GUIDE.md) · [托管与 App 设置](./docs/LOON_APP_SETTINGS.md) · [DNS 设置](./docs/DNS_PRIVACY.md)
+- **选路与排查**：[节点选择](./docs/NODE_SELECTION.md) · [网络辅助](./docs/NETWORK_DIAGNOSTICS.md) · [规则分类](./rules/README.md)
+- **版本与维护**：[更新记录](./docs/CHANGELOG.md) · [发布说明](./docs/RELEASE_NOTES_v7.0.10.md) · [校验信息](./docs/RELEASE_CHECKSUM_v7.0.10.md) · [维护指南](./docs/MAINTAINING.md)
+- **项目说明**：[安全政策](./SECURITY.md) · [第三方许可](./docs/THIRD_PARTY_NOTICES.md) · [开源许可证](./LICENSE)

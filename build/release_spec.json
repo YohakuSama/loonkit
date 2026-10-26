@@ -1,24 +1,8 @@
 {
-  "schema_version": 2,
-  "stable_release_version": "v7.0.9",
+  "schema_version": 3,
+  "release_engine": "structured",
+  "stable_release_version": "v7.0.10",
   "status": "FORMAL_RELEASE",
-  "release_rules_dir": "rules/releases/v7.0.3",
-  "release_assets_dir": "release",
-  "release_assets_commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-  "reviewed_auxiliary_commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
-  "source_snapshot_dir": "rules/inputs",
-  "live_dns_tun_edits_permitted": false,
-  "release_gate_file": null,
-  "plugin_assets_commit": "7cd8f285f85ed8e540ab0b0a5b6edc27811fac70",
-  "script_assets_commit": "97c48a5d14087597dbba35119d5ee8d43b1ce537",
-  "diagnostics_script_commit": "51918fda81d85545d0bc4e8453042f7c2f761de0",
-  "optional_service_plugin_commit": null,
-  "unified_service_diagnostics_script_commit": "51918fda81d85545d0bc4e8453042f7c2f761de0",
-  "node_script_commit": "51918fda81d85545d0bc4e8453042f7c2f761de0",
-  "current_runtime_directives_sha256": "472273e3651e1cdc6601cb9d78e82a5e635a59cdcf0a031d05004f6706a66b6b",
-  "previous_formal_profile_sha256": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3",
-  "previous_formal_profile_path": "build/baselines/generated/v7.0.8/LoonKit.lcf",
-  "reviewed_assets_commit": "7f11406a1b958cbf4f64d3281ead6ce417a19dbf",
   "historical_profile_sha256": {
     "v6.5.6": "d75c37a9dc0dcb8a109c1cdaa0cae647a95b7f70dcf22ec94a5e1ac179528b11",
     "v6.5.2": "e98dc568485ac4be1240a475e6c2beee60feb9ab5ce3afc19e7d96be81f6a5de",
@@ -35,7 +19,11 @@
     "v7.0.5": "90e8df088d899ff00dd3033d2a644372ae3052cf84ea4a0d476550c15ab22b8c",
     "v7.0.6": "0b042aef3cb4ffc3d8093c6187c86b82965a4dcb23e495200fbcc1389466c054",
     "v7.0.7": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0",
-    "v7.0.8": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3"
+    "v7.0.8": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3",
+    "v7.0.9": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee"
   },
-  "release_engine": "generic"
+  "previous_release": {
+    "version": "v7.0.9",
+    "profile_sha256": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee"
+  }
 }

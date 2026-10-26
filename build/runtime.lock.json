@@ -1,0 +1,701 @@
+{
+  "schema_version": 1,
+  "resources": [
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/media-unlock.js",
+      "commit": "45dd8bff200a69740178b7a2e0e087a47c8537d8",
+      "path": "release/diagnostics/media-unlock.js",
+      "kind": "script",
+      "local_path": "release/diagnostics/media-unlock.js",
+      "sha256": "f51a5b0c104c0c3c36a513d62ac07d41e96f8b3b1828ec21b7a48207b39a0638"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/network-diagnostics.js",
+      "commit": "45dd8bff200a69740178b7a2e0e087a47c8537d8",
+      "path": "release/diagnostics/network-diagnostics.js",
+      "kind": "script",
+      "local_path": "release/diagnostics/network-diagnostics.js",
+      "sha256": "20e361c8bee9194b5354e29e548009aeeb786bc52e791724ee2a8d7ca96c729c"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/node-intelligence.js",
+      "commit": "45dd8bff200a69740178b7a2e0e087a47c8537d8",
+      "path": "release/diagnostics/node-intelligence.js",
+      "kind": "script",
+      "local_path": "release/diagnostics/node-intelligence.js",
+      "sha256": "42e731d670beca7a45d60be57ecf7517511db0f0493fbe0979079b7cb7bef105"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AIScoped.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/AIScoped.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/AIScoped.lsr",
+      "sha256": "2ce8d9baeb0607f9d01235155ffb01d1f6f7cc01d666d225d00db039b12011cb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "sha256": "eb4b30b96232bd76f4308f2333478ed94d1c2d885079ffd0da4b7b5f66738349"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AnimeCrazy.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/AnimeCrazy.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/AnimeCrazy.lsr",
+      "sha256": "104f56290a7247cc98d3e8a111f058edcd40119660de9adc46df22e9f7195c34"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Apple.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Apple.lsr",
+      "sha256": "aed19bd3798bf72196c33bc08b008f817ead1f1ce15888458a48a624d1c0071e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/AppleOTA.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/AppleOTA.lsr",
+      "sha256": "7330e1e6f9b9d9330acc3c28ae63683244f41860aa1543a7619a6092d723ed4f"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Bilibili.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Bilibili.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Bilibili.lsr",
+      "sha256": "bcc9b0d31945813c3e11b07c2d936278eecc22f9557b80cf5663a78b87aec7c7"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/ChatGPT.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/ChatGPT.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/ChatGPT.lsr",
+      "sha256": "a3b9481b967f0e6ca5a4a72fe66bd69d5b500192edb1e981e2833cb6b2cfe2bf"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Claude.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Claude.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Claude.lsr",
+      "sha256": "7223088486907b9750cf8b8c0f0cc9843d7e4b190a9a987a4ba378d27693b772"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Cloudflare.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Cloudflare.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Cloudflare.lsr",
+      "sha256": "2597abd3ba74b8ee6c6b5a2ae4ade140c08908b05c6ee79ee9cf159edca0d0e9"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Dazn.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Dazn.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Dazn.lsr",
+      "sha256": "e63e55daf1f58a2476c5c38ea35bc4acb2ea3628596a3510442649ced53980ea"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Discord.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Discord.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Discord.lsr",
+      "sha256": "1f33162c2b998f417fbba947e6f64878cbc0a8e1f179e0e84779d471a4a40e37"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Disney.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Disney.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Disney.lsr",
+      "sha256": "c1866364b0059b45a04fae003bda90bdde97b80c398a6c706c029dbc105be8a5"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticAI.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/DomesticAI.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/DomesticAI.lsr",
+      "sha256": "9254c600bd8e9f4d08f4a004e3f9945b52241972dc817b4e61d943224229ebf6"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/DomesticCore.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/DomesticCore.lsr",
+      "sha256": "1b0251bad38add15db47beb0c77a8512b7b6a048a86fb6af49a865cd56980e89"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "sha256": "88a1856295532f0859916e01d354f08e0eb05909bf3a7f0d8101c17a54ba7f9c"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Facebook.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Facebook.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Facebook.lsr",
+      "sha256": "f7dcd98f6bd87772e61bb736b761a5f26d5a2ea431ef5915f4521fb2f551e24d"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Gemini.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Gemini.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Gemini.lsr",
+      "sha256": "37ae274df700c1870139a587e3ea930ab43d0eab80c004b7200ce250dfed4602"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/GitHub.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/GitHub.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/GitHub.lsr",
+      "sha256": "abc396709f9bacafa5cc9b175245f5072b8348476065dd9dc3f75051aa9db365"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Google.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Google.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Google.lsr",
+      "sha256": "5f92ffd16c45e7391e75d3d762596f5ef6f7dd0162dac9f91feb50f11cb6abe9"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/HBO.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/HBO.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/HBO.lsr",
+      "sha256": "2a14132e0030032747704bc60515d52c9ec9ced46f0cfeb7b4df35ae65429cb7"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Instagram.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Instagram.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Instagram.lsr",
+      "sha256": "b2b4013ba68a35b4a046db5456b684b071a5ad11367236ba62716a0ab9556342"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Microsoft.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Microsoft.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Microsoft.lsr",
+      "sha256": "0ddfe51a68c7da4def4cf0599d666d0725299c807988e65cd912be1070ab339c"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Paypal.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Paypal.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Paypal.lsr",
+      "sha256": "d6136e2ba0e223ecafda8ddb24ca84ad2743cf66986eb25eec4cce4c311f3f2e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/PrimeVideo.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/PrimeVideo.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/PrimeVideo.lsr",
+      "sha256": "071ff66f57d1074a4a7ebc3f626bc8ac4a2c3f1a646fd25d67d57da61990749a"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Abema.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Abema.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Abema.lsr",
+      "sha256": "c560afa8bc56f90c3c262773ecdbf6d393db2dac689a9bba35456060341b3155"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-BBC.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-BBC.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-BBC.lsr",
+      "sha256": "604aa27e6ef146d16d9ce987a5e88af3454d12a68566bd168f512b5cc033be0e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Line.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Line.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Line.lsr",
+      "sha256": "9c81f117b78ea6dcf8de0db4897a31cb9dadfb254e4567b77051e8b4bd280b1b"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Linkedin.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Linkedin.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Linkedin.lsr",
+      "sha256": "0edbccf6b90dbe5356d7a35a5e69c3e5adcd6dfdf15b4124f45e9b3f65ecbc85"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Reddit.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Reddit.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Reddit.lsr",
+      "sha256": "309e74f24128a051116e0c92a767222e2fb4cfb519c449c0fc2ff710f2cf35d5"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Spotify.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Spotify.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Spotify.lsr",
+      "sha256": "c77e7aefa435a909434f422f2c256767d2640098cfa83d44cd3cc502e6606b93"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Twitch.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Service-Twitch.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Service-Twitch.lsr",
+      "sha256": "61c3d2dd1d96ff7363a96c12e16febb40c794c3725751d9e1c93a9e3b623ddbb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "sha256": "4a8dd4509829a7a661ec1f985a9b9b5d33bd2fef294fa146d90366ab4215e76a"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Speedtest.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Speedtest.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Speedtest.lsr",
+      "sha256": "80f0bfb469d1734b4758a4d2a189097d7e49618e9de00aea3c5da16ee65cb1ec"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Steam.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Steam.lsr",
+      "sha256": "04deeddbd0608e461cca5739df5e1fe14ed70722792ffced1989d6c0eda4fc98"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamCN.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/SteamCN.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/SteamCN.lsr",
+      "sha256": "96b5fb646a81021f47a1cd48c67f90c544f0505c072bafa0cabda69f7a42fe7e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/SteamGlobal.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/SteamGlobal.lsr",
+      "sha256": "9eafb51fe5a7650e44ddda96108814436a685f45e36ad58af26a8eddecf840b1"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Telegram.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Telegram.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Telegram.lsr",
+      "sha256": "f4161f0e35f99c03dc4cc9cabcb6df1a5d5d5a192756ec0892eb23f7630a8a6a"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Twitter.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Twitter.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Twitter.lsr",
+      "sha256": "519a95ff66fa131ebf7cef66eca5a65009d5aa741e97176a576e42ea71cb18a2"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Whatsapp.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/Whatsapp.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/Whatsapp.lsr",
+      "sha256": "c3b700b3c075caecedbe63bf31da5797d6d6b63683fb7c98698e79cca29b06dc"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/YouTube.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/YouTube.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.3/YouTube.lsr",
+      "sha256": "eb9217f2f4acc25b3e95eb84aebb05d5b17725801c6ecadb6fcd95116d39fff4"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/ChinaDirect.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.5/ChinaDirect.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.5/ChinaDirect.lsr",
+      "sha256": "ba9508eab3a0b49d516f8e47bc6408853587b78101a2b3061974677b7d1487a6"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/Netflix.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.5/Netflix.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.5/Netflix.lsr",
+      "sha256": "99f7b98f90efa79ded0f1516b1489c21113a66caffd95f4a03afcc2c8160568d"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/TikTok.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.5/TikTok.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.5/TikTok.lsr",
+      "sha256": "7ed1afd1772a81cedf24c845677c05b9b9cb4fcace4bbf026223dc6f50436e14"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AI.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/AI.png",
+      "kind": "icon",
+      "local_path": "icons/AI.png",
+      "sha256": "9054398bd45c0ebd7affc925c1cf6984908db67c9a5089b3f2f5a87fc82f9a79"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Abema.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Abema.png",
+      "kind": "icon",
+      "local_path": "icons/Abema.png",
+      "sha256": "30e4c9bc0d7e1ee8eb5b8cf82e26c7491cc28da803968936ca0060c583947223"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AdBlock.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/AdBlock.png",
+      "kind": "icon",
+      "local_path": "icons/AdBlock.png",
+      "sha256": "0e6cf21a062b5823d6c0e06daabc25cea583f7c28d05f11f9ce0ef9189d067da"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AnimeCrazy.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/AnimeCrazy.png",
+      "kind": "icon",
+      "local_path": "icons/AnimeCrazy.png",
+      "sha256": "4d459ece4d7d6b4071e9aef5c72f6dfd0afd605980da9b5e88a8e7eb2833baeb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Apple.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Apple.png",
+      "kind": "icon",
+      "local_path": "icons/Apple.png",
+      "sha256": "5d4df679402b44b718939fa3186d95c1e25185816b843ec2f00e990fb2832431"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Auto.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Auto.png",
+      "kind": "icon",
+      "local_path": "icons/Auto.png",
+      "sha256": "8f2d2b6077e92cf498ed549832f96aed6132e80e12fde8bd92ae3a746443f4c2"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/BBC.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/BBC.png",
+      "kind": "icon",
+      "local_path": "icons/BBC.png",
+      "sha256": "92963cb4f374559576b114e71090bbf4df46842dc36e5831c827d90cf7df4e6f"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Bilibili.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Bilibili.png",
+      "kind": "icon",
+      "local_path": "icons/Bilibili.png",
+      "sha256": "c1c55e887431c6a85c14bed89b300b8998ed4da779403f89dbd4688b270b2823"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/ChatGPT.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/ChatGPT.png",
+      "kind": "icon",
+      "local_path": "icons/ChatGPT.png",
+      "sha256": "677c1bb2dc0ff2eff9518604c530345d24a0389b9b9bf1e9f1ab0286525728d2"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Claude.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Claude.png",
+      "kind": "icon",
+      "local_path": "icons/Claude.png",
+      "sha256": "1ae8b3fa7a3e0f03235b1855186a89dffa4ff9e40c48b2d24e861b55ac8b6862"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Cloudflare.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Cloudflare.png",
+      "kind": "icon",
+      "local_path": "icons/Cloudflare.png",
+      "sha256": "60ac7e8a46d34483c2ce549f2e72387a1734ed82fcdc51e912c4d4178880a4bb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Console.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Console.png",
+      "kind": "icon",
+      "local_path": "icons/Console.png",
+      "sha256": "689e4680d92e436bfa14214b814eaba4baf842d2759a7ef7354ad274d35238fc"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Dazn.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Dazn.png",
+      "kind": "icon",
+      "local_path": "icons/Dazn.png",
+      "sha256": "cc8d692766f6d2b8d8ac216ccc94db8b1d8773b2586f8c6514cc799ce33f7fe1"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Discord.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Discord.png",
+      "kind": "icon",
+      "local_path": "icons/Discord.png",
+      "sha256": "4c72a99cb2dc8946a64ff4f39968226f4cd884812874b0c21fd99a69f1a90ecc"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Disney.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Disney.png",
+      "kind": "icon",
+      "local_path": "icons/Disney.png",
+      "sha256": "946ece7da92735ded7a946d298ff7fbb3d30a65217ccaf2b2f51a6610ee0ff93"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Facebook.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Facebook.png",
+      "kind": "icon",
+      "local_path": "icons/Facebook.png",
+      "sha256": "1dc0425eb8d24f85623020868d0bb8788d2926a23307374ecce98517cfbce13b"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Fallback.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Fallback.png",
+      "kind": "icon",
+      "local_path": "icons/Fallback.png",
+      "sha256": "add8078d05455791e068eee0eb7a5f008624e9108b5ecce32593348d4816e931"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Final.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Final.png",
+      "kind": "icon",
+      "local_path": "icons/Final.png",
+      "sha256": "5183f6648decf4ea9db5913d89ba66acc8b85d6b44a2c091a3fbb0647ba337fb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Gemini.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Gemini.png",
+      "kind": "icon",
+      "local_path": "icons/Gemini.png",
+      "sha256": "cdcf860bd0fe7f1a4664615e1805ab01a7eb7b798ac9fb226a7321a1720fc820"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/GitHub.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/GitHub.png",
+      "kind": "icon",
+      "local_path": "icons/GitHub.png",
+      "sha256": "d0f43696caeb9d6c52fd339de45c7f6d682143be7a346b0ccd9c86810ca9c68d"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Google.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Google.png",
+      "kind": "icon",
+      "local_path": "icons/Google.png",
+      "sha256": "b4e71d614d70fd45db5c2514b53a03a8f13933c11c4398ea3bcf988ff3f47ad4"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/HBO.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/HBO.png",
+      "kind": "icon",
+      "local_path": "icons/HBO.png",
+      "sha256": "8cc2e5117832cc3eef45dbcde35292245b049ecc5d2c695ddd0555bb413f11c7"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Instagram.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Instagram.png",
+      "kind": "icon",
+      "local_path": "icons/Instagram.png",
+      "sha256": "7bee0c7ca4b67e5dd23f4b8f1a4e69f4e35655717614c3056d47bd3494795698"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Line.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Line.png",
+      "kind": "icon",
+      "local_path": "icons/Line.png",
+      "sha256": "0fcfb10094ffc12af7c3ec9142d20023586a863f28be46cbb599437fdf5aa38f"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Linkedin.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Linkedin.png",
+      "kind": "icon",
+      "local_path": "icons/Linkedin.png",
+      "sha256": "a051c5015efae72f14782793e0b9b940c544b0a7fdbd505a35d04630dbebe476"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Microsoft.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Microsoft.png",
+      "kind": "icon",
+      "local_path": "icons/Microsoft.png",
+      "sha256": "a0fa06b61744e2390752974e79ee74aa68af912c40795e4eea9c4b2bf4b1f001"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Netflix.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Netflix.png",
+      "kind": "icon",
+      "local_path": "icons/Netflix.png",
+      "sha256": "b1af05333c1796620f58590c1d2386027286611a892e4d9124d4b9d0905a1d42"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Paypal.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Paypal.png",
+      "kind": "icon",
+      "local_path": "icons/Paypal.png",
+      "sha256": "70829ffe2779b07711ee56d13fa97817050778bf9cb32298fd5e76d5c6baa00e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/PrimeVideo.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/PrimeVideo.png",
+      "kind": "icon",
+      "local_path": "icons/PrimeVideo.png",
+      "sha256": "4e97d5ce49985f3e42bdbc07365b9624d5ae32ad1858ebcc1e43c59de20b47cb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Proxy.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Proxy.png",
+      "kind": "icon",
+      "local_path": "icons/Proxy.png",
+      "sha256": "8daf49e0a5c89cc3c8d19e9f8b97688482472c18fb561a86d033098521a92540"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Reddit.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Reddit.png",
+      "kind": "icon",
+      "local_path": "icons/Reddit.png",
+      "sha256": "bd083a1f233f515b52719f8ad550dab5a6f1aac2816436cf4d23fed30616ac05"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Speedtest.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Speedtest.png",
+      "kind": "icon",
+      "local_path": "icons/Speedtest.png",
+      "sha256": "3a216b660aada2dcca1d9f813c165fff757ca0dee28d07c7709369650f412aef"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Spotify.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Spotify.png",
+      "kind": "icon",
+      "local_path": "icons/Spotify.png",
+      "sha256": "6b968433887f7067ffde37b9c40c29d207b1938d1f452d63b9f9375bb4139597"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Steam.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Steam.png",
+      "kind": "icon",
+      "local_path": "icons/Steam.png",
+      "sha256": "22526a8e986e5b9b56b4b4a962c88c79c92878e1b8003cdb9338d1acc24f8c8c"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Telegram.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Telegram.png",
+      "kind": "icon",
+      "local_path": "icons/Telegram.png",
+      "sha256": "6743b060c963c2220fc3c0e7e03e54f15395e532461575a17db32f03ff439e58"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/TikTok.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/TikTok.png",
+      "kind": "icon",
+      "local_path": "icons/TikTok.png",
+      "sha256": "4372d7e4a2adf0e77261fe78386140c94100e173fb13eb7943a7bfee1f5bd85e"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Twitch.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Twitch.png",
+      "kind": "icon",
+      "local_path": "icons/Twitch.png",
+      "sha256": "4224c93bd87f57ea54707b56ce4a240dec9c00572ed7ca4adf867270a18969c5"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Twitter.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Twitter.png",
+      "kind": "icon",
+      "local_path": "icons/Twitter.png",
+      "sha256": "c86423f00de94f51b2302163f9b48c398ee792459c7c4819a41d9ef7c78ee9fb"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Whatsapp.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/Whatsapp.png",
+      "kind": "icon",
+      "local_path": "icons/Whatsapp.png",
+      "sha256": "3a553efbe07fdad4df6e39c20a1a2c775926cc75a74b909aa131854f9e5ab3a3"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/YouTube.png",
+      "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
+      "path": "icons/YouTube.png",
+      "kind": "icon",
+      "local_path": "icons/YouTube.png",
+      "sha256": "500008a99958774231b73ffd217493f67b5bb2cc692da41c0c9071bf4b5c54bd"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/f79361451216850fecf9f9914720fb4f1c36861f/release/Network_Diagnostics.plugin",
+      "commit": "f79361451216850fecf9f9914720fb4f1c36861f",
+      "path": "release/Network_Diagnostics.plugin",
+      "kind": "plugin",
+      "local_path": "release/Network_Diagnostics.plugin",
+      "sha256": "28b1f4dc0a57d4a9235ef266573366d1bd88f1acc3ecdf61f8d8059c5da8df6f"
+    }
+  ]
+}

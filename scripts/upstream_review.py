@@ -437,7 +437,7 @@ def _domain_risk(rule: str, group: str, protected: tuple[str, ...]) -> list[str]
 
 
 def runtime_baseline(root=ROOT, *, profile_path='LoonKit.lcf', manifest_path='build/release_manifest.json'):
-    from beta_channel import content_rules
+    from loon_resources import content_rules
     from reviewed_release import validate_records
     from regional_rules import source_matcher
     root=Path(root)

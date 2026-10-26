@@ -2,10 +2,8 @@
 'use strict';
 const {test} = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
 const vm = require('node:vm');
-const ROOT = path.resolve(__dirname, '..');
+const published = require('./helpers/diagnostics.cjs');
 const SCRIPTS = {
   node: 'node-intelligence.js',
   network: 'network-diagnostics.js',
@@ -49,10 +47,13 @@ function run(kind, handler, options = {}) {
       write(value, key) {writes.push({value,key});}
     },
     $notification: {post(...args) {alerts.push(args);}},
-    setTimeout(fn, delay) {timers.push({fn, delay}); return timers.length;}
+    setTimeout(fn, delay) {
+      timers.push({fn, delay});
+      if(delay<=350)fn();
+      return timers.length;
+    }
   };
-  const folder = kind === 'network' ? 'v20261025r1' : kind === 'node' ? 'v20261025r3' : 'v20261025r2';
-  const src = fs.readFileSync(path.join(ROOT, 'scripts', folder, SCRIPTS[kind]), 'utf8');
+  const src = published.source(SCRIPTS[kind]);
   vm.runInNewContext(src, sandbox, {timeout:3000, filename:SCRIPTS[kind]});
   return {requests, completed, timers, alerts, writes};
 }
@@ -113,7 +114,7 @@ test('node: redirects, bad JSON, errors and rate limits are visible failures',()
       if(value.throws)throw Error('request exception');
       return value;
     });
-    assert.equal(s.requests.length,1);
+    assert.equal(s.requests.length,value.error||value.throws?2:1);
     assert.match(output(s),/出口信息查询失败/);
     assert.doesNotMatch(output(s),/出口 IP：8\.8\.8\.8/);
     assert.equal(s.completed.length,1);
@@ -144,7 +145,7 @@ test('node: optional DIRECT comparison uses same source but distinct policies',(
 test('node: silent HTTP hangs produce a single timeout completion',()=>{
   const s=run('node',()=>({hold:true}));
   assert.equal(s.completed.length,0);
-  const timer=s.timers.find(t=>t.delay===29000);
+  const timer=s.timers.find(t=>t.delay>=30000&&t.delay<80000);
   assert.ok(timer);
   timer.fn();
   assert.equal(s.completed.length,1);
@@ -178,8 +179,8 @@ test('network: redirects and captive-portal HTTP 200 stay uncertain, not success
 });
 
 test('network: timeout and malformed DNS evidence fail without false DoH claims', () => {
-  const session = run('network', ({index}) =>
-    index === 0 ? {error:new Error('timeout')} : {status:204},
+  const session = run('network', ({request}) =>
+    request.node === 'DIRECT' ? {error:new Error('timeout')} : {status:204},
     {dns:{reply:{protocol:'doh', answers:[{type:'CNAME', value:'invalid'}]}}});
   assert.match(output(session), /结论：节点连接正常/);
   assert.match(output(session), /直连：失败/);
@@ -304,13 +305,13 @@ test('media: challenge pages never claim service access', () => {
   assert.match(output(session), /⚠️ YouTube Premium　失败/);
 });
 
-test('media: a delayed request reaches the existing 22-second watchdog exactly once', () => {
+test('media: a hanging request reaches the watchdog exactly once', () => {
   const session = run('media', call => {
     if (new URL(call.request.url).hostname === 'www.netflix.com') return {hold:true};
     return mediaResponse(call);
   });
   assert.equal(session.completed.length, 0);
-  const watchdog = session.timers.find(t => t.delay === 22000);
+  const watchdog = session.timers.find(t => t.delay >= 30000 && t.delay < 80000);
   assert.ok(watchdog);
   watchdog.fn();
   assert.equal(session.completed.length, 1);

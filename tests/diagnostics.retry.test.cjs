@@ -1,10 +1,8 @@
 'use strict';
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const fs=require('node:fs');
 const vm=require('node:vm');
-const path=require('node:path');
-const ROOT=path.resolve(__dirname,'..','scripts','v20261026r1');
+const published=require('./helpers/diagnostics.cjs');
 function launch(file,handler,options={}){
  const requests=[],timers=[],completed=[];
  const ctx={
@@ -19,7 +17,7 @@ function launch(file,handler,options={}){
   $done(v){completed.push(v);},
   setTimeout(fn,ms){timers.push({fn,ms});}
  };
- vm.runInNewContext(fs.readFileSync(path.join(ROOT,file),'utf8'),ctx,{timeout:4000});
+ vm.runInNewContext(published.source(file),ctx,{timeout:4000});
  return {requests,timers,completed};
 }
 const content=s=>String(s.completed[0]?.content||'');

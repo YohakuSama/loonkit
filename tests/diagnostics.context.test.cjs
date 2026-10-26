@@ -4,13 +4,22 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
+const published=require('./helpers/diagnostics.cjs');
 const ROOT=path.resolve(__dirname,'..');
 const files=['node-intelligence.js','network-diagnostics.js','media-unlock.js'];
+
+test('published plugin exposes three manual tools with stable product descriptions',()=>{
+  const plugin=published.plugin.source;
+  assert.equal((plugin.match(/^generic then script\(/gm)||[]).length,3);
+  assert.doesNotMatch(plugin,/^network-changed then script\(/m);
+  assert.match(plugin,/^#!desc = 节点出口 · 网络检测 · 服务解锁检测$/m);
+  assert.doesNotMatch(plugin,/auto_check|高延迟重试版/);
+});
 
 function requested(file,params,args={},config){
   const requests=[],completed=[];
   const http={get(q){requests.push(q);},post(q){requests.push(q);}};
-  vm.runInNewContext(fs.readFileSync(path.join(ROOT,'release/diagnostics',file),'utf8'),{
+  vm.runInNewContext(published.source(file),{
     $environment:{params},$argument:args,$config:config,$httpClient:http,
     $done(value){completed.push(value);},setTimeout(){}
   });
