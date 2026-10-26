@@ -8,7 +8,7 @@
 
 在已安装 Loon 的 iPhone / iPad 上使用 Safari 打开导入链接。**节点、订阅与代理账号需自行准备，本项目不提供。**
 
-当前版本：**v7.0.9** · [更新记录](./docs/CHANGELOG.md) · [构建状态](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
+当前版本：**v7.0.10** · [更新记录](./docs/CHANGELOG.md) · [构建状态](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
 
 ---
 
@@ -37,7 +37,7 @@
 
 **调整线路**：在 Loon 的策略页选择服务策略组，改选 `DIRECT`、`Proxy`、`Auto` 或 `Fallback`。`Fallback` 按可用性和候选顺序选择节点，不等同于延迟排名第二的节点。
 
-**排查连接**：在 **策略 → 选定节点 → ···** 中运行所需的诊断工具。出口信息与连接结果只反映当前测试条件，不应被当作永久性能或可用性保证。[网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md) · [插件源码](./release/v7.0.9/Network_Diagnostics.plugin)
+**排查连接**：在 **策略 → 选定节点 → ···** 中运行所需的诊断工具。出口信息与连接结果只反映当前测试条件，不应被当作永久性能或可用性保证。[网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md) · [插件源码](./release/Network_Diagnostics.plugin)
 
 **检查 DNS**：隐私优先时可在 Loon 的 **DNS → DNS 服务器** 中关闭「查询回落」，但加密 DNS 不可用时可能导致解析失败。该设置不能单独保证设备不存在 DNS 泄漏。[DNS 设置与核验](./docs/DNS_PRIVACY.md)
 
@@ -78,5 +78,5 @@
 
 - **安装与设置**：[导入指南](./docs/SETUP_GUIDE.md) · [托管与 App 设置](./docs/LOON_APP_SETTINGS.md) · [DNS 设置](./docs/DNS_PRIVACY.md)
 - **选路与排查**：[节点选择](./docs/NODE_SELECTION.md) · [网络辅助](./docs/NETWORK_DIAGNOSTICS.md) · [规则分类](./rules/README.md)
-- **版本与维护**：[更新记录](./docs/CHANGELOG.md) · [发布说明](./docs/RELEASE_NOTES_v7.0.9.md) · [校验信息](./docs/RELEASE_CHECKSUM_v7.0.9.md) · [维护指南](./docs/MAINTAINING.md)
+- **版本与维护**：[更新记录](./docs/CHANGELOG.md) · [发布说明](./docs/RELEASE_NOTES_v7.0.10.md) · [校验信息](./docs/RELEASE_CHECKSUM_v7.0.10.md) · [维护指南](./docs/MAINTAINING.md)
 - **项目说明**：[安全政策](./SECURITY.md) · [第三方许可](./docs/THIRD_PARTY_NOTICES.md) · [开源许可证](./LICENSE)

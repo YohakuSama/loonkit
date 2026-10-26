@@ -1,0 +1,19 @@
+#!name = LoonKit · 网络辅助
+#!desc = 节点出口 · 网络检测 · 服务解锁检测
+#!author = YohakuSama
+#!homepage = https://github.com/YohakuSama/loonkit
+#!icon = {{ICON_URI}}
+#!system = iOS,iPadOS
+#!loon_version = 3.5.1(983)
+#!tag = 网络,节点,诊断
+#!date = 2026-10-26
+#!type = normal
+
+[Argument]
+target_policy = input,"Proxy",tag=检测节点,desc=优先使用节点菜单选定的节点
+compare_direct = switch,false,tag=直连 IP 对照,desc=对照直连与代理出口 IP
+
+[Script]
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/{{SCRIPT_COMMIT}}/release/diagnostics/node-intelligence.js", {${target_policy}, ${compare_direct}}) with tag="节点信息", img_url="location.fill.viewfinder.system", timeout=80
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/{{SCRIPT_COMMIT}}/release/diagnostics/network-diagnostics.js", {${target_policy}}) with tag="网络检测", img_url="network.system", timeout=80
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/{{SCRIPT_COMMIT}}/release/diagnostics/media-unlock.js", {${target_policy}}) with tag="解锁检测", img_url="play.rectangle.system", timeout=80

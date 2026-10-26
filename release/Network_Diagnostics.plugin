@@ -1,12 +1,12 @@
 #!name = LoonKit · 网络辅助
-#!desc = 节点出口 · 网络检测 · 节点服务检测
+#!desc = 节点出口 · 网络检测 · 服务解锁检测
 #!author = YohakuSama
 #!homepage = https://github.com/YohakuSama/loonkit
-#!icon = https://raw.githubusercontent.com/YohakuSama/loonkit/97c48a5d14087597dbba35119d5ee8d43b1ce537/icons/v20261021r1/Console.png
+#!icon = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Console.png
 #!system = iOS,iPadOS
 #!loon_version = 3.5.1(983)
 #!tag = 网络,节点,诊断
-#!date = 2026-10-25
+#!date = 2026-10-26
 #!type = normal
 
 [Argument]
@@ -14,6 +14,6 @@ target_policy = input,"Proxy",tag=检测节点,desc=优先使用节点菜单选�
 compare_direct = switch,false,tag=直连 IP 对照,desc=对照直连与代理出口 IP
 
 [Script]
-generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/3b6ca83aa5be093db5a0b6079185e3ba4030000f/scripts/v20261025r3/node-intelligence.js", {${target_policy}, ${compare_direct}}) with tag="节点信息", img_url="location.fill.viewfinder.system", timeout=40
-generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/88d45878b3b638ffe40b53d2ba19c67be16008da/scripts/v20261025r1/network-diagnostics.js", {${target_policy}}) with tag="网络检测", img_url="network.system", timeout=40
-generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/48c256b0d1913f167fc1cd75ddd2ece2e78b3b3e/scripts/v20261025r2/media-unlock.js", {${target_policy}}) with tag="解锁检测", img_url="play.rectangle.system", timeout=30
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/node-intelligence.js", {${target_policy}, ${compare_direct}}) with tag="节点信息", img_url="location.fill.viewfinder.system", timeout=80
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/network-diagnostics.js", {${target_policy}}) with tag="网络检测", img_url="network.system", timeout=80
+generic then script("https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/media-unlock.js", {${target_policy}}) with tag="解锁检测", img_url="play.rectangle.system", timeout=80

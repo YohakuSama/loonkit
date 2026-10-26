@@ -15,7 +15,7 @@ import re
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-from beta_channel import URI
+from loon_resources import URI
 from regional_rules import condition, source_matcher
 VALID_HOST = re.compile(r"^(?=.{1,253}$)[a-z0-9-]+(?:\.[a-z0-9-]+)+$", re.I)
 KINDS = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "IP-CIDR", "IP-CIDR6", "IP-ASN", "GEOIP"}

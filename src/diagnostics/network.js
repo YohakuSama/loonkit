@@ -25,39 +25,20 @@
     if (/dns|resolv|host/.test(msg)) return "域名解析失败";
     return "连接失败";
   }
-  function httpProbe(label, url, policy, cb) {
-    var start=Date.now(), attempts=0, settled=false;
-    function done(ok, detail) {
-      if(settled)return;
-      settled=true;
-      cb({label:label,ok:ok,detail:detail,ms:Date.now()-start});
-    }
-    function probe(){
-      if(settled)return;
-      attempts++;
-      var called=false;
-      function finish(ok, detail, transient) {
-        if(called||settled)return;
-        called=true;
-        if(transient&&attempts<2){
-          setTimeout(probe,300);
-        } else done(ok,detail);
-      }
-      try {
-        $httpClient.get({url:url,node:policy,timeout:12500,insecure:false,
-          "auto-redirect":false,"auto-cookie":false},function(error,response){
-          if(error)return finish(false,errorText(error),true);
-          var status=Number(response&&response.status);
-          if(status===204)return finish(true,"HTTP 204 · 正常",false);
-          if(status===200)return finish(null,"响应异常（HTTP 200），可能需要网络认证",false);
-          if(status>=300&&status<400)return finish(null,"HTTP "+status+" · 目标重定向",false);
-          if(status>=500&&status<=599)return finish(null,"HTTP "+status+" · 目标服务暂时异常",true);
-          if(status>=400&&status<500)return finish(null,"HTTP "+status+" · 服务返回错误",false);
-          finish(null,"HTTP "+(status||"未知")+"（无法确认）",false);
-        });
-      }catch(error){finish(false,errorText(error),true);}
-    }
-    probe();
+  function httpProbe(label,url,policy,cb){
+    var start=Date.now();
+    function done(ok,detail){cb({label:label,ok:ok,detail:detail,ms:Date.now()-start});}
+    LoonKit.request("get",{url:url,node:policy,timeout:12500,insecure:false,
+      "auto-redirect":false,"auto-cookie":false},function(error,response){
+      if(error)return done(false,errorText(error));
+      var status=Number(response&&response.status);
+      if(status===204)return done(true,"HTTP 204 · 正常");
+      if(status===200)return done(null,"响应异常（HTTP 200），可能需要网络认证");
+      if(status>=300&&status<400)return done(null,"HTTP "+status+" · 目标重定向");
+      if(status>=500&&status<=599)return done(null,"HTTP "+status+" · 目标服务暂时异常");
+      if(status>=400&&status<500)return done(null,"HTTP "+status+" · 服务返回错误");
+      done(null,"HTTP "+(status||"未知")+"（无法确认）");
+    },{attempts:2,delay:300});
   }
   function nativeDns(cb) {
     var label="DNS 解析";
@@ -113,50 +94,11 @@
     return (value.ok===null?"—":value.ok?"✓":"✗")+" "+value.label+"："+value.detail+
       (typeof value.ms==="number"?"（"+value.ms+" ms）":"");
   }
-  function choose(value) {
-    return typeof value==="string" && value.trim()?value.trim():"";
-  }
+
   function safe(value) {
     return String(value||"").replace(/[\u0000-\u001f\u007f]/g," ").trim().slice(0,100);
   }
-  function resolveNode() {
-    var env=(typeof $environment==="object" && $environment && $environment.params)||{};
-    var args=(typeof $argument==="object" && $argument)||{};
-    var info=env.nodeInfo && typeof env.nodeInfo==="object"?env.nodeInfo:{};
-    // A node-menu invocation wins over the plugin's fallback policy argument.
-    var selected=choose(env.node)||choose(info.name)||choose(info.tag);
-    if(!selected)selected=choose(env.policyGroup)||choose(args.target_policy);
-    if(!selected)return "";
-    var config=typeof $config==="object"&&$config,groups=[],selection={};
-    try {
-      if(config&&typeof config.getConfig==="function"){
-        var snapshot=JSON.parse(config.getConfig()||"{}");
-        if(Array.isArray(snapshot.all_policy_groups))groups=snapshot.all_policy_groups;
-        if(snapshot.policy_select&&typeof snapshot.policy_select==="object")
-          selection=snapshot.policy_select;
-      }
-    }catch(e){}
-    var visited={},depth=0;
-    while(depth++<8){
-      if(visited[selected])return "";
-      visited[selected]=true;
-      if(/^(DIRECT|REJECT|REJECT-DROP)$/i.test(selected))return "";
-      var isGroup=groups.some(function(group){
-        return group===selected || group&&typeof group==="object"&&
-          (group.name===selected||group.tag===selected);
-      });
-      var child="";
-      try {
-        if(config&&typeof config.getSelectedPolicy==="function")
-          child=choose(config.getSelectedPolicy(selected));
-      }catch(e){}
-      if(!child)child=choose(selection[selected]);
-      if(child&&child!==selected){selected=child;continue;}
-      if(isGroup||/^(Proxy|Auto|Fallback|ALL_Filter)$/i.test(selected))return "";
-      return selected;
-    }
-    return "";
-  }
+
   // Native alert content is proportional-font text, not an HTML table.
   function shortNode(value) {
     var chars=Array.from(safe(value));
@@ -185,7 +127,7 @@
   }
 
   function manual() {
-    var target=resolveNode();
+    var target=LoonKit.resolveNode();
     if(!target || /[\u0000-\u001f\u007f]/.test(target)) {
       finish({title:"网络检测",
         content:"请在单个节点的菜单中运行网络检测，或在插件的「检测策略」中填写具体节点名称。"});

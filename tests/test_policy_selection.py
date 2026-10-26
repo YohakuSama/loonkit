@@ -89,7 +89,7 @@ class PolicySelectionTests(unittest.TestCase):
         active = "\n".join(line for line in self.profile.splitlines()
                            if line.strip() and not line.lstrip().startswith("#")) + "\n"
         self.assertEqual(hashlib.sha256(active.encode("utf-8")).hexdigest(),
-                         __import__('json').loads((ROOT/'build/release_spec.json').read_text())['current_runtime_directives_sha256'])
+                         __import__('json').loads((ROOT/'build/release_manifest.json').read_text())['runtime_directives_sha256'])
 
     def test_no_internal_candidate_or_audit_comments_in_profile(self):
         comment_lines = [line for line in self.profile.splitlines()

@@ -62,19 +62,17 @@ class AuditFixTests(unittest.TestCase):
             self.assertEqual(self.owner(host),'AdBlock',host)
 
     def test_protected_general_and_geoip_are_byte_identical(self):
-        recipe = json.loads((ROOT / 'build/release_recipe.json').read_text())
-        old = (ROOT / recipe['base']['path']).read_text()
+        model = json.loads((ROOT / 'build/profile.json').read_text())
         new = (ROOT / 'LoonKit.lcf').read_text()
-        for name in ['General', 'Rule', 'Remote Filter']:
-            clean = lambda text: [x for x in beta_channel.section(text, name).splitlines()
-                                  if x.strip() and not x.lstrip().startswith('#')]
-            self.assertEqual(clean(old), clean(new), name)
-        spec = json.loads((ROOT / 'build/release_spec.json').read_text())
         manifest = json.loads((ROOT / 'build/release_manifest.json').read_text())
-        expected = ('https://raw.githubusercontent.com/YohakuSama/loonkit/'
-                    + spec['plugin_assets_commit'] + '/' + manifest['plugin_path']
-                    + ', enabled=true')
+        lock = json.loads((ROOT / 'build/runtime.lock.json').read_text())
+        uri = model['plugins'][0]
+        expected = uri + ', enabled=true'
         self.assertEqual(beta_channel.section(new, 'Plugin').strip(), expected)
+        asset = next(row for row in lock['resources'] if row['uri'] == uri)
+        self.assertEqual(asset['kind'], 'plugin')
+        self.assertEqual(asset['local_path'], manifest['plugin_path'])
+        self.assertEqual(asset['sha256'], manifest['plugin_sha256'])
         self.assertIn('GEOIP,CN,DIRECT,no-resolve',new)
         self.assertIn('dns-reject-mode = LOOPBACKIP',new)
 

@@ -1,0 +1,946 @@
+{
+  "schema_version": 1,
+  "general": {
+    "dns-server": "223.5.5.5,223.6.6.6",
+    "doh-server": "https://dns.alidns.com/dns-query",
+    "hijack-dns": "*:53",
+    "ip-mode": "dual",
+    "ipv6-vif": "auto",
+    "interface-mode": "auto",
+    "sni-sniffing": "true",
+    "skip-proxy": "127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,*.local,captive.apple.com",
+    "bypass-tun": "10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32",
+    "real-ip": "*.apple.com,*.icloud.com,dns.msftncsi.com,*.srv.nintendo.net,*.xboxlive.com",
+    "disable-stun": "true",
+    "udp-fallback-mode": "REJECT",
+    "domain-reject-mode": "DNS",
+    "dns-reject-mode": "LOOPBACKIP",
+    "proxy-test-url": "http://www.bing.com",
+    "internet-test-url": "http://wifi.vivo.com.cn/generate_204",
+    "test-timeout": "5",
+    "allow-wifi-access": "false"
+  },
+  "filters": [
+    {
+      "name": "ALL_Filter",
+      "pattern": ".*"
+    },
+    {
+      "name": "Auto_Filter",
+      "pattern": ".*"
+    },
+    {
+      "name": "Fallback_Filter",
+      "pattern": ".*"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Proxy",
+      "type": "select",
+      "members": [
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Proxy.png"
+    },
+    {
+      "name": "Auto",
+      "type": "url-test",
+      "members": [
+        "Auto_Filter"
+      ],
+      "options": {
+        "url": "http://www.bing.com",
+        "interval": 600,
+        "tolerance": 60
+      },
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Auto.png"
+    },
+    {
+      "name": "Fallback",
+      "type": "fallback",
+      "members": [
+        "Fallback_Filter"
+      ],
+      "options": {
+        "url": "http://www.bing.com",
+        "interval": 900,
+        "max-timeout": 2200
+      },
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Fallback.png"
+    },
+    {
+      "name": "AdBlock",
+      "type": "select",
+      "members": [
+        "REJECT",
+        "DIRECT",
+        "Proxy"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AdBlock.png"
+    },
+    {
+      "name": "Final",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "DIRECT"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Final.png"
+    },
+    {
+      "name": "AI",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AI.png"
+    },
+    {
+      "name": "ChatGPT",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/ChatGPT.png"
+    },
+    {
+      "name": "Gemini",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Gemini.png"
+    },
+    {
+      "name": "Claude",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Claude.png"
+    },
+    {
+      "name": "GitHub",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/GitHub.png"
+    },
+    {
+      "name": "Google",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Google.png"
+    },
+    {
+      "name": "Microsoft",
+      "type": "select",
+      "members": [
+        "DIRECT",
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Microsoft.png"
+    },
+    {
+      "name": "Apple",
+      "type": "select",
+      "members": [
+        "DIRECT",
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Apple.png"
+    },
+    {
+      "name": "Cloudflare",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Cloudflare.png"
+    },
+    {
+      "name": "Speedtest",
+      "type": "select",
+      "members": [
+        "DIRECT",
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Speedtest.png"
+    },
+    {
+      "name": "YouTube",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/YouTube.png"
+    },
+    {
+      "name": "Netflix",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Netflix.png"
+    },
+    {
+      "name": "Disney",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Disney.png"
+    },
+    {
+      "name": "PrimeVideo",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/PrimeVideo.png"
+    },
+    {
+      "name": "Spotify",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Spotify.png"
+    },
+    {
+      "name": "TikTok",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/TikTok.png"
+    },
+    {
+      "name": "Twitch",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Twitch.png"
+    },
+    {
+      "name": "HBO",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/HBO.png"
+    },
+    {
+      "name": "Abema",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Abema.png"
+    },
+    {
+      "name": "動畫瘋",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AnimeCrazy.png"
+    },
+    {
+      "name": "Dazn",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Dazn.png"
+    },
+    {
+      "name": "BBC",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/BBC.png"
+    },
+    {
+      "name": "Bilibili",
+      "type": "select",
+      "members": [
+        "DIRECT",
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Bilibili.png"
+    },
+    {
+      "name": "Telegram",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Telegram.png"
+    },
+    {
+      "name": "Whatsapp",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Whatsapp.png"
+    },
+    {
+      "name": "Instagram",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Instagram.png"
+    },
+    {
+      "name": "Facebook",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Facebook.png"
+    },
+    {
+      "name": "Twitter",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Twitter.png"
+    },
+    {
+      "name": "Discord",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Discord.png"
+    },
+    {
+      "name": "Line",
+      "type": "select",
+      "members": [
+        "DIRECT",
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Line.png"
+    },
+    {
+      "name": "Reddit",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Reddit.png"
+    },
+    {
+      "name": "Linkedin",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Linkedin.png"
+    },
+    {
+      "name": "Steam",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "DIRECT",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Steam.png"
+    },
+    {
+      "name": "Paypal",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Paypal.png"
+    }
+  ],
+  "remote_rules": [
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "policy": "AdBlock",
+      "tag": "Our-AdBlock-Balanced",
+      "source_group": "AdBlock"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-DomesticCore",
+      "source_group": "DomesticCore"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-DomesticSupplement",
+      "source_group": "DomesticCore"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamCN.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-SteamCN",
+      "source_group": "SteamCN"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticAI.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-DomesticAI",
+      "source_group": "DomesticAI"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/ChatGPT.lsr",
+      "policy": "ChatGPT",
+      "tag": "Our-ChatGPT",
+      "source_group": "ChatGPT"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Gemini.lsr",
+      "policy": "Gemini",
+      "tag": "Our-Gemini",
+      "source_group": "Gemini"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Claude.lsr",
+      "policy": "Claude",
+      "tag": "Our-Claude",
+      "source_group": "Claude"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AIScoped.lsr",
+      "policy": "AI",
+      "tag": "Our-AIScoped",
+      "source_group": "AI"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/GitHub.lsr",
+      "policy": "GitHub",
+      "tag": "Our-GitHub",
+      "source_group": "GitHub"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Speedtest.lsr",
+      "policy": "Speedtest",
+      "tag": "Our-Speedtest",
+      "source_group": "Speedtest"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Cloudflare.lsr",
+      "policy": "Cloudflare",
+      "tag": "Our-Cloudflare",
+      "source_group": "Cloudflare"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Spotify.lsr",
+      "policy": "Spotify",
+      "tag": "Our-Service-Spotify",
+      "source_group": "Spotify"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Twitch.lsr",
+      "policy": "Twitch",
+      "tag": "Our-Service-Twitch",
+      "source_group": "Twitch"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-BBC.lsr",
+      "policy": "BBC",
+      "tag": "Our-Service-BBC",
+      "source_group": "BBC"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Line.lsr",
+      "policy": "Line",
+      "tag": "Our-Service-Line",
+      "source_group": "Line"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Reddit.lsr",
+      "policy": "Reddit",
+      "tag": "Our-Service-Reddit",
+      "source_group": "Reddit"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Linkedin.lsr",
+      "policy": "Linkedin",
+      "tag": "Our-Service-Linkedin",
+      "source_group": "Linkedin"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Abema.lsr",
+      "policy": "Abema",
+      "tag": "Our-Service-Abema",
+      "source_group": "Abema"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "policy": "Proxy",
+      "tag": "Our-SharedInfrastructure",
+      "source_group": "SharedInfrastructure"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
+      "policy": "Apple",
+      "tag": "Our-AppleOTA",
+      "source_group": "AppleOTA"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr",
+      "policy": "Steam",
+      "tag": "Our-SteamGlobal",
+      "source_group": "Steam"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/YouTube.lsr",
+      "policy": "YouTube",
+      "tag": "Our-YouTube",
+      "source_group": "YouTube"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/Netflix.lsr",
+      "policy": "Netflix",
+      "tag": "Our-Netflix",
+      "source_group": "Netflix"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Disney.lsr",
+      "policy": "Disney",
+      "tag": "Our-Disney",
+      "source_group": "Disney"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/PrimeVideo.lsr",
+      "policy": "PrimeVideo",
+      "tag": "Our-PrimeVideo",
+      "source_group": "PrimeVideo"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/TikTok.lsr",
+      "policy": "TikTok",
+      "tag": "Our-TikTok",
+      "source_group": "TikTok"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Bilibili.lsr",
+      "policy": "Bilibili",
+      "tag": "Our-Bilibili",
+      "source_group": "Bilibili"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AnimeCrazy.lsr",
+      "policy": "動畫瘋",
+      "tag": "Our-AnimeCrazy",
+      "source_group": "動畫瘋"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Dazn.lsr",
+      "policy": "Dazn",
+      "tag": "Our-Dazn",
+      "source_group": "Dazn"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Telegram.lsr",
+      "policy": "Telegram",
+      "tag": "Our-Telegram",
+      "source_group": "Telegram"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Whatsapp.lsr",
+      "policy": "Whatsapp",
+      "tag": "Our-Whatsapp",
+      "source_group": "Whatsapp"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Instagram.lsr",
+      "policy": "Instagram",
+      "tag": "Our-Instagram",
+      "source_group": "Instagram"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Facebook.lsr",
+      "policy": "Facebook",
+      "tag": "Our-Facebook",
+      "source_group": "Facebook"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Twitter.lsr",
+      "policy": "Twitter",
+      "tag": "Our-Twitter",
+      "source_group": "Twitter"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Discord.lsr",
+      "policy": "Discord",
+      "tag": "Our-Discord",
+      "source_group": "Discord"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/HBO.lsr",
+      "policy": "HBO",
+      "tag": "Our-HBO",
+      "source_group": "HBO"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Google.lsr",
+      "policy": "Google",
+      "tag": "Our-Google",
+      "source_group": "Google"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Microsoft.lsr",
+      "policy": "Microsoft",
+      "tag": "Our-Microsoft",
+      "source_group": "Microsoft"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr",
+      "policy": "Apple",
+      "tag": "Our-Apple",
+      "source_group": "Apple"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr",
+      "policy": "Steam",
+      "tag": "Our-Steam",
+      "source_group": "Steam"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Paypal.lsr",
+      "policy": "Paypal",
+      "tag": "Our-Paypal",
+      "source_group": "Paypal"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/ChinaDirect.lsr",
+      "policy": "DIRECT",
+      "tag": "Our-ChinaDirect-Scoped",
+      "source_group": "ChinaDirect"
+    }
+  ],
+  "hosts": {
+    "dns.alidns.com": "223.5.5.5"
+  },
+  "rules": [
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "raw.githubusercontent.com",
+      "policy": "Proxy",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "trae-api-sg.mchost.guru",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "trae-api-us.mchost.guru",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "gemini.google.com",
+      "policy": "Gemini",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "aistudio.google.com",
+      "policy": "Gemini",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "copilot.microsoft.com",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "copilot-proxy.githubusercontent.com",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "copilot-telemetry-service.githubusercontent.com",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "copilot-telemetry.githubusercontent.com",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "DOMAIN",
+      "value": "copilot-workspace.githubnext.com",
+      "policy": "AI",
+      "flags": []
+    },
+    {
+      "type": "GEOIP",
+      "value": "CN",
+      "policy": "DIRECT",
+      "flags": [
+        "no-resolve"
+      ]
+    },
+    {
+      "type": "FINAL",
+      "value": "",
+      "policy": "Final",
+      "flags": []
+    }
+  ],
+  "plugins": [
+    "https://raw.githubusercontent.com/YohakuSama/loonkit/f79361451216850fecf9f9914720fb4f1c36861f/release/Network_Diagnostics.plugin"
+  ],
+  "service_roots": {
+    "Spotify": [
+      "spotify.com",
+      "scdn.co",
+      "byspotify.com",
+      "pscdn.co",
+      "spoti.fi",
+      "spotify-com.akamaized.net",
+      "spotify-everywhere.com",
+      "spotify.app.link",
+      "spotify.design",
+      "spotify.link",
+      "spotifycdn.com",
+      "spotifycdn.net",
+      "spotifycharts.com",
+      "spotifycodes.com",
+      "spotilocal.com"
+    ],
+    "Twitch": [
+      "twitch.tv",
+      "ttvnw.net",
+      "ext-twitch.tv",
+      "jtvnw.net",
+      "twitchcdn.net",
+      "twitchcon.com",
+      "twitchsvc.net"
+    ],
+    "Abema": [
+      "abema.tv",
+      "abema.io",
+      "abema-tv.com",
+      "abematv.akamaized.net",
+      "abematv.co.jp",
+      "ds-linear-abematv.akamaized.net",
+      "ds-vod-abematv.akamaized.net",
+      "linear-abematv.akamaized.net",
+      "vod-abematv.akamaized.net"
+    ],
+    "BBC": [
+      "bbc.co.uk",
+      "bbc.com",
+      "bbc.co",
+      "bbc.in",
+      "bbc.net.uk",
+      "bbci.co",
+      "bbci.co.uk",
+      "bbcmedia.co.uk",
+      "bbcchinese.com",
+      "bbcverticals.com",
+      "bbc.mp-pxcdn.com",
+      "bbcfmt.hs.llnwd.net",
+      "bbcfmt.s.llnwi.net"
+    ],
+    "Line": [
+      "line.me",
+      "line-apps.com",
+      "gcld-line.com",
+      "lin.ee",
+      "line-apps-beta.com",
+      "line-apps-rc.com",
+      "line-beta.me",
+      "line-cdn.net",
+      "line-scdn.net",
+      "line.biz",
+      "linecorp.com",
+      "linegame.jp",
+      "linemobile.com"
+    ],
+    "Reddit": [
+      "reddit.com",
+      "redd.it",
+      "reddit.app.link",
+      "redditblog.com",
+      "reddithelp.com",
+      "redditinc.com",
+      "redditmail.com",
+      "redditmedia.com",
+      "redditspace.com",
+      "redditstatic.com",
+      "redditstatus.com",
+      "reddituploads.com"
+    ],
+    "Linkedin": [
+      "linkedin.com",
+      "licdn.com",
+      "linkedin.at",
+      "linkedin.cn",
+      "licdn.cn",
+      "lnkd.in"
+    ]
+  }
+}

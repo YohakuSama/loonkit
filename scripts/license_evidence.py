@@ -85,7 +85,15 @@ def check(root: Path=ROOT) -> dict:
     evidence=json.loads((root/BASE/"legal_evidence.json").read_text(encoding="utf-8"))
     if evidence.get("schema_version")!=1 or evidence.get("release_candidate")!="vNext-RC2":
         raise ValueError("unknown legal evidence version")
-    manifest=json.loads((root/BASE/"release_manifest.json").read_text(encoding="utf-8"))
+    # This evidence describes a historical merged snapshot, independently of
+    # today's runtime inventory. Keep the reviewed scope bound to its bytes.
+    relative=evidence.get("candidate_manifest_path", "")
+    if not re.fullmatch(r"build/baselines/v[0-9]+\.[0-9]+\.[0-9]+/release_manifest\.json", relative):
+        raise ValueError("historical evidence requires a scoped baseline manifest")
+    raw=(root/relative).read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=evidence.get("candidate_manifest_sha256"):
+        raise ValueError("historical evidence manifest bytes changed")
+    manifest=json.loads(raw)
     sha=manifest["source_snapshot_commit"]
     if not GIT_SHA.fullmatch(sha) or evidence.get("candidate_rule_commit")!=sha:
         raise ValueError("legal evidence does not match RC2 pinned Git commit")

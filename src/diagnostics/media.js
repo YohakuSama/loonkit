@@ -6,45 +6,7 @@
  */
 (function () {
   "use strict";
-  var args=typeof $argument==="object"&&$argument||{};
-  var env=typeof $environment==="object"&&$environment.params||{};
-  var info=env.nodeInfo&&typeof env.nodeInfo==="object"?env.nodeInfo:{};
-  function string(v){return typeof v==="string"?v.trim():"";}
-  function resolveNode(){
-    var selected=string(info.name)||string(info.tag)||string(env.node)||
-      string(env.policyGroup)||string(args.target_policy);
-    if(!selected||selected.length>200||/[\u0000-\u001f\u007f]/.test(selected))return "";
-    var config=typeof $config==="object"&&$config,groups=[],selection={};
-    try{
-      if(config&&typeof config.getConfig==="function"){
-        var snapshot=JSON.parse(config.getConfig()||"{}");
-        if(Array.isArray(snapshot.all_policy_groups))groups=snapshot.all_policy_groups;
-        if(snapshot.policy_select&&typeof snapshot.policy_select==="object")
-          selection=snapshot.policy_select;
-      }
-    }catch(e){}
-    var seen={},depth=0;
-    while(depth++<8){
-      if(seen[selected])return "";
-      seen[selected]=true;
-      if(/^(DIRECT|REJECT|REJECT-DROP)$/i.test(selected))return "";
-      var isGroup=groups.some(function(group){
-        return group===selected||group&&typeof group==="object"&&
-          (group.name===selected||group.tag===selected);
-      });
-      var child="";
-      try{
-        if(config&&typeof config.getSelectedPolicy==="function")
-          child=string(config.getSelectedPolicy(selected));
-      }catch(e){}
-      if(!child)child=string(selection[selected]);
-      if(child&&child!==selected){selected=child;continue;}
-      if(isGroup||/^(Proxy|Auto|Fallback|ALL_Filter)$/i.test(selected))return "";
-      return selected;
-    }
-    return "";
-  }
-  var node=resolveNode();
+  var node=LoonKit.resolveNode();
   if(!node){
     $done({title:"解锁检测",content:"请从单个节点运行，或在检测策略中指定具体节点。"});return;
   }
@@ -53,7 +15,7 @@
     ["disney","Disney+"],["netflix","Netflix"],["chatgpt","ChatGPT"],
     ["youtube","YouTube Premium"]
   ];
-  var result={},closed=false,completeCount=0,active=0,queue=[],MAX_HTTP=7;
+  var result={},closed=false,completeCount=0,active=0,queue=[],MAX_HTTP=3;
   function status(r){return Number(r&&r.status)||0;}
   function header(r,key){
     var h=r&&r.headers||{},keys=Object.keys(h);
@@ -66,19 +28,19 @@
   function verdict(state,geo){return {state:state,geo:region(geo)};}
   function enqueue(url,options,callback){
     if(closed)return;
-    queue.push({url:url,options:options||{},callback:callback});
+    queue.push({url:url,options:options||{},callback:callback,attempt:0});
     pump();
   }
   function pump(){
     while(!closed&&active<MAX_HTTP&&queue.length){
       (function(task){
-        active++;var once=false,o=task.options;
+        active++;
+        var once=false,o=task.options;
         var request={
-          url:task.url,node:node,timeout:o.timeout||5000,
+          url:task.url,node:node,timeout:o.timeout||11000,
           insecure:false,
           headers:{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/94.0.4606.61 Safari/537.36"}
         };
-        // Preserve Loon's default redirect/cookie behavior unless a probe needs the raw response.
         if(o.redirect===false)request["auto-redirect"]=false;
         if(o.cookie===false)request["auto-cookie"]=false;
         var headers=o.headers||{};
@@ -86,13 +48,21 @@
         if(o.method==="POST")request.body=o.body;
         function completed(err,response,body){
           if(once)return;once=true;active--;
-          if(!closed)task.callback(err,response||{},typeof body==="string"?body.slice(0,200000):"");
+          if(closed)return;
+          var code=Number(response&&response.status)||0;
+          var transient=!!err||(code>=500&&code<=599);
+          if(transient&&task.attempt<1){
+            task.attempt++;
+            // Queue the retry after other probes. All requests retain the exact
+            // originating node, endpoint, method and headers.
+            queue.push(task);
+          }else{
+            task.callback(err,response||{},typeof body==="string"?body.slice(0,200000):"");
+          }
           if(!closed)pump();
         }
         try{
-          var method=o.method==="POST"?$httpClient.post:$httpClient.get;
-          if(typeof method!=="function")throw new Error("No HTTP method");
-          method.call($httpClient,request,completed);
+          LoonKit.request(o.method==="POST"?"post":"get",request,completed,{attempts:1});
         }catch(e){completed(e,null,"");}
       })(queue.shift());
     }
@@ -173,7 +143,7 @@
         if(!isTitle)return finish(verdict("failed"));
         var parts=origin.split("/"),area=parts.length>3?parts[3].split("-")[0].toUpperCase():"";
         finish(verdict("full",area==="TITLE"?"":region(area)));
-      },{timeout:6000,headers:{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15"}});
+      },{timeout:12500,headers:{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15"}});
     }else if(id==="youtube"){
       get("https://www.youtube.com/premium",function(err,res,body){
         if(err||status(res)!==200)return finish(verdict("failed"));
@@ -184,7 +154,7 @@
         if(!geo&&body.indexOf("www.google.cn")!==-1)geo="CN";
         if(/google accounts|verify you are human|unusual traffic|sign in - google/i.test(body))return finish(verdict("failed"));
         finish(verdict("supported",geo));
-      },{timeout:10000});
+      },{timeout:12000});
     }else if(id==="chatgpt"){
       get("https://chatgpt.com/",function(err,res,body){
         var sc=status(res),redirect=header(res,"location");
@@ -254,5 +224,5 @@
       if(!once&&!closed){once=true;result[it[0]]=verdict("failed");if(++completeCount===items.length)done();}
     }
   });
-  setTimeout(done,22000);
+  setTimeout(done,69000);
 })();

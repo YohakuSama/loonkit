@@ -7,6 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 URI = re.compile(r"https://raw\.githubusercontent\.com/YohakuSama/loonkit/(?P<sha>[a-f0-9]{40})/(?P<path>[A-Za-z0-9_./-]+)\Z")
 
 
+def pinned_uri(uri: str) -> dict:
+    hit = URI.fullmatch(uri)
+    if not hit or ".." in hit["path"].split("/"):
+        raise ValueError("runtime asset must use an immutable repository URL: " + uri)
+    return {"uri": uri, "commit": hit["sha"], "path": hit["path"]}
+
+
 def section(profile: str, name: str) -> str:
     hit = re.search(r"(?m)^\[" + re.escape(name) + r"\]$", profile)
     if not hit:
