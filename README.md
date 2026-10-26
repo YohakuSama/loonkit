@@ -1,47 +1,35 @@
-<p align="center">
-  <img src="./docs/assets/loonkit-mark.svg" width="84" alt="LoonKit" />
+<p>
+  <img src="./docs/assets/loonkit-mark.svg" width="64" height="64" alt="LoonKit 路径分流标识" />
 </p>
 
-<h1 align="center">LoonKit</h1>
+# LoonKit
 
-<p align="center">
-  <strong>让每一条连接，都有清晰的去向。</strong><br />
-  适用于 Loon 的规则分流配置与节点诊断工具箱。
+**让连接按你的规则走。**
+
+一套面向 [Loon](https://nsloon.app/) 的分流配置与网络诊断工具箱。把服务分流、节点选择和连接排查组织在一起；保留清晰的策略边界，也保留你对每个出口的控制。
+
+<p>
+  <a href="./docs/CHANGELOG.md"><img alt="Release v7.0.9" src="https://img.shields.io/badge/release-v7.0.9-334155?style=flat" /></a>
+  <a href="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml"><img alt="Build status" src="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main" /></a>
+  <a href="./LICENSE"><img alt="GPL-2.0-only" src="https://img.shields.io/badge/license-GPL--2.0--only-334155?style=flat" /></a>
 </p>
 
-<p align="center">
-  <a href="./docs/CHANGELOG.md"><img src="https://img.shields.io/badge/release-v7.0.9-17181c?style=flat-square" alt="v7.0.9" /></a>
-  <a href="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml"><img src="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-GPL--2.0--only-17181c?style=flat-square" alt="GPL-2.0-only" /></a>
+<p>
+  <a href="https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf"><img src="./docs/assets/import-loon.svg" width="186" height="44" alt="一键导入 Loon" /></a>
 </p>
 
-<p align="center">
-  <a href="https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf"><img src="./docs/assets/import-loon.svg" width="222" alt="一键导入 LoonKit" /></a>
-  &nbsp;
-  <a href="https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf"><img src="./docs/assets/download-config.svg" width="164" alt="下载配置" /></a>
-</p>
+[获取配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf) · [快速开始](#快速开始) · [诊断工具](#诊断工具) · [关键设置](#关键设置) · [常见问题](#常见问题) · [文档](#文档)
 
-<p align="center">
-  <sub>iPhone / iPad 上使用 Safari 打开。导入时请检查「托管」与「全覆盖更新」选项。</sub>
-</p>
-
-<p align="center">
-  <a href="#快速开始">快速开始</a> &nbsp;·&nbsp;
-  <a href="#插件与诊断">插件与诊断</a> &nbsp;·&nbsp;
-  <a href="#关键设置">关键设置</a> &nbsp;·&nbsp;
-  <a href="#常见问题">常见问题</a> &nbsp;·&nbsp;
-  <a href="#文档">文档</a>
-</p>
+<sub>在 iPhone / iPad 的 Safari 中打开导入链接；使用前请安装 Loon。项目不提供节点、订阅或代理账号。</sub>
 
 ---
 
-当前版本：**v7.0.9**。
+## 一套可读、可维护的分流方案
 
-LoonKit 将 AI、开发、流媒体、社交及国内常用服务的规则组织为独立策略组，配合广告管理、节点测速与原生诊断插件。项目 **不提供节点、机场订阅或代理账号**；请导入自己的节点并按需选路。
-
-<p align="center">
-  <strong>39</strong> 策略组　 ·　 <strong>43</strong> 远程规则　 ·　 <strong>3</strong> 网络诊断工具　 ·　 <strong>40</strong> 配套图标
-</p>
+- **服务独立选路** — AI、开发平台、流媒体与国内常用服务使用独立策略组。
+- **节点由你决定** — 配合 Auto / Fallback 策略、自有订阅与广告过滤，不内置代理服务。
+- **诊断选定节点** — 分别查看真实出口、连接状态、DNS 与七项服务访问情况。
+- **升级可追溯** — 版本化插件、变更日志、构建检查与回滚资料相互对应。
 
 ## 快速开始
 
@@ -73,13 +61,13 @@ LoonKit 将 AI、开发、流媒体、社交及国内常用服务的规则组织
 
 进入 Loon 的 **配置 / 设置 → DNS → DNS 服务器 → 查询回落 → 关闭**。
 
-你的真实截图显示这一开关位于「DNS 服务器」页面。关闭后能避免 **DoH 查询失败时通过普通 DNS 重试**；但如果 DoH 被当前网络阻断，域名解析可能失败。**这不等于保证全设备零 DNS 泄漏。**
+已核对的 Loon 界面显示此开关位于「DNS 服务器」页面。关闭后能避免 **DoH 查询失败时通过普通 DNS 重试**；但如果 DoH 被当前网络阻断，域名解析可能失败。**这不等于保证全设备零 DNS 泄漏。**
 
 当前配置使用 AliDNS DoH：`https://dns.alidns.com/dns-query`，并保留普通 DNS 地址用于对应场景。截图中的「DoH 流量模式 DIRECT」是 *DoH 请求的路由方式*，**不是「查询回落」开关**。
 
 [DNS 原理与检查](./docs/DNS_PRIVACY.md) · [Loon 官方 DNS 文档](https://nsloon.app/docs/DNS/)
 
-## 功能概览
+## 功能与策略
 
 | 功能 | 当前提供的能力 |
 | :--- | :--- |
@@ -89,7 +77,7 @@ LoonKit 将 AI、开发、流媒体、社交及国内常用服务的规则组织
 | **Diagnostics** | 节点实际出口、网络与 DNS 检查、七项服务访问检测。 |
 | **Release** | 固定资源提交、构建清单、回滚基线和持续集成校验。 |
 
-## 插件与诊断
+## 诊断工具
 
 LoonKit 的三项手动诊断均可从 **「策略 → 某个节点 → ···」** 菜单运行。下面是根据实际输出整理的**脱敏示例**；测试 IP 为保留示例地址，具体节点与结果随你的网络变化。
 
@@ -213,10 +201,4 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf
 
 ---
 
-<p align="center">
-  <sub>Built for Loon. Designed for control.</sub><br />
-  <a href="https://github.com/YohakuSama/loonkit/issues">Issues</a> ·
-  <a href="./SECURITY.md">Security</a> ·
-  <a href="./docs/THIRD_PARTY_NOTICES.md">Third-party licenses</a> ·
-  <a href="./LICENSE">GPL-2.0-only</a>
-</p>
+<sub>Made for Loon · [Issues](https://github.com/YohakuSama/loonkit/issues) · [Security](./SECURITY.md) · [Third-party notices](./docs/THIRD_PARTY_NOTICES.md) · [GPL-2.0-only](./LICENSE)</sub>
