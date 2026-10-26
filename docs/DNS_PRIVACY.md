@@ -19,7 +19,7 @@ AliDNS 支持 EDNS Client Subnet（ECS），有助于满足条件时的 CDN/地�
 1. 进入 **配置 / 设置 → DNS → DNS 服务器**，查看当前 DoH 服务器与「DoH 流量模式」。
 2. 默认使用 AliDNS 时，无须更换。若改用自建或第三方解析器，把 **DoH 服务器地址**替换为其官方提供的完整 HTTPS URL；仅修改「普通 DNS」或 `dns-server` **不会替换 DoH**。
 3. **海外 DoH 需要代理访问时，将「DoH 流量模式」设为 `RULE`**，确认对应域名/IP 的命中策略实际走可用节点；不能仅切换选项就假定解析成功。国内或自建解析器能够直连时，通常可继续使用 `DIRECT`。
-4. 在同一页面按需求设置「查询回落」，随后分别在 Wi-Fi 和蜂窝网络上核对 DNS 日志、规则命中与实际网页访问。
+4. 「查询回落」的设置取决于隐私与可用性偏好，具体行为见下节；修改后记录当前选项，避免与 DoH 的 `RULE` 模式混淆。
 5. 如同时编辑托管的 `LoonKit.lcf`，需要同步检查 `[General]` 的 `doh-server`；配置重新导入或全覆盖更新后，要复核 App 中生效的服务器及流量模式。**不要假定 App 手工改动会永久覆盖托管配置。**
 
 若新 DoH 使用域名，请额外核对其启动解析是否可用；项目中 `[Host]` 对 `dns.alidns.com` 的固定地址**只用于默认 AliDNS**，不能拿来映射其他解析器。节点入口域名也可能有独立的 `server-dns`，与普通网页 DNS 分开配置和检查。
@@ -48,14 +48,16 @@ dns.alidns.com = 223.5.5.5
 
 `dns-server` 是普通 UDP DNS；`doh-server` 是加密 DNS 端点；`[Host]` 提供 AliDNS 主机名的启动地址；`hijack-dns = *:53` 处理匹配的 UDP/53 DNS 查询，**不等于拦截所有加密 DNS**。
 
-## 检查顺序
+## 按故障现象定位
 
-1. **默认 AliDNS**：确认 DNS 服务器可达，日志出现有效解析，常用国内/海外网站能正常连接；不要把一个检测页面的 DNS 列表当成完整抓包结果。
-2. **更换海外 DoH**：确认 DoH URL 正确、`RULE` 已选、解析器请求命中代理、节点能访问 HTTPS 端点，然后再测域名解析与服务访问。
-3. **关闭查询回落后**：在可控环境模拟 DoH 不可达，记录是否解析失败；恢复网络再次核对。
-4. **IPv4 / IPv6、Wi-Fi / 蜂窝**：分别检查 A/AAAA、DNS 请求路径与连接结果；节点专属 `server-dns` 需单独检查。
+| 现象 | 检查重点 |
+| --- | --- |
+| 默认 AliDNS 偶尔解析失败 | 核对 DoH 端点可达性、Loon DNS 日志和网络切换时机；暂不急于更换全套解析器。 |
+| 更换海外 DoH 后无法打开网站 | 在请求记录中确认解析器请求是否按 `RULE` 命中可用代理，再区分 DoH TLS 连接失败与目标服务本身不可达。 |
+| 关闭「查询回落」后只有部分网络不可用 | 在可控环境检查是否存在被阻断的 DoH 连接；恢复原网络与配置后复测，不把失败直接归因于规则。 |
+| 仅 IPv6 或仅某类节点异常 | 分别检查 A/AAAA、Wi-Fi/蜂窝网络、节点 `server-dns` 与实际连接路径。 |
 
-网络辅助工具可显示 Loon DNS API 的测试结果，但无法代替设备侧抓包和请求路径核验。
+**验证能力边界**：DNS 日志显示解析结果，网络辅助工具显示 Loon DNS API 的测试结果；若要判断是否存在明文查询或绕行，仍需核查对应请求路径，必要时在授权的网络中抓包。单个检测网页不代表设备上的全部 DNS 请求。
 
 参考：[Loon 官方 DNS 文档](https://nsloon.app/docs/DNS/) · [Loon 节点 DNS](https://nsloon.app/docs/Node/) · [阿里云 ECS 说明](https://www.alibabacloud.com/help/zh/dns/pvtz-intelligent-analysis-of-vpc-single-line-egress-based-on-forwarding-management)
 
