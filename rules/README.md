@@ -1,6 +1,6 @@
 # 分流规则：匹配范围与策略归属
 
-这里说明 **LoonKit 会把哪些请求交给哪个策略组**，不负责教用户导入配置、选节点或操作 DNS。实际生效清单以 [LoonKit.lcf](../LoonKit.lcf) 和自动生成的 [release_manifest.json](../build/release_manifest.json) 为准；规则资源目录名（例如 `v7.0.3`）是固定资源的历史版本，**不等于当前配置版本**。
+LoonKit 根据本地规则与远程规则，将请求交给对应策略组。生效清单以 [LoonKit.lcf](../LoonKit.lcf) 和自动生成的 [release_manifest.json](../build/release_manifest.json) 为准；资源目录名称（例如 `v7.0.3`）表示规则资产的版本，并不等于正式配置版本。
 
 ## 规则如何参与选路
 
