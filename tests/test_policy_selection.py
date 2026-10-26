@@ -148,7 +148,8 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertIn("第一个可用节点", nodes)
         # Each navigation destination should own one task rather than repeat a setup checklist.
         self.assertIn("从空配置到可以使用", setup)
-        self.assertIn("首次安装与验收", setup)
+        self.assertIn("## 2. 导入并应用配置", setup)
+        self.assertIn("## 4. 首次验收", setup)
         self.assertIn("配置托管、更新与覆盖风险", app)
         self.assertIn("三项检测的区别", diagnostics_doc)
         self.assertIn("分流规则：匹配范围与策略归属", rules_doc)
