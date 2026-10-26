@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LoonKit 分流路径标识">
+  <title>LoonKit</title>
+  <g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 48H40" stroke="#F0F3F9"/>
+    <path d="M40 48C47 48 51 38 57 33L70 21" stroke="#8CA7FF"/>
+    <path d="M40 48C47 48 51 58 57 63L70 75" stroke="#F0F3F9"/>
+  </g>
+  <circle cx="19" cy="48" r="7" fill="#F0F3F9"/>
+  <circle cx="73" cy="18" r="7" fill="#8CA7FF"/>
+  <circle cx="73" cy="78" r="7" fill="#F0F3F9"/>
+</svg>
