@@ -63,7 +63,7 @@
 
 - **切换线路**：在 Loon 的策略页选择服务策略组，改选 `DIRECT`、`Proxy`、`Auto` 或 `Fallback`。其中 `Fallback` 选择第一个可用节点，而不是延迟第二低的节点。
 - **检查出口**：在 **策略 → 选定节点 → ···** 中运行所需的网络辅助工具，区分节点入口、实际出口与连接状态。[网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md)
-- **核对 DNS**：可在 **DNS → DNS 服务器** 中检查「查询回落」选项。隐私优先时可以关闭，但 DoH 不可用时可能导致解析失败；该设置不代表设备不存在 DNS 泄漏。[DNS 设置与核验](./docs/DNS_PRIVACY.md)
+- **DNS 默认方案**：默认使用 AliDNS，适合主要在中国大陆网络使用；也可换成自建或国内可稳定访问、按需支持 ECS 的解析器。若更换为需要代理访问的**海外 DoH**，进入 **配置 / 设置 → DNS → DNS 服务器**，替换 DoH URL，并将 **「DoH 流量模式」设为 `RULE`**，核对解析器请求是否实际走可用代理。「查询回落」是另一个独立开关。[DNS 设置与核验](./docs/DNS_PRIVACY.md)
 
 <details>
 <summary><strong>进阶设置与兼容性</strong></summary>
