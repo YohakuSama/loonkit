@@ -6,6 +6,6 @@
 | v6.5.5-beta.4 | 用户反馈使用正常 |
 | v6.5.2 | 用户反馈使用正常 |
 
-自动化校验结果见 [CI](https://github.com/YohakuSama/loonkit/actions)。设备记录包含客户端版本、配置 hash、场景、结果和测试时间。
+上述是已收集的历史设备反馈，不代表其他版本已完成实机验收。自动化校验见 [CI](https://github.com/YohakuSama/loonkit/actions)；完整设备记录应包含客户端版本、配置 hash、测试网络、场景、结果和时间。没有设备记录的版本不应被描述为通过实机测试。
 
 [测试矩阵](./BETA_DEVICE_MATRIX.md) · [发布记录](./CHANGELOG.md)

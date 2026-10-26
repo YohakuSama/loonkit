@@ -101,7 +101,7 @@ LoonKit 不内置个人节点。请添加自己的节点订阅，并检查 `Prox
 
 ## 文档导航
 
-以下文档按任务分工，详细步骤和技术解释集中在对应页面，不需要逐篇重复阅读。
+按使用场景选择对应文档：
 
 **使用指南** · [首次导入与验收](./docs/SETUP_GUIDE.md) · [托管、更新与覆盖风险](./docs/LOON_APP_SETTINGS.md) · [节点筛选与测速](./docs/NODE_SELECTION.md) · [DNS 与 DoH 故障定位](./docs/DNS_PRIVACY.md)
 

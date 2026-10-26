@@ -1,6 +1,8 @@
-# 分流设计
+# 历史 Beta 分流设计记录
 
-| 范围 | 处理方式 |
+这里保留早期 Beta 方案中的地区判断设计，**不是当前正式规则的配置说明**。正式分流行为以[规则说明](../rules/README.md)和[正式配置](../LoonKit.lcf)为准。
+
+| 范围 | 当时的设计方式 |
 | --- | --- |
 | 国内常用服务 | 现有国内服务规则与 GEOIP 兜底。 |
 | Apple / Microsoft / Paypal / Bilibili | 先检查解析 IP 的 CN 条件；CN 直连，其他结果进入服务策略。 |
@@ -10,6 +12,6 @@
 | 未知服务 | Final。 |
 | 上游更新 | 受限精确域名增量进入 beta 草稿；地区分流及高风险变更人工审阅。 |
 
-现役规则不使用 USER-AGENT 或 DOMAIN-KEYWORD 猜测业务归属。GEOIP,CN,DIRECT,no-resolve 保持原样。
+该方案不以 `USER-AGENT` 或 `DOMAIN-KEYWORD` 推断服务归属；文中涉及的 CN 条件分流属于这一阶段的设计记录，不能据此推断现行正式规则仍使用相同处理方式。
 
 [规则审阅](./RULE_SAFETY.md) · [DNS](./DNS_PRIVACY.md)

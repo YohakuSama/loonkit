@@ -1,4 +1,6 @@
-# Loon 2026-09-11 syntax audit — beta-only knowledge refresh
+# Loon 2026-09-11 syntax audit — historical beta snapshot
+
+> Historical evidence recorded on 2026-09-11. References to production v6.5.4, beta v6.5.5-beta.2 and the seven-day gate describe the state **at that date**, not the current main branch. For current configuration and user instructions, see [LoonKit.lcf](../LoonKit.lcf) and [DNS guide](./DNS_PRIVACY.md).
 
 Status: **documented / CI contract tests / actual Loon runtime NOT tested**.
 This audit makes **no runtime configuration changes**. Keep production main v6.5.4,

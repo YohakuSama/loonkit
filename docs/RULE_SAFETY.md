@@ -17,7 +17,7 @@
 
 DOMAIN-SET 的无前导点域名转换为 DOMAIN，带前导点域名转换为 DOMAIN-SUFFIX。V2Fly include 递归展开并保存快照；不可等价转换的正则进入排除证据。
 
-当前正式版 v6.5.9 起，Apple、Microsoft、PayPal、Bilibili、AppleOTA 的现役订阅均使用 Loon 原生 DOMAIN / DOMAIN-SUFFIX；不生成 AND / OR / NOT 复合 GEOIP，也不声称保留同域名按 CN/非 CN IP 分流。早期 v6.5.8 嵌套规则仅为历史归档；Beta 为内部测试，不对普通用户提供安装入口。上游审阅保留来源和服务边界，不凭推测扩宽域名或共享 CDN。
+自 v6.5.9 的规则结构调整后，Apple、Microsoft、PayPal、Bilibili、AppleOTA 的正式订阅使用 Loon 原生 `DOMAIN` / `DOMAIN-SUFFIX`，不再通过 `AND` / `OR` / `NOT` 复合 GEOIP 规则，对同一域名按 CN / 非 CN 解析 IP 切换策略。v6.5.8 的嵌套规则属于历史基线；Beta 的候选规则不应作为普通用户的正式安装入口。现行规则归属见[分流规则说明](../rules/README.md)，上游审阅不凭推测扩大共享 CDN 或公共租户范围。
 
 ## 自动化产物
 

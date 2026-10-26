@@ -1,6 +1,6 @@
 # 测试渠道
 
-当前测试版：**v6.5.9-beta.1**，基于正式版 **v6.5.8**。
+测试渠道配置版本：**v6.5.9-beta.1**；其构建基线为历史正式版本 **v6.5.8**，与当前 `main` 上的正式配置分开维护。版本关系见 [Beta 资源清单](../build/beta_manifest.json)。
 
 [导入测试版](https://raw.githubusercontent.com/YohakuSama/loonkit/beta/beta/LoonKit.lcf)
 
@@ -12,7 +12,7 @@
 | 构建与资源清单 | build/beta_manifest.json |
 | 验收项目 | [设备测试矩阵](./BETA_DEVICE_MATRIX.md) |
 | 更新机制 | [上游更新](./BETA_UPSTREAM_AUTOMATION.md) |
-| 回滚 | [固定正式配置](https://raw.githubusercontent.com/YohakuSama/loonkit/6eef8e7c218330d5f62a63d3ce155395b566d2db/LoonKit.lcf) |
+| 历史基线恢复 | [Beta 构建所用的固定正式配置](https://raw.githubusercontent.com/YohakuSama/loonkit/6eef8e7c218330d5f62a63d3ce155395b566d2db/LoonKit.lcf)（不是最新正式版） |
 
 广告拦截默认启用；停用 Beta-AdBlock-Balanced 远程规则可恢复服务原有分流。
 
