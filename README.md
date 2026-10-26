@@ -50,6 +50,8 @@
 [逐屏导入教程](./docs/SETUP_GUIDE.md) · [托管与更新选项](./docs/LOON_APP_SETTINGS.md)
 ## 功能与策略
 
+当前版本：**v7.0.9**。
+
 | 功能 | 当前提供的能力 |
 | :--- | :--- |
 | **Routing** | 国内常用服务优先直连，AI、Google、GitHub、流媒体与社交应用独立策略。 |
