@@ -1,6 +1,6 @@
 # LoonKit 图标
 
-所有策略组及网络诊断 PNG 图标统一存放在本目录 `icons/`，均为 **512×512 PNG**，不再分版本创建 PNG 子目录。
+策略组及网络诊断使用的 PNG 图标统一存放在 `icons/`，尺寸均为 **512×512**。
 
 应用图标的原始素材及统一规范见 [App Store 来源清单](./appstore_sources.json)；可重新生成的脚本为 [build_appstore_icons.py](../scripts/build_appstore_icons.py)。已有图标可编辑 SVG 源文件保存在 [source](./source/)，不参与运行时资源引用。
 
