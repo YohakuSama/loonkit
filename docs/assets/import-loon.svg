@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186 44" width="186" height="44" role="img" aria-label="一键导入 Loon">
 <title>一键导入 Loon</title>
-<rect x="0.75" y="0.75" width="184.5" height="42.5" rx="9" fill="#192332"/>
+<rect x="0.75" y="0.75" width="184.5" height="42.5" rx="9" fill="#355BE8"/>
 <path d="M23 12v16m-6-6 6 6 6-6M17 32h12" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="43" y="27" fill="#FFFFFF" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif" font-size="15" font-weight="600">一键导入 Loon</text>
 <path d="m164 17 5 5-5 5" fill="none" stroke="#BFC9D7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
