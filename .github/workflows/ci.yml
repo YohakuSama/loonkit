@@ -27,6 +27,8 @@ jobs:
           python3 scripts/verify_release.py --check --remote
       - name: Current third-party license gate
         run: python3 scripts/license_audit.py --check
+      - name: README and documentation integrity
+        run: python3 scripts/check_readme_presentation.py
       - name: Active production regression tests
         run: python3 scripts/test_suites.py current
       - name: Simulate two successive releases without publication (isolated Git clone)
