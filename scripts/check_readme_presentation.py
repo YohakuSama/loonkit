@@ -104,6 +104,21 @@ def check() -> list[str]:
                 errors.append("Mobile banner is too tall: " + filename)
             if filename.startswith("readme-hero-wide") and width / height < 2.5:
                 errors.append("Desktop banner is too tall: " + filename)
+            if filename.startswith("readme-hero-mobile"):
+                panel = [node for node in root.iter() if node.attrib.get("class") == "route-panel"]
+                options = [node for node in root.iter() if node.attrib.get("class") == "route-option"]
+                if len(panel) != 1 or len(options) != 3:
+                    errors.append("Mobile route panel or option labels missing: " + filename)
+                else:
+                    box = panel[0]
+                    box_right = float(box.attrib["x"]) + float(box.attrib["width"])
+                    box_bottom = float(box.attrib["y"]) + float(box.attrib["height"])
+                    for option in options:
+                        right = float(option.attrib["x"]) + float(option.attrib["width"])
+                        bottom = float(option.attrib["y"]) + float(option.attrib["height"])
+                        if box_right - right < 16 or box_bottom - bottom < 6:
+                            errors.append("Mobile route label outside safe panel area: " + filename)
+                            break
         except (ET.ParseError, ValueError) as exc:
             errors.append("Invalid SVG " + filename + ": " + str(exc))
 
