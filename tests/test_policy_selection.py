@@ -145,7 +145,14 @@ class PolicySelectionTests(unittest.TestCase):
         self.assertIn("第一个可用节点", nodes)
         self.assertIn("DNS 服务器", app)
         self.assertIn("加密 DNS 失败回退到普通 DNS", dns)
-        self.assertIn("不能独立证明全设备无 DNS 泄漏", dns)
+        self.assertIn("不能单靠一个开关判断整个设备的 DNS 路径", dns)
+        # Keep user-facing guidance aligned with the actual default resolver and App mode.
+        for doc in (readme, dns, app):
+            self.assertIn("AliDNS", doc)
+            self.assertIn("ECS", doc)
+            self.assertIn("RULE", doc)
+        self.assertIn("海外 DoH", dns)
+        self.assertIn("查询回落", dns)
         self.assertIn("Paypal 默认使用 `Proxy`", app)
         self.assertIn("disable-stun = true", app)
         self.assertIn("udp-fallback-mode = REJECT", app)
