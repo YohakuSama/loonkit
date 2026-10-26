@@ -1,7 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LoonKit 路径分流标识">
-<title>LoonKit</title>
-<path d="M19 48H38" fill="none" stroke="#192332" stroke-width="9" stroke-linecap="round"/>
-<path d="M38 48H44C49 48 51 44 55 40L70 25" fill="none" stroke="#3D63F5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M38 48H44C49 48 51 52 55 56L70 71" fill="none" stroke="#192332" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="19" cy="48" r="7" fill="#192332"/><circle cx="73" cy="22" r="7" fill="#3D63F5"/><circle cx="73" cy="74" r="7" fill="#192332"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LoonKit 分流路径标识">
+  <title>LoonKit</title>
+  <g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 48H40" stroke="#172334"/>
+    <path d="M40 48C47 48 51 38 57 33L70 21" stroke="#3D63F5"/>
+    <path d="M40 48C47 48 51 58 57 63L70 75" stroke="#172334"/>
+  </g>
+  <circle cx="19" cy="48" r="7" fill="#172334"/>
+  <circle cx="73" cy="18" r="7" fill="#3D63F5"/>
+  <circle cx="73" cy="78" r="7" fill="#172334"/>
 </svg>
