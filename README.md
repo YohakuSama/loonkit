@@ -3,55 +3,49 @@
     <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="./docs/assets/readme-hero-mobile-dark.svg" />
     <source media="(max-width: 600px)" srcset="./docs/assets/readme-hero-mobile-light.svg" />
     <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/readme-hero-wide-dark.svg" />
-    <img src="./docs/assets/readme-hero-wide-light.svg" alt="LoonKit：面向 Loon 的规则分流配置，支持按策略选择直连、自动或代理线路" width="960" />
+    <img src="./docs/assets/readme-hero-wide-light.svg" alt="LoonKit：为 Loon 提供规则分流、节点选路与网络辅助的配置" width="960" />
   </picture>
 </p>
 
 <p align="center">
-  <strong>适用于 Loon 的规则分流配置与网络辅助工具。</strong>
+  <strong>让不同服务，走各自合适的线路。</strong>
 </p>
 
 <p align="center">
-  国内常用服务优先直连，AI、开发平台、流媒体与社交应用可分别选路；<br />
-  配合节点管理、广告过滤和连接诊断，按需要调整每一类流量的去向。
+  适用于 Loon 的规则分流配置与网络辅助工具。<br />
+  国内常用服务优先直连，AI、开发平台和流媒体等服务可独立选路。
 </p>
 
 <p align="center">
   <a href="https://www.nsloon.com/openloon/import?sub=https%3A%2F%2Fraw.githubusercontent.com%2FYohakuSama%2Floonkit%2Fmain%2FLoonKit.lcf">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/readme-cta-dark.svg" />
-      <img src="./docs/assets/readme-cta-light.svg" alt="一键导入 Loon" width="214" height="50" />
+      <img src="./docs/assets/readme-cta-light.svg" alt="一键导入 Loon" width="214" height="48" />
     </picture>
   </a>
 </p>
 
 <p align="center">
-  <a href="https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf">获取配置地址</a> ·
-  <a href="#快速开始">快速开始</a> ·
-  <a href="./docs/SETUP_GUIDE.md">配置指南</a>
+  <sub>请在已安装 Loon 的 iPhone / iPad 上通过 Safari 导入 · 节点与订阅需自行准备</sub>
 </p>
 
 <p align="center">
-  <sub><a href="./docs/CHANGELOG.md">Release notes</a> · <a href="https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml">Production CI</a> · <a href="./LICENSE">GPL-2.0-only</a></sub>
+  <a href="https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf">获取配置地址</a> ·
+  <a href="#快速开始">快速开始</a> ·
+  <a href="./docs/SETUP_GUIDE.md">完整指南</a>
 </p>
 
-当前版本：**v7.0.10**。
-
-> [!NOTE]
-> 项目不提供节点、订阅或代理账号。使用前请准备好 Loon 和自己的节点，并备份已有配置。
+当前版本：**v7.0.10** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
 
 ---
 
 ## 功能概览
 
-**按服务分流**  
-国内常用服务优先直连，AI、Google、GitHub、流媒体及社交服务使用对应策略组。可以在 Loon 中为不同服务分别指定线路，而不必让全部流量共用同一个出口。
+**服务分流** — 根据服务类别分别设定策略。国内常用服务优先直连，AI、开发平台、流媒体与社交服务按需选择线路。
 
-**灵活选择节点**  
-在 `Proxy` 中手动选择线路，或使用 `Auto` 根据测速结果选路、`Fallback` 在候选线路中选择可用节点。`AdBlock` 可按需求选择拦截、直连或代理。
+**节点选路** — 通过 `Proxy` 手动选路、`Auto` 根据测速选择节点，或由 `Fallback` 在候选线路中选择可用节点；广告管理由 `AdBlock` 策略控制。
 
-**定位网络问题**  
-在选定节点上查看出口信息、连接状态与 DNS 结果。网络辅助提供的是测试时的参考信息，不替代 Loon 的请求日志，也不保证节点始终可用。
+**网络辅助** — 在选定节点上查看出口信息、连接状态和 DNS 结果，辅助定位问题。诊断结果反映测试时的网络状况，不代表持续可用。
 
 ## 快速开始
 
