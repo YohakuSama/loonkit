@@ -1,3 +1,0 @@
-# StashKit Google ipcidr from LoonKit v7.0.10
-173.194.0.0/16
-74.125.0.0/16

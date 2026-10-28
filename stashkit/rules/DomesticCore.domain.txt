@@ -1,7 +1,0 @@
-# StashKit • DomesticCore • domain • sourced from LoonKit v7.0.10
-+.alipay.com
-+.alipayobjects.com
-+.amap.com
-+.hello-inc.com
-+.hellobike.com
-+.helloglobal.com
