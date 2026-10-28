@@ -1,0 +1,2 @@
+# StashKit Facebook asn from LoonKit v7.0.10
+IP-ASN,32934,no-resolve
