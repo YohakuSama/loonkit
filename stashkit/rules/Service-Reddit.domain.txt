@@ -1,0 +1,13 @@
+# StashKit Service-Reddit domain from LoonKit v7.0.10
++.reddit.com
++.redd.it
++.reddit.app.link
++.redditblog.com
++.reddithelp.com
++.redditinc.com
++.redditmail.com
++.redditmedia.com
++.redditspace.com
++.redditstatic.com
++.redditstatus.com
++.reddituploads.com

@@ -1,0 +1,10 @@
+# StashKit Service-Abema domain from LoonKit v7.0.10
++.abema.tv
++.abema.io
++.abema-tv.com
++.abematv.akamaized.net
++.abematv.co.jp
++.ds-linear-abematv.akamaized.net
++.ds-vod-abematv.akamaized.net
++.linear-abematv.akamaized.net
++.vod-abematv.akamaized.net
