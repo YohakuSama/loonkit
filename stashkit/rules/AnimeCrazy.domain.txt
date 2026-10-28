@@ -1,0 +1,7 @@
+# StashKit AnimeCrazy domain from LoonKit v7.0.10
++.bahamut.akamaized.net
++.bahamut.com.tw
++.digicert.com
++.gamer.com.tw
++.hinet.net
++.viblast.com

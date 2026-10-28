@@ -1,0 +1,2 @@
+# StashKit ChinaDirect asn from LoonKit v7.0.10
+IP-ASN,132203,no-resolve

@@ -1,0 +1,9 @@
+# StashKit SharedInfrastructure domain from LoonKit v7.0.10
+api.statsig.com
+client-api.arkoselabs.com
++.featuregates.org
++.host.livekit.cloud
++.turn.livekit.cloud
++.aliexpress.com
++.lazada.com
++.daraz.com

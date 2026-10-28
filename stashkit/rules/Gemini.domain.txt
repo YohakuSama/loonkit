@@ -1,0 +1,21 @@
+# StashKit • Gemini • domain • LoonKit v7.0.10
+alkalicore-pa.clients6.google.com
+alkalimakersuite-pa.clients6.google.com
+geminiweb-pa.clients.google.com
+geminiweb-pa.clients6.google.com
+webchannel-alkalimakersuite-pa.clients6.google.com
++.ai.google.dev
++.ai.studio
++.aistudio.google.com
++.bard.google.com
++.gemini.google
++.gemini.google.com
++.gemini.gstatic.com
++.generativeai.google
++.generativeai.googleapis.com
++.generativelanguage.googleapis.com
++.makersuite.google.com
++.proactivebackend-pa.googleapis.com
++.robinfrontend-pa.googleapis.com
+webchannel-robinfrontend-pa.googleapis.com
+geminiweb-pa.googleapis.com

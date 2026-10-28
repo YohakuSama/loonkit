@@ -1,0 +1,8 @@
+# StashKit Cloudflare domain from LoonKit v7.0.10
++.cloudflare-dns.com
++.cloudflare.com
++.cloudflareaccess.com
++.cloudflareclient.com
++.cloudflarestatus.com
++.cloudflarewarp.com
++.one.one.one

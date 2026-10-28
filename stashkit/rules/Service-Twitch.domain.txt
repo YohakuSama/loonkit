@@ -1,0 +1,8 @@
+# StashKit Service-Twitch domain from LoonKit v7.0.10
++.twitch.tv
++.ttvnw.net
++.ext-twitch.tv
++.jtvnw.net
++.twitchcdn.net
++.twitchcon.com
++.twitchsvc.net

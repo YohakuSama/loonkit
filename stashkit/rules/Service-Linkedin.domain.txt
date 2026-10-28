@@ -1,0 +1,7 @@
+# StashKit Service-Linkedin domain from LoonKit v7.0.10
++.linkedin.com
++.licdn.com
++.linkedin.at
++.linkedin.cn
++.licdn.cn
++.lnkd.in

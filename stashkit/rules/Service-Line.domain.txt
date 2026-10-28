@@ -1,0 +1,14 @@
+# StashKit Service-Line domain from LoonKit v7.0.10
++.line.me
++.line-apps.com
++.gcld-line.com
++.lin.ee
++.line-apps-beta.com
++.line-apps-rc.com
++.line-beta.me
++.line-cdn.net
++.line-scdn.net
++.line.biz
++.linecorp.com
++.linegame.jp
++.linemobile.com

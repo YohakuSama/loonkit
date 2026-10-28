@@ -1,0 +1,38 @@
+name: StashKit validation
+
+on:
+  pull_request:
+    paths:
+      - 'stashkit/**'
+      - '.github/workflows/stashkit-ci.yml'
+      - 'LoonKit.lcf'
+      - 'build/release_manifest.json'
+      - 'rules/releases/**'
+  push:
+    branches: [main]
+    paths:
+      - 'stashkit/**'
+      - '.github/workflows/stashkit-ci.yml'
+      - 'LoonKit.lcf'
+      - 'build/release_manifest.json'
+      - 'rules/releases/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install YAML parser
+        run: python -m pip install 'PyYAML>=6,<7'
+      - name: Validate all source and Stash rule assets
+        run: python stashkit/scripts/verify.py
