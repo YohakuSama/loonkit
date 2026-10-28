@@ -1,0 +1,7 @@
+name: StashKit — personal proxy provider example
+desc: Replace the URL and save as provider.stoverride before importing. Do not commit private URLs.
+# Example only: invalid URL by design. NOT a working subscription.
+proxy-providers:
+  personal:
+    url: https://example.invalid/REPLACE-WITH-YOUR-CLASH-YAML-PROXY-PROVIDER
+    interval: 3600
