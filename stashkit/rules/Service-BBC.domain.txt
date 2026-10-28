@@ -1,0 +1,14 @@
+# StashKit Service-BBC domain from LoonKit v7.0.10
++.bbc.co.uk
++.bbc.com
++.bbc.co
++.bbc.in
++.bbc.net.uk
++.bbci.co
++.bbci.co.uk
++.bbcmedia.co.uk
++.bbcchinese.com
++.bbcverticals.com
++.bbc.mp-pxcdn.com
++.bbcfmt.hs.llnwd.net
++.bbcfmt.s.llnwi.net

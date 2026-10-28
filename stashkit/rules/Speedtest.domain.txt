@@ -1,0 +1,9 @@
+# StashKit Speedtest domain from LoonKit v7.0.10
++.fast.com
++.ooklaserver.net
++.speed.cloudflare.com
++.speed.dler.io
++.speedtest.co
++.speedtest.net
++.speedtestcustom.com
++.ookla.com
