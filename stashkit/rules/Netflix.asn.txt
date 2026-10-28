@@ -1,0 +1,3 @@
+# StashKit Netflix asn from LoonKit v7.0.10
+IP-ASN,2906,no-resolve
+IP-ASN,40027,no-resolve
