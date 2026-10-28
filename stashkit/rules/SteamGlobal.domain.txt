@@ -1,5 +1,0 @@
-# StashKit SteamGlobal domain from LoonKit v7.0.10
-+.cm.steampowered.com
-+.steamcontent.com
-+.steamserver.net
-+.steamusercontent.com
