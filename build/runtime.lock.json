@@ -42,14 +42,6 @@
       "sha256": "2ce8d9baeb0607f9d01235155ffb01d1f6f7cc01d666d225d00db039b12011cb"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AdBlockBalanced.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/AdBlockBalanced.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.3/AdBlockBalanced.lsr",
-      "sha256": "eb4b30b96232bd76f4308f2333478ed94d1c2d885079ffd0da4b7b5f66738349"
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AnimeCrazy.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/AnimeCrazy.lsr",
@@ -376,6 +368,22 @@
       "kind": "rule",
       "local_path": "rules/releases/v7.0.5/TikTok.lsr",
       "sha256": "7ed1afd1772a81cedf24c845677c05b9b9cb4fcace4bbf026223dc6f50436e14"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
+      "commit": "90659c20351c37fe505d7db18896baf0aeb8f59d",
+      "path": "rules/releases/v7.0.13/AdBlockBalanced.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.13/AdBlockBalanced.lsr",
+      "sha256": "24b185b258c81bc9b119c3bd6537bf32ac3acdc3c6eb2ee1481d3af98300d273"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/Crypto.lsr",
+      "commit": "90659c20351c37fe505d7db18896baf0aeb8f59d",
+      "path": "rules/releases/v7.0.13/Crypto.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.13/Crypto.lsr",
+      "sha256": "7c2f02c26d1281c33b7b5aeb0b03b964840f1dc0bd5aa4dcecf8c0a3c5365fb9"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/a9d4e9dc22f573d3f2a4ccd3776441d007f1e686/icons/Crypto.png",

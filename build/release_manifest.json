@@ -1,23 +1,33 @@
 {
   "schema_version": 2,
-  "label": "v7.0.12",
+  "label": "v7.0.13",
   "profile_sha256": {
-    "LoonKit.lcf": "5aaed7c152d45bbcd007a385083358c31d8127ad8777bb82c793c08eb83df077"
+    "LoonKit.lcf": "3e557ce9ac043a9e8faa9e96e1bddc4e03a957e8439c13d7cd107daf7b0c6c34"
   },
-  "runtime_directives_sha256": "76c0661065d48b5eb239cb849084b638c66befdeb68a053b7e1137097cdb1690",
-  "remote_subscription_count": 43,
-  "remote_rule_count": 196561,
-  "runtime_rule_matcher_count": 196561,
+  "runtime_directives_sha256": "acfd7792ce8551d1c63b985361edf3955869cdbce22c372612e8d6f3cf32771e",
+  "remote_subscription_count": 44,
+  "remote_rule_count": 196779,
+  "runtime_rule_matcher_count": 196779,
   "runtime_resources": [
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AdBlockBalanced.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
+      "commit": "90659c20351c37fe505d7db18896baf0aeb8f59d",
+      "path": "rules/releases/v7.0.13/AdBlockBalanced.lsr",
       "policy": "AdBlock",
       "tag": "Our-AdBlock-Balanced",
       "enabled": "true",
-      "sha256": "eb4b30b96232bd76f4308f2333478ed94d1c2d885079ffd0da4b7b5f66738349",
-      "matcher_count": 76895
+      "sha256": "24b185b258c81bc9b119c3bd6537bf32ac3acdc3c6eb2ee1481d3af98300d273",
+      "matcher_count": 76894
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/Crypto.lsr",
+      "commit": "90659c20351c37fe505d7db18896baf0aeb8f59d",
+      "path": "rules/releases/v7.0.13/Crypto.lsr",
+      "policy": "Crypto",
+      "tag": "Our-Crypto",
+      "enabled": "true",
+      "sha256": "7c2f02c26d1281c33b7b5aeb0b03b964840f1dc0bd5aa4dcecf8c0a3c5365fb9",
+      "matcher_count": 219
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
@@ -444,6 +454,9 @@
     "AdBlock": [
       "Our-AdBlock-Balanced"
     ],
+    "Crypto": [
+      "Our-Crypto"
+    ],
     "DomesticCore": [
       "Our-DomesticCore",
       "Our-DomesticSupplement"
@@ -568,7 +581,8 @@
     ]
   },
   "source_group_counts": {
-    "AdBlock": 76895,
+    "AdBlock": 76894,
+    "Crypto": 219,
     "DomesticCore": 9,
     "SteamCN": 13,
     "DomesticAI": 10,
@@ -709,7 +723,7 @@
     "channel": "stable"
   },
   "previous_release": {
-    "version": "v7.0.11",
-    "profile_sha256": "b553dc48964161498d43e0deb8e15f0c06003748178a3d92a303fdef0bc1233b"
+    "version": "v7.0.12",
+    "profile_sha256": "5aaed7c152d45bbcd007a385083358c31d8127ad8777bb82c793c08eb83df077"
   }
 }
