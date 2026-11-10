@@ -145,11 +145,11 @@ def source_line(source: dict, line: str) -> str | None:
         if not parts:
             raise ValueError("unexpected v2fly tokens")
         # v2fly allows multiple whitespace-separated @attributes (e.g.
-        # "@ads @telemetry") as well as comma-separated attributes.
+        # "@ads @telemetry") as well as comma-separated attributes and negated tags like @!cn.
         # Reject non-attribute trailing tokens rather than ignoring them.
         attrs = []
         for token in parts[1:]:
-            if not re.fullmatch(r"@[a-z0-9_-]+(?:,[a-z0-9_-]+)*", token, re.I):
+            if not re.fullmatch(r"@!?[a-z0-9_-]+(?:,!?[a-z0-9_-]+)*", token, re.I):
                 raise ValueError("unexpected v2fly attribute")
             attrs.extend(token[1:].lower().split(","))
         if any(attr in source.get("skip_attrs", []) for attr in attrs):
