@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "release_engine": "structured",
-  "stable_release_version": "v7.0.10",
+  "stable_release_version": "v7.0.11",
   "status": "FORMAL_RELEASE",
   "historical_profile_sha256": {
     "v6.5.6": "d75c37a9dc0dcb8a109c1cdaa0cae647a95b7f70dcf22ec94a5e1ac179528b11",
@@ -20,10 +20,11 @@
     "v7.0.6": "0b042aef3cb4ffc3d8093c6187c86b82965a4dcb23e495200fbcc1389466c054",
     "v7.0.7": "f4da045371cc972600bff705bb13805a6555cd3dd9f87ec673fe543eeee4dbd0",
     "v7.0.8": "54997635234cd77c8c8c021a9730187ffe982694a7852a776222acd4aa5270b3",
-    "v7.0.9": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee"
+    "v7.0.9": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee",
+    "v7.0.10": "45d873cc35dcc614bfe02786ca20ad35b7a8771e480c78c9a667df18f54918bb"
   },
   "previous_release": {
-    "version": "v7.0.9",
-    "profile_sha256": "27cb11582335c1ac4d8d459e8a0140c8a8ab82ff1725ba36c70382518d171dee"
+    "version": "v7.0.10",
+    "profile_sha256": "45d873cc35dcc614bfe02786ca20ad35b7a8771e480c78c9a667df18f54918bb"
   }
 }
