@@ -13,7 +13,7 @@
 
 <p align="center">
   适用于 Loon 的规则分流配置与网络辅助工具。<br />
-  国内常用服务优先直连，AI、开发平台和流媒体等服务可独立选路。
+  国内常用服务优先直连，AI、加密货币平台、开发平台和流媒体等服务可独立选路。
 </p>
 
 <p align="center">
@@ -35,13 +35,13 @@
   <a href="./docs/SETUP_GUIDE.md">首次导入</a>
 </p>
 
-当前版本：**v7.0.10** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
+当前版本：**v7.0.11** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
 
 ---
 
 ## 功能概览
 
-**服务分流** — 根据服务类别分别设定策略。国内常用服务优先直连，AI、开发平台、流媒体与社交服务按需选择线路。
+**服务分流** — 根据服务类别分别设定策略。国内常用服务优先直连；`Crypto` 对明确登记的交易所、钱包和行情域名默认走代理，不交给国内直连兜底。AI、开发平台、流媒体与社交服务按需选路。
 
 **节点选路** — 通过 `Proxy` 手动选路、`Auto` 根据测速选择节点，或由 `Fallback` 在候选线路中选择可用节点；广告管理由 `AdBlock` 策略控制。
 
@@ -57,11 +57,11 @@
 > [!IMPORTANT]
 > 主配置的 `[Proxy]` 和 `[Remote Proxy]` 默认不包含个人节点。**「全覆盖更新」可能替换现有节点、订阅及本地设置。** 只有完成备份、确认接受覆盖后果时，才在首次完整部署中使用。
 
-[详细导入步骤](./docs/SETUP_GUIDE.md) · [托管与更新选项](./docs/LOON_APP_SETTINGS.md)
+[详细导入步骤](./docs/SETUP_GUIDE.md) · [托管与更新选项](./docs/LOON_APP_SETTINGS.md) · macOS 请在 Loon for Mac 内从 [配置地址](https://raw.githubusercontent.com/YohakuSama/loonkit/main/LoonKit.lcf) 导入
 
 ## 使用与排查
 
-- **切换线路**：在 Loon 的策略页选择服务策略组，改选 `DIRECT`、`Proxy`、`Auto` 或 `Fallback`。其中 `Fallback` 选择第一个可用节点，而不是延迟第二低的节点。
+- **切换线路**：在 Loon 的策略页选择服务策略组，改选 `DIRECT`（仅限提供此选项的组）、`Proxy`、`Auto` 或 `Fallback`。`Crypto` 不提供 `DIRECT` 选项，默认使用 `Proxy`；其中 `Fallback` 选择第一个可用节点，而不是延迟第二低的节点。
 - **检查出口**：在 **策略 → 选定节点 → ···** 中运行所需的网络辅助工具，区分节点入口、实际出口与连接状态。[网络辅助说明](./docs/NETWORK_DIAGNOSTICS.md)
 - **DNS 默认方案**：默认使用 AliDNS，适合主要在中国大陆网络使用；也可换成自建或国内可稳定访问、按需支持 ECS 的解析器。若更换为需要代理访问的**海外 DoH**，进入 **配置 / 设置 → DNS → DNS 服务器**，替换 DoH URL，将 **「DoH 流量模式」设为 `RULE`**，并确认解析器请求实际命中可用代理。
 - **DNS 查询回落（隐私优先建议关闭）**：进入 **配置 / 设置 → DNS → DNS 服务器 → 查询回落 → 关闭**。关闭后，Loon 的加密 DNS 查询失败时不会自动回落至普通 DNS，可减少这类明文 DNS 重试；但如果 DoH 不可用，可能出现域名解析失败。优先考虑可用性的用户可根据网络情况决定是否开启。这是**独立于「DoH 流量模式」的 App 开关**，也不能据此判断设备的全部 DNS 路径。[DNS 设置与核验](./docs/DNS_PRIVACY.md)
@@ -71,7 +71,7 @@
 
 - 节点测速默认使用 `http://www.bing.com`，实际结果受网络与节点影响。
 - 自动选路和备用线路的候选筛选可分别设置，见[节点选择说明](./docs/NODE_SELECTION.md)。
-- 网络辅助使用脚本功能，无需仅为此安装 MitM 证书。
+- 网络辅助插件声明兼容 iOS、iPadOS 与 macOS 版 Loon；macOS 上请使用支持新版 Generic Script 的 Loon for Mac，具体功能仍应在实际设备与节点上核验。无需仅为此安装 MitM 证书。
 - TUN、UDP、QUIC、IPv6 应根据实际网络及节点协议调整；遇到问题时先核对 Loon 请求记录。
 
 </details>
@@ -107,6 +107,6 @@ LoonKit 不内置个人节点。请添加自己的节点订阅，并检查 `Prox
 
 **规则与诊断** · [规则命中与策略归属](./rules/README.md) · [诊断结果解读](./docs/NETWORK_DIAGNOSTICS.md) · [插件定义文件](./release/Network_Diagnostics.plugin) · [诊断公共源码](./src/diagnostics/common.js)
 
-**项目维护** · [历史变更记录](./docs/CHANGELOG.md) · [当前版发布说明](./docs/RELEASE_NOTES_v7.0.10.md) · [当前版 SHA256](./docs/RELEASE_CHECKSUM_v7.0.10.md) · [构建、校验与发布流程](./docs/MAINTAINING.md)
+**项目维护** · [历史变更记录](./docs/CHANGELOG.md) · [当前版发布说明](./docs/RELEASE_NOTES_v7.0.11.md) · [当前版 SHA256](./docs/RELEASE_CHECKSUM_v7.0.11.md) · [构建、校验与发布流程](./docs/MAINTAINING.md)
 
 <sub>[Issues](https://github.com/YohakuSama/loonkit/issues) · [Security](./SECURITY.md) · [Third-party notices](./docs/THIRD_PARTY_NOTICES.md) · [GPL-2.0-only](./LICENSE)</sub>
