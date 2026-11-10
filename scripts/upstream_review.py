@@ -142,14 +142,17 @@ def source_line(source: dict, line: str) -> str | None:
         if not raw:
             return None
         parts = raw.split()
-        if len(parts) > 2 or not parts:
+        if not parts:
             raise ValueError("unexpected v2fly tokens")
-        if len(parts) == 2:
-            if not parts[1].startswith("@"):
+        # v2fly supports multiple @attributes, comma-separated tags and @!cn.
+        # Never silently discard malformed or non-attribute trailing tokens.
+        attrs = []
+        for token in parts[1:]:
+            if not re.fullmatch(r"@!?[a-z0-9_-]+(?:,!?[a-z0-9_-]+)*", token, re.I):
                 raise ValueError("unexpected v2fly attribute")
-            attrs = parts[1][1:].lower().split(",")
-            if any(x in source.get("skip_attrs", []) for x in attrs):
-                return None
+            attrs.extend(token[1:].lower().split(","))
+        if any(attr in source.get("skip_attrs", []) for attr in attrs):
+            return None
         match = parts[0]
         if match.startswith("include:") or match.startswith("regexp:"):
             raise ValueError("v2fly include/regexp requires explicit review")
