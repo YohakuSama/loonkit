@@ -62,6 +62,12 @@ class CryptoRoutingTests(unittest.TestCase):
             with self.subTest(host=hostname):
                 self.assertNotEqual(self.router.match(hostname)["predicted_policy"], "Crypto")
 
+    def test_future_upstream_direct_candidates_have_crypto_guardrails(self):
+        guardrails = json.loads((ROOT / "rules/routing_guardrails.json").read_text(encoding="utf-8"))
+        protected = set(guardrails["protected_proxy_domains"])
+        self.assertTrue(set(EXPECTED) <= protected)
+        self.assertEqual(len(guardrails["protected_proxy_domains"]), len(protected))
+
     def test_published_plugin_explicitly_supports_macOS(self):
         source = (ROOT / "src/diagnostics/Network_Diagnostics.plugin").read_text(encoding="utf-8")
         published = (ROOT / "release/Network_Diagnostics.plugin").read_text(encoding="utf-8")
