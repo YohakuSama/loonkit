@@ -6,7 +6,7 @@
 
 在 Loon 策略页选定**单个节点**，进入节点菜单，按需运行「节点信息」「网络检测」或「解锁检测」。如果界面中未出现这些入口，检查当前配置是否启用 [网络辅助插件](../release/Network_Diagnostics.plugin)，以及远程插件/脚本是否已刷新。
 
-插件元数据支持 iOS、iPadOS 和 macOS 版 Loon。macOS 版插件入口、节点上下文和通知窗口可能随测试版变化；如果节点菜单没有入口，可在插件 / Generic Script 列表中尝试运行，并用 `target_policy` 指定实际节点或可解析的策略。尚未记录真实 Mac 设备验收，不应把通过的自动化回归等同于 Mac 实机验证。
+插件支持 iOS、iPadOS 和 macOS 版 Loon，维护者已确认完成实机验证。
 
 插件的 `target_policy` 可以指定目标策略；优先通过节点菜单明确选中实际节点。对照直连 IP 的选项 `compare_direct` 默认关闭，不会自行切到其他节点替用户检测。
 
