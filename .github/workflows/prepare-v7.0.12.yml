@@ -1,4 +1,4 @@
-name: Prepare verified v7.0.12 assets
+name: Prepare verified v7.0.12 assets (reviewed)
 on:
   push:
     branches: [feat/crypto-icon-policy-order-v7.0.12]
