@@ -1,0 +1,41 @@
+name: Prepare verified v7.0.12 assets
+on:
+  push:
+    branches: [feat/crypto-icon-policy-order-v7.0.12]
+    paths: [.github/workflows/prepare-v7.0.12.yml]
+permissions:
+  contents: write
+jobs:
+  generate:
+    if: github.repository == 'YohakuSama/loonkit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Generate and verify immutable release
+        run: |
+          set -euo pipefail
+          test "$(python3 -c 'import json; print(json.load(open("build/release_spec.json"))["stable_release_version"])')" = "v7.0.12"
+          test -z "$(git status --porcelain)"
+          python3 scripts/source_lock.py --check
+          python3 scripts/build_diagnostics.py --check
+          python3 scripts/release_engine.py --write
+          python3 scripts/runtime_assets.py --write
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/license_audit.py --check
+          python3 scripts/check_readme_presentation.py
+          python3 scripts/test_suites.py current
+          git add LoonKit.lcf build/release_manifest.json build/runtime.lock.json release/SHA256SUMS.v7.0.12 docs/RELEASE_CHECKSUM_v7.0.12.md
+          test -n "$(git diff --cached --name-only)"
+          git -c user.name="LoonKit Release Builder" -c user.email="release-bot@example.invalid" commit -m "build(release): generate verified v7.0.12 profile and asset lock"
+      - name: Push verified release outputs only to preparation branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/YohakuSama/loonkit.git" HEAD:refs/heads/feat/crypto-icon-policy-order-v7.0.12
