@@ -173,8 +173,20 @@ class UpstreamParsingTests(unittest.TestCase):
         self.assertEqual(evidence["excluded_count"], 1)
         self.assertTrue(evidence["minimum_satisfied"])
 
+    def test_v2fly_negated_region_tags_follow_source_skip_policy(self):
+        tiktok, tik_evidence = upstream_review.parse_source(
+            {"format": "v2fly", "skip_attrs": ["ads"]},
+            b"tiktok.com @!cn\nanalytics.tiktok.com @ads\n")
+        self.assertEqual(tiktok, {"DOMAIN-SUFFIX,tiktok.com"})
+        self.assertEqual(tik_evidence["invalid_count"], 0)
+        bilibili, bili_evidence = upstream_review.parse_source(
+            {"format": "v2fly", "skip_attrs": ["ads", "!cn"]},
+            b"bilibili.com\nbilibili.tv @!cn\n")
+        self.assertEqual(bilibili, {"DOMAIN-SUFFIX,bilibili.com"})
+        self.assertEqual(bili_evidence["invalid_count"], 0)
+
     def test_v2fly_bad_attribute_tokens_still_fail_closed(self):
-        for value in ("openai.com @ads telemetry", "openai.com @ads,",
+        for value in ("openai.com @ads telemetry", "openai.com @ads,", "openai.com @!!cn",
                       "openai.com @ads @"):
             with self.subTest(value=value):
                 rules, evidence = upstream_review.parse_source(
