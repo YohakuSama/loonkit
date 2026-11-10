@@ -32,7 +32,6 @@ class CryptoRoutingTests(unittest.TestCase):
         cls.router = Router(ROOT)
 
     def test_crypto_finance_group_order_and_unique_icon(self):
-        import re
         import struct
         groups = self.model["groups"]
         names = [g["name"] for g in groups]
@@ -45,7 +44,7 @@ class CryptoRoutingTests(unittest.TestCase):
         self.assertRegex(crypto["icon"], r"/[a-f0-9]{40}/icons/Crypto[.]png$")
         self.assertNotEqual(crypto["icon"], groups[0]["icon"])
         image = (ROOT / "icons/Crypto.png").read_bytes()
-        self.assertEqual(image[:8], b"\\x89PNG\\r\\n\\x1a\\n")
+        self.assertEqual(image[:8].hex(), "89504e470d0a1a0a")
         self.assertEqual(struct.unpack(">II", image[16:24]), (512, 512))
 
     def test_crypto_group_never_selects_direct_by_default(self):
