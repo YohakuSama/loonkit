@@ -4,7 +4,7 @@ LoonKit 根据本地规则与远程规则，将请求交给对应策略组。生
 
 ## 规则如何参与选路
 
-- **本地显式域名**：例如 `raw.githubusercontent.com` 命中 `Proxy`，TRAE 的指定海外 API 命中 `AI`；Copilot 相关请求由本地规则显式交给 AI。
+- **本地显式域名**：例如 `raw.githubusercontent.com` 命中 `Proxy`，TRAE 的指定海外 API 命中 `AI`；Copilot 相关请求由本地规则显式交给 AI。主要加密货币交易所、钱包和行情网站通过明确的 `DOMAIN-SUFFIX` 规则命中 `Crypto`，优先于国内直连订阅和 CN GeoIP 兜底。
 - **远程分类订阅**：43 份固定规则按当前配置声明的顺序，将国内常用服务、AI、视频、社交、广告与共享基础设施分别指向 `DIRECT`、服务策略组、`AdBlock` 或 `Proxy`。
 - **兜底**：`GEOIP,CN,DIRECT,no-resolve` 处理已有目标 IP 可以判断为 CN 的请求；其余落入 `FINAL,Final`。`no-resolve` 不应被解释为可以识别所有国内域名。
 - **优先级注意**：更具体的服务资源与通用资源之间存在覆盖关系。当前规则对 GitHub Copilot、YouTube、Speedtest 等范围进行了有意划分；不能只看最终 `Final` 组来推断所有命中结果。
@@ -17,6 +17,7 @@ LoonKit 根据本地规则与远程规则，将请求交给对应策略组。生
 | --- | --- |
 | `Proxy`、`Auto`、`Fallback` | 决定策略最终使用的节点；筛选、测速与回退顺序见[节点选择](../docs/NODE_SELECTION.md)。 |
 | Apple、Microsoft、Bilibili、Line、Speedtest | 对应策略组默认优先 `DIRECT`，用户可按需改选。 |
+| **Crypto 默认使用 `Proxy`** | Binance、OKX、Bybit、Coinbase、Kraken 等 29 个明确登记的后缀优先匹配 `Crypto`，该策略组不提供 `DIRECT`；无法覆盖未登记域名、纯 IP 连接或用户自定义规则。 |
 | **Paypal 默认使用 `Proxy`** | PayPal 所属规则命中服务策略；默认选路不等于保证所有请求都经代理。 |
 | `AdBlock` | 相关订阅按拒绝策略处理；将子策略改为 `DIRECT` 不会让已命中 `REJECT` 的规则自动恢复匹配，排查时要核对实际规则和订阅。 |
 | `Final` | 没有被前述规则处理的流量由此组决定。 |
@@ -35,6 +36,6 @@ LoonKit 根据本地规则与远程规则，将请求交给对应策略组。生
 
 ## 出现误分流时
 
-按 **请求记录中的命中规则 → 归属的策略组 → 策略组当前选中节点 → 实际连接结果** 顺序检查。能解析域名不代表正确分流，能选节点也不代表目标服务接受该出口。如果问题只发生在 DNS 解析阶段，转到[DNS 专题](../docs/DNS_PRIVACY.md)。
+按 **请求记录中的命中规则 → 归属的策略组 → 策略组当前选中节点 → 实际连接结果** 顺序检查。加密货币平台请先确认请求域名确实命中 `Crypto`；第三方 CDN、独立 API 域名和直接使用 IP 的连接不在 29 个已登记后缀的保障范围内。能解析域名不代表正确分流，能选节点也不代表目标服务接受该出口。如果问题只发生在 DNS 解析阶段，转到[DNS 专题](../docs/DNS_PRIVACY.md)。
 
 [返回首页](../README.md) · [规则审阅](../docs/RULE_SAFETY.md)
