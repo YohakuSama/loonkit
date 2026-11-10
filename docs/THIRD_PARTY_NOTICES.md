@@ -18,6 +18,14 @@ LoonKit 的原创代码、脚本和配置贡献采用 [GPL-2.0-only](../LICENSE)
 上述共计 87 条历史输入来源记录，完整索引见 [license_sources.json](../build/license_sources.json)。记录数为输入来源条目数，而非独立作者数。
 
 
+## v7.0.13 Crypto 远程订阅来源
+
+[Crypto.lsr](../rules/releases/v7.0.13/Crypto.lsr) 是经审阅的独立规则资源，内容参考 [blackmatrix7/ios_rule_script Loon Crypto](https://github.com/blackmatrix7/ios_rule_script/blob/0b6897dc17e0c513d25449c935a9694818e32f0c/rule/Loon/Crypto/Crypto.list) 固定上游提交 `0b6897dc17e0c513d25449c935a9694818e32f0c`，其原数据标示更新于 2025-06-06。该来源使用 GPL-2.0-only，完整许可正文参见 [rules/LICENSE.GPL-2.0](../rules/LICENSE.GPL-2.0)；原始数据来源还包括 blackmatrix7 项目所列出的 ACL4SSR 分类规则。
+
+与原始上游不同，当前文件删除 4 条宽泛关键词、易误分流的通用服务域名及已停用平台等规则，保留 29 个原 Crypto 域名，并加入经过筛选的现役平台/钱包/DeFi 域名，合计 219 条。不是原样复制上游文件；修改后的完整文本随 Git 提交公开。
+
+[AdBlockBalanced.lsr](../rules/releases/v7.0.13/AdBlockBalanced.lsr) 基于原有 [AdBlock 固定资源](../rules/releases/v7.0.3/AdBlockBalanced.lsr)，仅移除 `DOMAIN,coincheck.com` 一条，以恢复交易所主页的正常分流；其余内容逐字不变。Crypto 放在 AdBlock 之后，因此其他明确广告和遥测规则继续由 AdBlock 处理。
+
 ## v7.0.3 服务补充来源
 
 新增的国内 AI 精准域名及 Gemini WebChannel 等规则，参考 [o-ocn/loon-rules](https://github.com/o-ocn/loon-rules) 固定提交 [`47fa36ef0fcbfb9b664bac6fa2f4e574b6107b0f`](https://github.com/o-ocn/loon-rules/tree/47fa36ef0fcbfb9b664bac6fa2f4e574b6107b0f)（GPL-2.0）。只纳入经过策略归属检查的必要规则，不整包镜像其版权规则集。修改后的域名补丁在 `rules/releases/v7.0.3/` 中保留来源信息。
