@@ -1,0 +1,44 @@
+name: Verify v7.0.11 full regression
+on:
+  push:
+    branches: [feat/macos-crypto-routing-v7.0.11]
+    paths: [.github/workflows/verify-v7.0.11.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    if: github.repository == 'YohakuSama/loonkit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Verify pins, metadata, publication and docs
+        run: |
+          set -euo pipefail
+          python3 scripts/source_lock.py --check
+          python3 scripts/build_diagnostics.py --check
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/license_audit.py --check
+          python3 scripts/check_readme_presentation.py
+      - name: Entire Python regression, including beta and Crypto
+        run: python3 scripts/test_suites.py all
+      - name: Published diagnostics JavaScript regression and syntax
+        run: |
+          node --test tests/diagnostics*.test.cjs
+          node - <<'JS'
+          const {scripts} = require('./tests/helpers/diagnostics.cjs');
+          const {execFileSync} = require('node:child_process');
+          for(const entry of Object.values(scripts)) execFileSync(process.execPath,['--check',entry.filename],{stdio:'inherit'});
+          JS
+      - name: No release or source mutation by checks
+        run: |
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
