@@ -524,10 +524,16 @@
   ],
   "remote_rules": [
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AdBlockBalanced.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
       "policy": "AdBlock",
       "tag": "Our-AdBlock-Balanced",
       "source_group": "AdBlock"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/Crypto.lsr",
+      "policy": "Crypto",
+      "tag": "Our-Crypto",
+      "source_group": "Crypto"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
@@ -786,180 +792,6 @@
     "dns.alidns.com": "223.5.5.5"
   },
   "rules": [
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "binance.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "binance.us",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "okx.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "okex.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bybit.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bybit.eu",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bitget.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "coinbase.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "coinbasecdn.net",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "kraken.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "crypto.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "kucoin.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "gate.io",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "gate.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "mexc.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "htx.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "huobi.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bingx.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bitfinex.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bitstamp.net",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "gemini.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "uniswap.org",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "metamask.io",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "coingecko.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "coinmarketcap.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "etherscan.io",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "bscscan.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "defillama.com",
-      "policy": "Crypto",
-      "flags": []
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "dexscreener.com",
-      "policy": "Crypto",
-      "flags": []
-    },
     {
       "type": "DOMAIN-SUFFIX",
       "value": "raw.githubusercontent.com",

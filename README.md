@@ -35,13 +35,13 @@
   <a href="./docs/SETUP_GUIDE.md">首次导入</a>
 </p>
 
-当前版本：**v7.0.12** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
+当前版本：**v7.0.13** · [更新记录](./docs/CHANGELOG.md) · [Production CI](https://github.com/YohakuSama/loonkit/actions/workflows/ci.yml) · [GPL-2.0-only](./LICENSE)
 
 ---
 
 ## 功能概览
 
-**服务分流** — 基础选路、AI、开发与平台、金融（`Crypto` / `Paypal`）、流媒体、社交及游戏策略按用途排序。国内常用服务优先直连；`Crypto` 对明确登记的交易所、钱包和行情域名默认走代理，不交给国内直连兜底。AI、开发平台、流媒体与社交服务按需选路。
+**服务分流** — 基础选路、AI、开发与平台、金融（`Crypto` / `Paypal`）、流媒体、社交及游戏策略按用途排序。国内常用服务优先直连；`Crypto` 由独立、固定提交的远程规则订阅提供 219 条精确匹配，默认走代理并优先于国内直连；广告拦截仍保留在它之前。AI、开发平台、流媒体与社交服务按需选路。
 
 **节点选路** — 通过 `Proxy` 手动选路、`Auto` 根据测速选择节点，或由 `Fallback` 在候选线路中选择可用节点；广告管理由 `AdBlock` 策略控制。
 
@@ -107,6 +107,6 @@ LoonKit 不内置个人节点。请添加自己的节点订阅，并检查 `Prox
 
 **规则与诊断** · [规则命中与策略归属](./rules/README.md) · [诊断结果解读](./docs/NETWORK_DIAGNOSTICS.md) · [插件定义文件](./release/Network_Diagnostics.plugin) · [诊断公共源码](./src/diagnostics/common.js)
 
-**项目维护** · [历史变更记录](./docs/CHANGELOG.md) · [当前版发布说明](./docs/RELEASE_NOTES_v7.0.12.md) · [当前版 SHA256](./docs/RELEASE_CHECKSUM_v7.0.12.md) · [构建、校验与发布流程](./docs/MAINTAINING.md)
+**项目维护** · [历史变更记录](./docs/CHANGELOG.md) · [当前版发布说明](./docs/RELEASE_NOTES_v7.0.13.md) · [当前版 SHA256](./docs/RELEASE_CHECKSUM_v7.0.13.md) · [构建、校验与发布流程](./docs/MAINTAINING.md)
 
 <sub>[Issues](https://github.com/YohakuSama/loonkit/issues) · [Security](./SECURITY.md) · [Third-party notices](./docs/THIRD_PARTY_NOTICES.md) · [GPL-2.0-only](./LICENSE)</sub>
