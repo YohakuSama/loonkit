@@ -3,10 +3,10 @@
 #!author = YohakuSama
 #!homepage = https://github.com/YohakuSama/loonkit
 #!icon = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Console.png
-#!system = iOS,iPadOS
+#!system = iOS,iPadOS,macOS
 #!loon_version = 3.5.1(983)
 #!tag = 网络,节点,诊断
-#!date = 2026-10-26
+#!date = 2026-11-11
 #!type = normal
 
 [Argument]
