@@ -26,6 +26,18 @@ jobs:
           python-version: '3.12'
       - name: Download all 87 sources and generate quarantined review
         run: python3 scripts/upstream_review.py --output "$RUNNER_TEMP/upstream-review"
+      - name: Check unchanged previews against frozen legacy catalog
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from upstream_review import verify_legacy_candidate_previews
+          directory = Path(os.environ["RUNNER_TEMP"]) / "upstream-review"
+          report = json.loads((directory / "UPSTREAM_REVIEW.json").read_text())
+          checked = verify_legacy_candidate_previews(Path.cwd(), directory, report)
+          print(f"Verified {checked} unchanged legacy candidate groups.")
+          PY
       - name: Upload source snapshots and risk findings
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
