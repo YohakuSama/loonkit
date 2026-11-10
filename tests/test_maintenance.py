@@ -160,6 +160,28 @@ class UpstreamParsingTests(unittest.TestCase):
         self.assertEqual(evidence["excluded_expressions"][0]["reason"],
                          "HOST_REGEX_CANNOT_SAFELY_WIDEN_TO_SUFFIX")
 
+    def test_v2fly_multiple_attributes_are_classified_without_widening(self):
+        source = {"format": "v2fly", "min_rules": 1, "skip_attrs": ["ads"]}
+        rules, evidence = upstream_review.parse_source(source, (
+            "openai.com\n"
+            "full:browser-intake-datadoghq.com @ads @telemetry\n"
+            "full:disney.my.sentry.io @ads @telemetry\n"
+            "regexp:^chatgpt-async-webps-prod-.*$\n"
+        ).encode())
+        self.assertEqual(rules, {"DOMAIN-SUFFIX,openai.com"})
+        self.assertEqual(evidence["invalid_count"], 0)
+        self.assertEqual(evidence["excluded_count"], 1)
+        self.assertTrue(evidence["minimum_satisfied"])
+
+    def test_v2fly_bad_attribute_tokens_still_fail_closed(self):
+        for value in ("openai.com @ads telemetry", "openai.com @ads,",
+                      "openai.com @ads @"):
+            with self.subTest(value=value):
+                rules, evidence = upstream_review.parse_source(
+                    {"format": "v2fly"}, (value + "\n").encode())
+                self.assertEqual(rules, set())
+                self.assertEqual(evidence["invalid_count"], 1)
+
     def test_unknown_format_rejected(self):
         with self.assertRaisesRegex(ValueError, "unknown format"):
             upstream_review.parse_source({"format": "guess"}, b"example.com")
@@ -297,6 +319,43 @@ class WorkingTreeCleanupTests(unittest.TestCase):
         )
         self.assertEqual(projection[1], extra)
         self.assertEqual(set(projection[0]), set(current["source_group_tags"]) & allowed)
+
+    def test_legacy_preview_check_excludes_only_declared_new_owners(self):
+        root = Path(__file__).resolve().parents[1]
+        baseline = {
+            "AI": {"DOMAIN-SUFFIX,openai.com"},
+            "動畫瘋": {"DOMAIN-SUFFIX,gamer.com.tw"},
+            "ChatGPT": {"DOMAIN-SUFFIX,chatgpt.com"},
+        }
+        report = {
+            "publication_allowed": False, "preview_sha256_unchanged": True,
+            "runtime_groups_not_in_legacy_catalog": ["ChatGPT"],
+            "groups": {"AI": {}, "動畫瘋": {}},
+        }
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder)
+            (directory / "candidate").mkdir()
+            (directory / "candidate" / "AI.list").write_text(
+                "# pinned baseline\nDOMAIN-SUFFIX,openai.com\n")
+            (directory / "candidate" / "AnimeCrazy.list").write_text(
+                "DOMAIN-SUFFIX,gamer.com.tw\n")
+            def verify():
+                return upstream_review.verify_legacy_candidate_previews(
+                    root, directory, report, baseline_rules=baseline)
+            self.assertEqual(verify(), 2)
+            report["runtime_groups_not_in_legacy_catalog"] = []
+            with self.assertRaisesRegex(ValueError, "coverage mismatch"):
+                verify()
+            report["runtime_groups_not_in_legacy_catalog"] = ["ChatGPT"]
+            (directory / "candidate" / "AI.list").write_text(
+                "DOMAIN-SUFFIX,unexpected.example\n")
+            with self.assertRaisesRegex(ValueError, "unapproved changed preview"):
+                verify()
+            (directory / "candidate" / "AI.list").write_text(
+                "DOMAIN-SUFFIX,openai.com\n")
+            report["publication_allowed"] = True
+            with self.assertRaisesRegex(ValueError, "unsafe upstream preview"):
+                verify()
 
 
 
