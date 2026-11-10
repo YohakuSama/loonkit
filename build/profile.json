@@ -219,6 +219,30 @@
       "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Speedtest.png"
     },
     {
+      "name": "Crypto",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/a9d4e9dc22f573d3f2a4ccd3776441d007f1e686/icons/Crypto.png"
+    },
+    {
+      "name": "Paypal",
+      "type": "select",
+      "members": [
+        "Proxy",
+        "Auto",
+        "Fallback",
+        "ALL_Filter"
+      ],
+      "options": {},
+      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Paypal.png"
+    },
+    {
       "name": "YouTube",
       "type": "select",
       "members": [
@@ -496,30 +520,6 @@
       ],
       "options": {},
       "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Steam.png"
-    },
-    {
-      "name": "Crypto",
-      "type": "select",
-      "members": [
-        "Proxy",
-        "Auto",
-        "Fallback",
-        "ALL_Filter"
-      ],
-      "options": {},
-      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Proxy.png"
-    },
-    {
-      "name": "Paypal",
-      "type": "select",
-      "members": [
-        "Proxy",
-        "Auto",
-        "Fallback",
-        "ALL_Filter"
-      ],
-      "options": {},
-      "icon": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Paypal.png"
     }
   ],
   "remote_rules": [

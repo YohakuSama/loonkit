@@ -31,6 +31,22 @@ class CryptoRoutingTests(unittest.TestCase):
         cls.model = json.loads((ROOT / "build/profile.json").read_text(encoding="utf-8"))
         cls.router = Router(ROOT)
 
+    def test_crypto_finance_group_order_and_unique_icon(self):
+        import struct
+        groups = self.model["groups"]
+        names = [g["name"] for g in groups]
+        self.assertEqual(len(names), len(set(names)))
+        self.assertEqual(names[:5], ["Proxy", "Auto", "Fallback", "AdBlock", "Final"])
+        self.assertEqual(names[names.index("Speedtest") + 1:names.index("Speedtest") + 3],
+                         ["Crypto", "Paypal"])
+        self.assertEqual(names[names.index("Paypal") + 1], "YouTube")
+        crypto, = (g for g in groups if g["name"] == "Crypto")
+        self.assertRegex(crypto["icon"], r"/[a-f0-9]{40}/icons/Crypto[.]png$")
+        self.assertNotEqual(crypto["icon"], groups[0]["icon"])
+        image = (ROOT / "icons/Crypto.png").read_bytes()
+        self.assertEqual(image[:8].hex(), "89504e470d0a1a0a")
+        self.assertEqual(struct.unpack(">II", image[16:24]), (512, 512))
+
     def test_crypto_group_never_selects_direct_by_default(self):
         group, = (g for g in self.model["groups"] if g["name"] == "Crypto")
         self.assertEqual(group["type"], "select")
