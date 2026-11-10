@@ -142,14 +142,18 @@ def source_line(source: dict, line: str) -> str | None:
         if not raw:
             return None
         parts = raw.split()
-        if len(parts) > 2 or not parts:
+        if not parts:
             raise ValueError("unexpected v2fly tokens")
-        if len(parts) == 2:
-            if not parts[1].startswith("@"):
+        # v2fly allows multiple whitespace-separated @attributes (e.g.
+        # "@ads @telemetry") as well as comma-separated attributes.
+        # Reject non-attribute trailing tokens rather than ignoring them.
+        attrs = []
+        for token in parts[1:]:
+            if not re.fullmatch(r"@[a-z0-9_-]+(?:,[a-z0-9_-]+)*", token, re.I):
                 raise ValueError("unexpected v2fly attribute")
-            attrs = parts[1][1:].lower().split(",")
-            if any(x in source.get("skip_attrs", []) for x in attrs):
-                return None
+            attrs.extend(token[1:].lower().split(","))
+        if any(attr in source.get("skip_attrs", []) for attr in attrs):
+            return None
         match = parts[0]
         if match.startswith("include:") or match.startswith("regexp:"):
             raise ValueError("v2fly include/regexp requires explicit review")
@@ -454,6 +458,43 @@ def project_catalog_baseline(current: dict, allowed: set) -> tuple[dict, list[st
     unknown = sorted(set(current) - allowed)
     return {owner: rules for owner, rules in current.items()
             if owner in allowed}, unknown
+
+
+def verify_legacy_candidate_previews(root: Path, directory: Path, report: dict,
+                                     *, baseline_rules: dict | None = None) -> int:
+    """Ensure unchanged previews cover exactly the frozen catalog's runtime owners.
+
+    Newer owners must be explicitly reported but must not be compared with
+    the legacy 87-source catalog or silently added to its candidate files.
+    """
+    if report.get("publication_allowed") is not False or report.get("preview_sha256_unchanged") is not True:
+        raise ValueError("unsafe upstream preview publication status")
+    root, directory = Path(root), Path(directory)
+    legacy = json.loads((root / "build/engine_manifest.json").read_text(encoding="utf-8"))
+    allowed = set(legacy["active_groups"]) | set(legacy["inactive_groups"])
+    current = runtime_baseline(root) if baseline_rules is None else baseline_rules
+    baseline, excluded = project_catalog_baseline(current, allowed)
+    if (not baseline or report.get("runtime_groups_not_in_legacy_catalog") != excluded
+            or not isinstance(report.get("groups"), dict)
+            or set(report["groups"]) != set(baseline)):
+        raise ValueError("legacy catalog owner coverage mismatch")
+    candidate_dir = directory / "candidate"
+    expected_files = {
+        ("AnimeCrazy" if group == "動畫瘋" else group) + ".list"
+        for group in baseline
+    }
+    if {p.name for p in candidate_dir.glob("*.list")} != expected_files:
+        raise ValueError("legacy candidate file coverage mismatch")
+    for group, old in baseline.items():
+        name = "AnimeCrazy" if group == "動畫瘋" else group
+        preview = {
+            line.strip()
+            for line in (candidate_dir / (name + ".list")).read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith(("#", ";", "//"))
+        }
+        if old != preview:
+            raise ValueError("unapproved changed preview: " + group)
+    return len(baseline)
 
 
 def build_report(root: Path = ROOT, fetcher=None, *, baseline_rules=None) -> tuple[dict, dict[str, bytes], dict]:
