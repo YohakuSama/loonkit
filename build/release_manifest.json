@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "label": "v7.0.11",
+  "label": "v7.0.12",
   "profile_sha256": {
-    "LoonKit.lcf": "b553dc48964161498d43e0deb8e15f0c06003748178a3d92a303fdef0bc1233b"
+    "LoonKit.lcf": "5aaed7c152d45bbcd007a385083358c31d8127ad8777bb82c793c08eb83df077"
   },
-  "runtime_directives_sha256": "a3b799f281e066728c4773e5ec2c3dbe18556929531382372b2fcc0d2b2ce0f0",
+  "runtime_directives_sha256": "76c0661065d48b5eb239cb849084b638c66befdeb68a053b7e1137097cdb1690",
   "remote_subscription_count": 43,
   "remote_rule_count": 196561,
   "runtime_rule_matcher_count": 196561,
@@ -709,7 +709,7 @@
     "channel": "stable"
   },
   "previous_release": {
-    "version": "v7.0.10",
-    "profile_sha256": "45d873cc35dcc614bfe02786ca20ad35b7a8771e480c78c9a667df18f54918bb"
+    "version": "v7.0.11",
+    "profile_sha256": "b553dc48964161498d43e0deb8e15f0c06003748178a3d92a303fdef0bc1233b"
   }
 }
