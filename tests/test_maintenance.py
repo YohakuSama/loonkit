@@ -162,6 +162,35 @@ class UpstreamParsingTests(unittest.TestCase):
         self.assertEqual(evidence["excluded_expressions"][0]["reason"],
                          "HOST_REGEX_CANNOT_SAFELY_WIDEN_TO_SUFFIX")
 
+    def test_v2fly_multiple_attributes_and_negated_region_tags(self):
+        source = {"format": "v2fly", "skip_attrs": ["ads"]}
+        rules, evidence = upstream_review.parse_source(source, (
+            "openai.com\n"
+            "full:browser-intake-datadoghq.com @ads @telemetry\n"
+            "full:disney.my.sentry.io @ads @telemetry\n"
+            "tiktok.com @!cn\n"
+            "regexp:^chatgpt-async-webps-prod-.*$\n"
+        ).encode())
+        self.assertEqual(rules, {"DOMAIN-SUFFIX,openai.com",
+                                 "DOMAIN-SUFFIX,tiktok.com"})
+        self.assertEqual(evidence["invalid_count"], 0)
+        self.assertEqual(evidence["excluded_count"], 1)
+
+        bilibili, evidence = upstream_review.parse_source(
+            {"format": "v2fly", "skip_attrs": ["ads", "!cn"]},
+            b"bilibili.com\nbilibili.tv @!cn\n")
+        self.assertEqual(bilibili, {"DOMAIN-SUFFIX,bilibili.com"})
+        self.assertEqual(evidence["invalid_count"], 0)
+
+    def test_v2fly_unsafe_attribute_syntax_remains_incomplete(self):
+        for value in ("example.com @ads extra", "example.com @ads,",
+                      "example.com @!!cn", "example.com @ads @"):
+            with self.subTest(value=value):
+                rules, evidence = upstream_review.parse_source(
+                    {"format": "v2fly"}, (value + "\n").encode())
+                self.assertEqual(rules, set())
+                self.assertEqual(evidence["invalid_count"], 1)
+
     def test_unknown_format_rejected(self):
         with self.assertRaisesRegex(ValueError, "unknown format"):
             upstream_review.parse_source({"format": "guess"}, b"example.com")
