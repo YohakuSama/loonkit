@@ -2,6 +2,14 @@
   "schema_version": 1,
   "resources": [
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/274dd172f147727445b15b9cc70a4c01881ad202/release/Network_Diagnostics.plugin",
+      "commit": "274dd172f147727445b15b9cc70a4c01881ad202",
+      "path": "release/Network_Diagnostics.plugin",
+      "kind": "plugin",
+      "local_path": "release/Network_Diagnostics.plugin",
+      "sha256": "a56f52a4be6b7d89e59f235bdaab9e37c4f8259855c26b1f41d3730b7af47dbb"
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/45dd8bff200a69740178b7a2e0e087a47c8537d8/release/diagnostics/media-unlock.js",
       "commit": "45dd8bff200a69740178b7a2e0e087a47c8537d8",
       "path": "release/diagnostics/media-unlock.js",
@@ -688,14 +696,6 @@
       "kind": "icon",
       "local_path": "icons/YouTube.png",
       "sha256": "500008a99958774231b73ffd217493f67b5bb2cc692da41c0c9071bf4b5c54bd"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/f79361451216850fecf9f9914720fb4f1c36861f/release/Network_Diagnostics.plugin",
-      "commit": "f79361451216850fecf9f9914720fb4f1c36861f",
-      "path": "release/Network_Diagnostics.plugin",
-      "kind": "plugin",
-      "local_path": "release/Network_Diagnostics.plugin",
-      "sha256": "28b1f4dc0a57d4a9235ef266573366d1bd88f1acc3ecdf61f8d8059c5da8df6f"
     }
   ]
 }

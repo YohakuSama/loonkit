@@ -1,4 +1,4 @@
-# LoonKit v7.0.10
+# LoonKit v7.0.11
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -70,6 +70,7 @@ Line = select,DIRECT,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.github
 Reddit = select,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Reddit.png
 Linkedin = select,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Linkedin.png
 Steam = select,Proxy,Auto,Fallback,DIRECT,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Steam.png
+Crypto = select,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Proxy.png
 Paypal = select,Proxy,Auto,Fallback,ALL_Filter,img-url = https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/Paypal.png
 
 [Remote Rule]
@@ -121,6 +122,35 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dc
 dns.alidns.com = 223.5.5.5
 
 [Rule]
+DOMAIN-SUFFIX,binance.com,Crypto
+DOMAIN-SUFFIX,binance.us,Crypto
+DOMAIN-SUFFIX,okx.com,Crypto
+DOMAIN-SUFFIX,okex.com,Crypto
+DOMAIN-SUFFIX,bybit.com,Crypto
+DOMAIN-SUFFIX,bybit.eu,Crypto
+DOMAIN-SUFFIX,bitget.com,Crypto
+DOMAIN-SUFFIX,coinbase.com,Crypto
+DOMAIN-SUFFIX,coinbasecdn.net,Crypto
+DOMAIN-SUFFIX,kraken.com,Crypto
+DOMAIN-SUFFIX,crypto.com,Crypto
+DOMAIN-SUFFIX,kucoin.com,Crypto
+DOMAIN-SUFFIX,gate.io,Crypto
+DOMAIN-SUFFIX,gate.com,Crypto
+DOMAIN-SUFFIX,mexc.com,Crypto
+DOMAIN-SUFFIX,htx.com,Crypto
+DOMAIN-SUFFIX,huobi.com,Crypto
+DOMAIN-SUFFIX,bingx.com,Crypto
+DOMAIN-SUFFIX,bitfinex.com,Crypto
+DOMAIN-SUFFIX,bitstamp.net,Crypto
+DOMAIN-SUFFIX,gemini.com,Crypto
+DOMAIN-SUFFIX,uniswap.org,Crypto
+DOMAIN-SUFFIX,metamask.io,Crypto
+DOMAIN-SUFFIX,coingecko.com,Crypto
+DOMAIN-SUFFIX,coinmarketcap.com,Crypto
+DOMAIN-SUFFIX,etherscan.io,Crypto
+DOMAIN-SUFFIX,bscscan.com,Crypto
+DOMAIN-SUFFIX,defillama.com,Crypto
+DOMAIN-SUFFIX,dexscreener.com,Crypto
 DOMAIN-SUFFIX,raw.githubusercontent.com,Proxy
 DOMAIN,trae-api-sg.mchost.guru,AI
 DOMAIN,trae-api-us.mchost.guru,AI
@@ -135,4 +165,4 @@ GEOIP,CN,DIRECT,no-resolve
 FINAL,Final
 
 [Plugin]
-https://raw.githubusercontent.com/YohakuSama/loonkit/f79361451216850fecf9f9914720fb4f1c36861f/release/Network_Diagnostics.plugin, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/274dd172f147727445b15b9cc70a4c01881ad202/release/Network_Diagnostics.plugin, enabled=true
