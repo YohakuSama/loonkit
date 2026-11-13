@@ -65,7 +65,7 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
             "openai.com", "chatgpt.com", "anthropic.com", "gemini.google.com",
             "microsoft.com", "wikipedia.org", "reddit.com", "discord.com",
             "telegram.org", "netflix.com", "paypal.com", "steamcommunity.com",
-            "quark.cn", "stripe.com", "cloudflare.com",
+            "quark.cn", "stripe.com", "api.stripe.com", "m.stripe.network", "cloudflare.com",
             "never-registered-service-example.invalid",
         )
         print("POLICY_AUDIT_ROUTE_PROBES", json.dumps({
