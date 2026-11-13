@@ -1,0 +1,154 @@
+name: LoonKit one-time issue 186 release preparation
+on:
+  push:
+    branches:
+      - fix/issue-186-routes-v7.0.14
+    paths:
+      - .github/workflows/issue-186-release-prep.yml
+permissions:
+  contents: write
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - name: Regenerate, verify and commit versioned release
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/release_engine.py --start-next v7.0.14
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          
+          pin = "beefdc33dd7f94079941eff06005a53ade9c5b1b"
+          prefix = "https://raw.githubusercontent.com/YohakuSama/loonkit/" + pin + "/rules/releases/v7.0.14/"
+          profile_path = Path("build/profile.json")
+          model = json.loads(profile_path.read_text(encoding="utf-8"))
+          rows = model["remote_rules"]
+          assert [r["source_group"] for r in rows[:2]] == ["AdBlock", "Crypto"], "unexpected precedence"
+          assert rows[-1]["source_group"] == "ChinaDirect", "unexpected domestic fallback"
+          assert not any(r["source_group"] in {"QuarkDirect", "WikipediaDuolingo"} for r in rows)
+          rows[2:2] = [
+              {"uri": prefix + "QuarkDirect.lsr", "policy": "DIRECT", "tag": "Our-QuarkDirect", "source_group": "QuarkDirect"},
+              {"uri": prefix + "WikipediaDuolingo.lsr", "policy": "Proxy", "tag": "Our-WikipediaDuolingo", "source_group": "WikipediaDuolingo"},
+          ]
+          profile_path.write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          
+          protected = json.loads(Path("rules/routing_guardrails.json").read_text(encoding="utf-8"))
+          intl = [
+              "duolingo.com", "mediawiki.org", "w.wiki", "wikibooks.org",
+              "wikidata.org", "wikimedia.org", "wikimediafoundation.org",
+              "wikinews.org", "wikipedia.org", "wikiquote.org",
+              "wikisource.org", "wikiversity.org", "wikivoyage.org",
+              "wiktionary.org", "wmfusercontent.org",
+          ]
+          protected["protected_proxy_domains"] = sorted(set(protected["protected_proxy_domains"]) | set(intl))
+          protected["intent"] = ("Critical diagnostic, international payment, Crypto, Wikimedia "
+              "and Duolingo domains must not be reclassified DIRECT in staged upstream rules. "
+              "Static protection only; on-device route verification still required.")
+          Path("rules/routing_guardrails.json").write_text(json.dumps(protected, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          
+          notes = """# LoonKit v7.0.14
+          
+          - **夸克网盘**：补上夸克官方主域名与子域名的直连规则。网页和网盘请求不再因缺少专属规则而交给默认策略。
+          - **维基百科**：补上维基百科、维基共享资源与相关站点的代理规则。
+          - **多邻国**：国际站及子域名默认走代理。多邻国中国站保持原有分流方式。
+          - **原有设置不变**：广告拦截、加密货币服务分流、节点选择、DNS 与网络辅助设置保持不变。
+          - **更新方法**：在 Loon 中更新 LoonKit 配置并刷新远程规则。已自行修改的设置，请先备份再更新。
+          """
+          Path("docs/RELEASE_NOTES_v7.0.14.md").write_text(notes, encoding="utf-8")
+          changelog = Path("docs/CHANGELOG.md")
+          old = changelog.read_text(encoding="utf-8")
+          Path("docs/CHANGELOG_HISTORY.md").write_text(
+              "# 历史维护记录\n\n此页面保留之前的完整技术变更，供维护者查阅。普通用户查看 [更新记录](./CHANGELOG.md)。\n\n" + old,
+              encoding="utf-8",
+          )
+          changelog.write_text("""# 更新记录
+          
+          这里只说明更新后你会遇到的变化。需要排查旧版本时，查看[历史维护记录](./CHANGELOG_HISTORY.md)。
+          
+          ## v7.0.14 · 2026-11-13
+          
+          - **夸克网盘**：补充直连规则，覆盖夸克主站、网盘及相关子域名。
+          - **维基百科**：补充代理规则，覆盖维基百科及相关的 Wikimedia 网站。
+          - **多邻国**：国际站使用代理；中国站保持原有设置。
+          - **其他功能**：广告拦截、加密货币服务和节点设置保持不变。
+          
+          更新方法：在 Loon 中更新 LoonKit 配置，再刷新远程规则。若你改过配置，先备份。
+          
+          ## v7.0.13 · 2026-11-11
+          
+          - 扩大加密货币交易所、钱包及行情网站的代理覆盖范围。
+          - 修复 Coincheck 首页被广告规则误拦截的问题。
+          - 广告和跟踪请求继续按原规则拦截。
+          
+          ## v7.0.12 · 2026-11-11
+          
+          - 更换加密货币服务图标，调整策略组排列，找起来更方便。
+          - 不影响此前的分流与节点选择。
+          
+          ## v7.0.11 · 2026-11-11
+          
+          - 新增加密货币服务的独立线路选择，减少误走国内直连。
+          - 网络辅助功能增加 Mac 版 Loon 支持。
+          
+          ## v7.0.10 · 2026-10-26
+          
+          - 整理配置生成和校验流程，减少发布时配置遗漏或版本不一致的问题。
+          - 日常使用设置保持不变。
+          
+          ## v7.0.9 · 2026-10-26
+          
+          - 改善慢速节点的网络检测，减少短暂连接失败造成的误判。
+          - 调整服务检测请求，降低同时检测时的负担。
+          
+          ## 更早版本
+          
+          查看[历史维护记录](./CHANGELOG_HISTORY.md)。
+          """, encoding="utf-8")
+          
+          readme_path = Path("README.md")
+          readme = readme_path.read_text(encoding="utf-8")
+          old_intro = "**节点选路** —"
+          assert old_intro in readme
+          readme = readme.replace(old_intro,
+              "**常用网站补全** — 夸克网盘默认直连，维基百科和多邻国国际站默认走代理。已有广告拦截和其他分流设置不变。\n\n" + old_intro, 1)
+          readme_path.write_text(readme, encoding="utf-8")
+          
+          rules_path = Path("rules/README.md")
+          rules_readme = rules_path.read_text(encoding="utf-8")
+          assert "44 份固定规则" in rules_readme
+          rules_readme = rules_readme.replace("44 份固定规则", "46 份固定规则", 1)
+          needle = "- **兜底**："
+          assert needle in rules_readme
+          rules_readme = rules_readme.replace(needle,
+              "- **补充服务分流**：夸克（quark.cn、myquark.cn）及子域名直连，维基百科与 Wikimedia 相关域名、多邻国国际站（duolingo.com）走代理。这两份规则独立固定在 v7.0.14 资源中，不使用模糊关键词；多邻国中国站不在国际规则范围内。\n" + needle, 1)
+          rules_path.write_text(rules_readme, encoding="utf-8")
+          
+          maintaining_path = Path("docs/MAINTAINING.md")
+          maintaining = maintaining_path.read_text(encoding="utf-8")
+          maintaining_path.write_text(maintaining.replace("--start-next v7.0.13", "--start-next v7.0.15"), encoding="utf-8")
+          PY
+          python3 scripts/release_engine.py --write
+          python3 scripts/runtime_assets.py --write
+          python3 scripts/source_lock.py --check
+          python3 scripts/build_diagnostics.py --check
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/license_audit.py --check
+          python3 scripts/check_readme_presentation.py
+          python3 scripts/test_suites.py all
+          node --test tests/diagnostics*.test.cjs
+          git rm .github/workflows/issue-186-release-prep.yml
+          git add -A
+          git -c user.name="LoonKit Release Prep" -c user.email="ci@example.invalid" commit -m "fix: complete issue #186 routing and user-facing v7.0.14 notes"
+          git push origin "HEAD:$GITHUB_REF_NAME"
