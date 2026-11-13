@@ -1,4 +1,4 @@
-# LoonKit v7.0.13
+# LoonKit v7.0.14
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -76,6 +76,8 @@ Steam = select,Proxy,Auto,Fallback,DIRECT,ALL_Filter,img-url = https://raw.githu
 [Remote Rule]
 https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr, policy=AdBlock, tag=Our-AdBlock-Balanced, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/Crypto.lsr, policy=Crypto, tag=Our-Crypto, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/QuarkDirect.lsr, policy=DIRECT, tag=Our-QuarkDirect, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/WikipediaDuolingo.lsr, policy=Proxy, tag=Our-WikipediaDuolingo, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr, policy=DIRECT, tag=Our-DomesticCore, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr, policy=DIRECT, tag=Our-DomesticSupplement, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamCN.lsr, policy=DIRECT, tag=Our-SteamCN, enabled=true
