@@ -1,0 +1,131 @@
+name: One-time consolidate issue 186 release
+on:
+  push:
+    branches:
+      - fix/consolidate-issue-186-existing-rules-v7.0.15
+    paths:
+      - .github/workflows/issue-186-consolidate-release.yml
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - name: Generate release, verify resources and run all tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/release_engine.py --start-next v7.0.15
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          
+          pin = "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73"
+          new_url = "https://raw.githubusercontent.com/YohakuSama/loonkit/" + pin + "/rules/releases/v7.0.15/"
+          path = Path("build/profile.json")
+          model = json.loads(path.read_text(encoding="utf-8"))
+          remote = model["remote_rules"]
+          assert len(remote) == 46
+          assert [r["source_group"] for r in remote[:4]] == ["AdBlock", "Crypto", "QuarkDirect", "WikipediaDuolingo"]
+          old_local = list(model["rules"])
+          old_groups = list(model["groups"])
+          remote[:] = [r for r in remote if r["source_group"] not in {"QuarkDirect", "WikipediaDuolingo"}]
+          assert len(remote) == 44 and remote[-1]["source_group"] == "ChinaDirect"
+          for filename, group, policy in (
+              ("DomesticSupplement.lsr", "DomesticCore", "DIRECT"),
+              ("SharedInfrastructure.lsr", "SharedInfrastructure", "Proxy"),
+          ):
+              matches = [r for r in remote if r["uri"].endswith("/" + filename)]
+              assert len(matches) == 1
+              row = matches[0]
+              assert row["source_group"] == group and row["policy"] == policy
+              row["uri"] = new_url + filename
+          assert model["rules"] == old_local
+          assert model["groups"] == old_groups
+          path.write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          
+          notes = """# LoonKit v7.0.15
+          
+          - **夸克网盘**：继续直连。域名已合并到现有国内补充规则库。
+          - **维基百科与多邻国**：国际站继续使用代理。域名已合并到现有通用代理规则库。
+          - **规则整理**：去掉上版新增的两份独立订阅，恢复为 44 份远程规则。没有新增策略组，也没有往本地规则写入域名。
+          - **如何更新**：在 Loon 中更新 LoonKit 配置并刷新远程规则。原有节点、广告拦截和其他服务策略无需调整。
+          """
+          Path("docs/RELEASE_NOTES_v7.0.15.md").write_text(notes, encoding="utf-8")
+          changelog = Path("docs/CHANGELOG.md")
+          old = changelog.read_text(encoding="utf-8")
+          assert old.startswith("# 更新记录\n") and "## v7.0.14" in old
+          new = """## v7.0.15 · 2026-11-13
+          
+          - 夸克网盘继续直连，维基百科及多邻国国际站继续走代理。
+          - 三项网站的规则已并入原有规则库，移除额外的两份订阅。
+          - 远程规则订阅恢复为 44 份。你的策略组和本地规则无需调整。
+          
+          更新方法：在 Loon 中更新配置并刷新远程规则。若你改过配置，先备份。
+          
+          """
+          marker="## v7.0.14"
+          changelog.write_text(old.replace(marker,new+marker,1),encoding="utf-8")
+          
+          rules = Path("rules/README.md")
+          body = rules.read_text(encoding="utf-8")
+          assert "46 份固定规则" in body
+          assert "这两份规则独立固定在 v7.0.14 资源中" in body
+          body = body.replace("46 份固定规则", "44 份固定规则", 1)
+          body = body.replace("这两份规则独立固定在 v7.0.14 资源中，不使用模糊关键词",
+              "它们分别归入原有的 DomesticSupplement 与 SharedInfrastructure 远程订阅，没有新增独立规则库或策略组，也没有模糊关键词",1)
+          body = body.replace("| [reviewed/v6.5.8/decisions.json]",
+              "| [releases/v7.0.15/DomesticSupplement.lsr](./releases/v7.0.15/DomesticSupplement.lsr)、[SharedInfrastructure.lsr](./releases/v7.0.15/SharedInfrastructure.lsr) | 复用现有国内补充与通用代理分类，仅更新对应资源的固定快照；原有订阅总数不变。 |\n| [reviewed/v6.5.8/decisions.json]",1)
+          body = body.replace("其他 42 份远程规则的固定资产", "其他 40 份远程规则的固定资产", 1)
+          rules.write_text(body,encoding="utf-8")
+          
+          deps = Path("docs/DEPENDENCIES.md")
+          body = deps.read_text(encoding="utf-8")
+          assert "**v7.0.14**" in body and "46 份" in body and "91 个" in body
+          body = (body.replace("**v7.0.14**", "**v7.0.15**", 1)
+                      .replace("46 份", "44 份", 1).replace("91 个", "89 个", 1)
+                      .replace("42 份既有远程规则", "40 份既有远程规则", 1)
+                      .replace("夸克直连、维基百科及多邻国规则（v7.0.14）",
+                               "现有国内补充与通用代理订阅的新版资源", 1)
+                      .replace("beefdc33dd7f94079941eff06005a53ade9c5b1b", pin, 1)
+                      .replace("RELEASE_CHECKSUM_v7.0.14.md", "RELEASE_CHECKSUM_v7.0.15.md",1))
+          deps.write_text(body,encoding="utf-8")
+          
+          maintainer=Path("docs/MAINTAINING.md")
+          maintainer.write_text(maintainer.read_text(encoding="utf-8").replace(
+              "--start-next v7.0.15", "--start-next v7.0.16",1),encoding="utf-8")
+          tests=Path("tests/test_crypto_routing.py")
+          t=tests.read_text(encoding="utf-8")
+          assert "self.assertEqual(len(remote), 46)" in t
+          tests.write_text(t.replace("self.assertEqual(len(remote), 46)",
+                                     "self.assertEqual(len(remote), 44)",1),encoding="utf-8")
+          
+          # Existing subscribed resource categories only. The historic v7.0.14 tag remains intact.
+          for rel in ("rules/releases/v7.0.15/DomesticSupplement.lsr",
+                      "rules/releases/v7.0.15/SharedInfrastructure.lsr"):
+              assert Path(rel).is_file() and Path(rel).stat().st_size > 120
+          PY
+          python3 scripts/release_engine.py --write
+          python3 scripts/runtime_assets.py --write
+          python3 scripts/source_lock.py --check
+          python3 scripts/build_diagnostics.py --check
+          python3 scripts/verify_release.py --check --remote
+          python3 scripts/license_audit.py --check
+          python3 scripts/check_readme_presentation.py
+          python3 scripts/test_suites.py all
+          node --test tests/diagnostics*.test.cjs
+          git rm -f rules/releases/v7.0.14/QuarkDirect.lsr rules/releases/v7.0.14/WikipediaDuolingo.lsr
+          git rm -f .github/workflows/issue-186-consolidate-release.yml
+          git add -A
+          git -c user.name="LoonKit CI" -c user.email="ci@example.invalid" commit -m "fix: reuse existing remote rule categories for issue #186 (v7.0.15)"
+          git push origin "HEAD:$GITHUB_REF_NAME"
