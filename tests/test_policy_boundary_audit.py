@@ -33,6 +33,24 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         self.assertEqual(self.base["final_rule"], "FINAL,Final")
         self.assertTrue(self.base["geoip_cn_before_final"])
 
+    def test_shared_infrastructure_candidate_only_adds_stripe_owned_roots(self):
+        current = ROOT / "rules/releases/v7.0.15/SharedInfrastructure.lsr"
+        candidate = ROOT / "rules/releases/v7.0.16/SharedInfrastructure.lsr"
+
+        def matchers(path):
+            return [
+                line.strip() for line in path.read_text(encoding="utf-8").splitlines()
+                if line.strip() and not line.lstrip().startswith("#")
+            ]
+
+        before, after = matchers(current), matchers(candidate)
+        self.assertEqual(after[:len(before)], before)
+        self.assertEqual(
+            after[len(before):],
+            ["DOMAIN-SUFFIX,stripe.com", "DOMAIN-SUFFIX,stripe.network"],
+        )
+        self.assertEqual(len(after), len(set(after)))
+
     def test_no_unreviewed_fully_shadowed_policy_pairs(self):
         baseline = json.loads((
             ROOT / "rules/reviewed/policy_boundary_v7.0.15.json"
