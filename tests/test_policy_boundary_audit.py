@@ -33,6 +33,19 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         self.assertEqual(self.base["final_rule"], "FINAL,Final")
         self.assertTrue(self.base["geoip_cn_before_final"])
 
+    def test_no_unreviewed_fully_shadowed_policy_pairs(self):
+        baseline = json.loads((
+            ROOT / "rules/reviewed/policy_boundary_v7.0.15.json"
+        ).read_text(encoding="utf-8"))
+        self.assertEqual(baseline["baseline"], "v7.0.15")
+        shadows = {
+            f'{entry["earlier_policy"]} -> {entry["later_policy"]} [{entry["reason"]}]':
+            entry["count"] for entry in self.base["policy_pairs"]
+            if entry["reason"] in ("SUFFIX_SHADOW", "EXACT_DUPLICATE")
+        }
+        self.assertEqual(shadows, baseline["limits"])
+        self.assertEqual(sum(shadows.values()), 85)
+
     def test_apple_private_cloud_compute_requires_explicit_priority(self):
         original = analyze(replacements=self.candidates)
         prior = [
