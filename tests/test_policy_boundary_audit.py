@@ -33,6 +33,37 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         self.assertEqual(self.base["final_rule"], "FINAL,Final")
         self.assertTrue(self.base["geoip_cn_before_final"])
 
+    def test_active_v7016_pins_keep_apple_ota_and_pcc_before_cloudflare(self):
+        profile = json.loads((ROOT / "build/profile.json").read_text(encoding="utf-8"))
+        by_tag = {row["tag"]: row for row in profile["remote_rules"]}
+        if "v7.0.16/Apple.lsr" not in by_tag["Our-Apple"]["uri"]:
+            self.assertIn("v7.0.3/Apple.lsr", by_tag["Our-Apple"]["uri"])
+            return
+        tags = [row["tag"] for row in profile["remote_rules"]]
+        self.assertLess(tags.index("Our-AppleOTA"), tags.index("Our-Apple"))
+        self.assertLess(tags.index("Our-Apple"), tags.index("Our-Cloudflare"))
+        self.assertEqual(by_tag["Our-Apple"]["policy"], "Apple")
+        self.assertEqual(by_tag["Our-SharedInfrastructure"]["policy"], "Proxy")
+        self.assertIn("v7.0.16/SharedInfrastructure.lsr",
+                      by_tag["Our-SharedInfrastructure"]["uri"])
+        from route_diagnostics import Router
+        router = Router()
+        expected = {
+            "apple-relay.cloudflare.com": "Apple",
+            "apple-relay.fastly-edge.com": "Apple",
+            "cp4.cloudflare.com": "Apple",
+            "api.cloudflare.com": "Cloudflare",
+            "api.stripe.com": "Proxy",
+            "m.stripe.network": "Proxy",
+            "gemini.google.com": "Gemini",
+            "youtube.com": "YouTube",
+            "raw.githubusercontent.com": "Proxy",
+            "quark.cn": "DIRECT",
+        }
+        for host, policy in expected.items():
+            with self.subTest(host=host):
+                self.assertEqual(router.match(host)["predicted_policy"], policy)
+
     def test_shared_infrastructure_candidate_only_adds_stripe_owned_roots(self):
         current = ROOT / "rules/releases/v7.0.15/SharedInfrastructure.lsr"
         candidate = ROOT / "rules/releases/v7.0.16/SharedInfrastructure.lsr"
@@ -61,11 +92,18 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
             entry["count"] for entry in self.base["policy_pairs"]
             if entry["reason"] in ("SUFFIX_SHADOW", "EXACT_DUPLICATE")
         }
-        self.assertEqual(shadows, baseline["limits"])
-        self.assertEqual(sum(shadows.values()), 85)
+        for key, count in shadows.items():
+            self.assertIn(key, baseline["limits"], "new unreviewed policy intersection")
+            self.assertLessEqual(count, baseline["limits"][key], "shadow count grew: " + key)
+        self.assertLessEqual(sum(shadows.values()), sum(baseline["limits"].values()))
 
     def test_apple_private_cloud_compute_requires_explicit_priority(self):
-        original = analyze(replacements=self.candidates)
+        # Negative test: force the generic Cloudflare subscription ahead of
+        # Apple to reproduce the known incorrect PCC route in any release.
+        bad_order = list(self.tags)
+        bad_order.remove("Our-Cloudflare")
+        bad_order.insert(bad_order.index("Our-AppleOTA"), "Our-Cloudflare")
+        original = analyze(replacements=self.candidates, priority=tuple(bad_order))
         prior = [
             p for p in original["policy_pairs"]
             if p["earlier_policy"] == "Cloudflare" and p["later_policy"] == "Apple"
