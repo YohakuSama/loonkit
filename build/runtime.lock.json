@@ -394,6 +394,22 @@
       "sha256": "fb80163641af852f63e06dd1df9b4d34cb23e4b6ca062f911e2b07f0df6b8100"
     },
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/QuarkDirect.lsr",
+      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
+      "path": "rules/releases/v7.0.14/QuarkDirect.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.14/QuarkDirect.lsr",
+      "sha256": "59025744593ea0856c142ed63ad1521fdfd93a8d989d2c95c4a49ef2003c6b28"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/WikipediaDuolingo.lsr",
+      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
+      "path": "rules/releases/v7.0.14/WikipediaDuolingo.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.14/WikipediaDuolingo.lsr",
+      "sha256": "3b02a7c89ba0dd9bf48768659664201999bbddaa88e7c2e9ad58e35dc77a580f"
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AI.png",
       "commit": "d82214d057b27a68d6b9c07c61fb126a69adc903",
       "path": "icons/AI.png",
