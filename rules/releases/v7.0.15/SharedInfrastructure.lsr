@@ -8,6 +8,7 @@ DOMAIN-SUFFIX,aliexpress.com
 DOMAIN-SUFFIX,lazada.com
 DOMAIN-SUFFIX,daraz.com
 # Issue #186: Wikimedia family and Duolingo international site, reviewed proxy additions.
+# Added domain roots checked against v2fly/domain-list-community data/wikimedia and data/duolingo (MIT license).
 # duolingo.cn stays outside this international proxy supplement.
 DOMAIN-SUFFIX,duolingo.com
 DOMAIN-SUFFIX,mediawiki.org
