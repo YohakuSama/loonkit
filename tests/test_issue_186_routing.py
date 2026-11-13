@@ -53,7 +53,19 @@ class Issue186RoutingTests(unittest.TestCase):
                 row = matches[0]
                 self.assertEqual(row["source_group"], group)
                 self.assertEqual(row["policy"], policy)
-                self.assertRegex(row["uri"], r"/[0-9a-f]{40}/rules/releases/v7[.]0[.]15/" + filename.replace(".", r"[.]") + "$")
+                # Issue #186's DomesticSupplement remains at its original
+                # immutable snapshot. SharedInfrastructure is now the same
+                # existing subscription with v7.0.16 Stripe additions.
+                expected_asset_version = (
+                    "v7.0.16" if filename == "SharedInfrastructure.lsr"
+                    else "v7.0.15"
+                )
+                self.assertRegex(
+                    row["uri"],
+                    r"/[0-9a-f]{40}/rules/releases/" +
+                    re.escape(expected_asset_version) + "/" +
+                    filename.replace(".", r"[.]") + "$",
+                )
                 path = ROOT / pinned_uri(row["uri"])["path"]
                 content = content_rules(path.read_bytes())
                 self.assertTrue({"DOMAIN-SUFFIX," + root for root in roots} <= set(content))

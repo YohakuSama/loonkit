@@ -1,4 +1,4 @@
-# LoonKit v7.0.15
+# LoonKit v7.0.16
 
 [General]
 dns-server = 223.5.5.5,223.6.6.6
@@ -86,6 +86,8 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dc
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AIScoped.lsr, policy=AI, tag=Our-AIScoped, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/GitHub.lsr, policy=GitHub, tag=Our-GitHub, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Speedtest.lsr, policy=Speedtest, tag=Our-Speedtest, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr, policy=Apple, tag=Our-AppleOTA, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/Apple.lsr, policy=Apple, tag=Our-Apple, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Cloudflare.lsr, policy=Cloudflare, tag=Our-Cloudflare, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Spotify.lsr, policy=Spotify, tag=Our-Service-Spotify, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Twitch.lsr, policy=Twitch, tag=Our-Service-Twitch, enabled=true
@@ -94,8 +96,7 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dc
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Reddit.lsr, policy=Reddit, tag=Our-Service-Reddit, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Linkedin.lsr, policy=Linkedin, tag=Our-Service-Linkedin, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Service-Abema.lsr, policy=Abema, tag=Our-Service-Abema, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr, policy=Proxy, tag=Our-SharedInfrastructure, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr, policy=Apple, tag=Our-AppleOTA, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/SharedInfrastructure.lsr, policy=Proxy, tag=Our-SharedInfrastructure, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr, policy=Steam, tag=Our-SteamGlobal, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/YouTube.lsr, policy=YouTube, tag=Our-YouTube, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/Netflix.lsr, policy=Netflix, tag=Our-Netflix, enabled=true
@@ -114,7 +115,6 @@ https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dc
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/HBO.lsr, policy=HBO, tag=Our-HBO, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Google.lsr, policy=Google, tag=Our-Google, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Microsoft.lsr, policy=Microsoft, tag=Our-Microsoft, enabled=true
-https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr, policy=Apple, tag=Our-Apple, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr, policy=Steam, tag=Our-Steam, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Paypal.lsr, policy=Paypal, tag=Our-Paypal, enabled=true
 https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/ChinaDirect.lsr, policy=DIRECT, tag=Our-ChinaDirect-Scoped, enabled=true

@@ -117,7 +117,14 @@ class RegionalRouteTests(unittest.TestCase):
         self.assertTrue(all(x.startswith(('DOMAIN,', 'DOMAIN-SUFFIX,'))
                             for x in formal['Apple']))
         # Beta retains its conditional sub-rules; production excludes them.
-        self.assertEqual(len(beta['Apple'] - formal['Apple']), 13)
+        # v7.0.16 removes four Apple EdgeKey rules already subsumed by
+        # the parent apple.com.edgekey.net suffix. The historical Beta
+        # snapshot keeps those four rules in addition to the 13 archived
+        # conditional entries. No loss of effective hostname coverage.
+        active=json.loads((ROOT/'build/release_manifest.json').read_text())
+        apple=next(row for row in active['runtime_resources'] if row['tag']=='Our-Apple')
+        expected_beta_only=17 if apple['path'].endswith('/v7.0.16/Apple.lsr') else 13
+        self.assertEqual(len(beta['Apple'] - formal['Apple']), expected_beta_only)
         self.assertEqual(len(beta['Bilibili'] - formal['Bilibili']), 8)
 
     def test_upstream_plan_cannot_shadow_cn_only_scopes(self):

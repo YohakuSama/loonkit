@@ -596,6 +596,18 @@
       "source_group": "Speedtest"
     },
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
+      "policy": "Apple",
+      "tag": "Our-AppleOTA",
+      "source_group": "AppleOTA"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/Apple.lsr",
+      "policy": "Apple",
+      "tag": "Our-Apple",
+      "source_group": "Apple"
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Cloudflare.lsr",
       "policy": "Cloudflare",
       "tag": "Our-Cloudflare",
@@ -644,16 +656,10 @@
       "source_group": "Abema"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/SharedInfrastructure.lsr",
       "policy": "Proxy",
       "tag": "Our-SharedInfrastructure",
       "source_group": "SharedInfrastructure"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
-      "policy": "Apple",
-      "tag": "Our-AppleOTA",
-      "source_group": "AppleOTA"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr",
@@ -762,12 +768,6 @@
       "policy": "Microsoft",
       "tag": "Our-Microsoft",
       "source_group": "Microsoft"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr",
-      "policy": "Apple",
-      "tag": "Our-Apple",
-      "source_group": "Apple"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr",
