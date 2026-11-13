@@ -49,6 +49,9 @@ def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
 
     exact = {}
     suffix = {}
+    # Earlier more-specific matchers, indexed by their parent suffix.  Skip
+    # top-level labels to keep the report bounded even for large direct lists.
+    children = defaultdict(list)
     counts = Counter()
     types = Counter()
     per_tag = defaultdict(Counter)
@@ -115,11 +118,31 @@ def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
                             "earlier_tag": prior["tag"], "later_tag": tag,
                             "earlier_rule": prior["rule"], "later_rule": text,
                         })
+            if kind == "DOMAIN-SUFFIX":
+                # A later broad suffix does not hide earlier specific matches.
+                # Record these cross-policy intersections separately, since
+                # reordering the subscriptions *would* change who wins.
+                for earlier in children.get(value, ()):
+                    reason = "LATER_BROAD_SUFFIX_OVERLAP"
+                    if earlier["policy"] == policy:
+                        counts["earlier_specific_same_policy"] += 1
+                    else:
+                        counts["earlier_specific_cross_policy"] += 1
+                        group = (earlier["policy"], policy, reason)
+                        collisions[group] += 1
+                        if len(examples[group]) < 6:
+                            examples[group].append({
+                                "earlier_tag": earlier["tag"], "later_tag": tag,
+                                "earlier_rule": earlier["rule"], "later_rule": text,
+                            })
             now = {"tag": tag, "policy": policy, "rule": text}
             if key not in exact:
                 exact[key] = now
             if kind == "DOMAIN-SUFFIX" and value not in suffix:
                 suffix[value] = now
+            parts = value.split(".")
+            for offset in range(1, len(parts) - 1):
+                children[".".join(parts[offset:])].append(now)
 
     local_rules = [line.strip() for line in section(profile, "Rule").splitlines()
                    if line.strip() and not line.lstrip().startswith("#")]
