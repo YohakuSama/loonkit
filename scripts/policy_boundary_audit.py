@@ -24,8 +24,15 @@ def ancestors(value: str):
         yield ".".join(parts[i:])
 
 
+def matches_host(kind: str, value: str, host: str) -> bool:
+    return (kind == "DOMAIN" and host == value) or (
+        kind == "DOMAIN-SUFFIX" and (host == value or host.endswith("." + value))
+    )
+
+
 def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
-            priority: tuple[str, ...] | None = None) -> dict:
+            priority: tuple[str, ...] | None = None,
+            probes: tuple[str, ...] = ()) -> dict:
     """Inspect all real subscriptions; optional replacements model a proposed release.
 
     replacements maps an existing manifest tag to an on-disk candidate file.
@@ -39,6 +46,17 @@ def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
     if {x["uri"] for x in subscriptions} != set(resources):
         raise ValueError("manifest and live remote subscriptions differ")
     replacements = replacements or {}
+    probes = tuple(host.lower().rstrip(".") for host in probes)
+    if len(set(probes)) != len(probes):
+        raise ValueError("duplicate probe")
+    probe_policies = {}
+    for line in section(profile, "Rule").splitlines():
+        fields = [piece.strip() for piece in line.split(",")]
+        if len(fields) < 3 or fields[0] not in ("DOMAIN", "DOMAIN-SUFFIX"):
+            continue
+        for host in probes:
+            if host not in probe_policies and matches_host(fields[0], fields[1].lower(), host):
+                probe_policies[host] = {"policy": fields[2], "source": "local", "rule": line}
     tags = [x["tag"] for x in subscriptions]
     if not set(replacements).issubset(tags):
         raise ValueError("replacement refers to unknown live subscription")
@@ -80,6 +98,10 @@ def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
             value = value.lower()
             types[kind] += 1
             per_tag[tag]["rules"] += 1
+            if kind in ("DOMAIN", "DOMAIN-SUFFIX"):
+                for host in probes:
+                    if host not in probe_policies and matches_host(kind, value, host):
+                        probe_policies[host] = {"policy": policy, "source": tag, "rule": text}
             if kind not in ("DOMAIN", "DOMAIN-SUFFIX"):
                 if kind in ("DOMAIN-KEYWORD", "URL-REGEX"):
                     counts["keyword_or_regex"] += 1
@@ -162,6 +184,12 @@ def analyze(root: Path = ROOT, *, replacements: dict[str, str] | None = None,
         "final_rule": local_rules[-1],
         "geoip_cn_before_final": "GEOIP,CN,DIRECT,no-resolve" in local_rules[:-1],
         "candidate_mode": bool(replacements or priority),
+        "domain_probes": {
+            host: probe_policies.get(host, {
+                "policy": "Final (subject to GEOIP/ASN/runtime)",
+                "source": "fallback", "rule": "FINAL,Final",
+            }) for host in probes
+        },
     }
 
 
