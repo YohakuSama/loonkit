@@ -145,6 +145,23 @@ jobs:
           python3 scripts/build_diagnostics.py --check
           python3 scripts/verify_release.py --check --remote
           python3 scripts/license_audit.py --check
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          doc = Path("docs/DEPENDENCIES.md")
+          text = doc.read_text(encoding="utf-8")
+          assert "**v7.0.13**" in text and "44 份" in text and "89 个" in text
+          lock = json.loads(Path("build/runtime.lock.json").read_text(encoding="utf-8"))
+          assert len(lock["resources"]) == 91
+          text = (text.replace("**v7.0.13**", "**v7.0.14**", 1)
+                      .replace("44 份", "46 份", 1)
+                      .replace("89 个", str(len(lock["resources"])) + " 个", 1)
+                      .replace("RELEASE_CHECKSUM_v7.0.12.md", "RELEASE_CHECKSUM_v7.0.14.md", 1))
+          anchor = "| 常用策略图标（"
+          assert anchor in text
+          text = text.replace(anchor, "| 夸克直连、维基百科及多邻国规则（v7.0.14） | \`beefdc33dd7f94079941eff06005a53ade9c5b1b\` |\n" + anchor, 1)
+          doc.write_text(text, encoding="utf-8")
+          PY
           python3 scripts/check_readme_presentation.py
           python3 scripts/test_suites.py all
           node --test tests/diagnostics*.test.cjs
