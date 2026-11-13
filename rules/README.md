@@ -33,8 +33,9 @@ LoonKit 根据本地规则与远程规则，将请求交给对应策略组。生
 | [sources.json](./sources.json)、[inputs/](./inputs/) | 上游来源登记与冻结输入，不是直接安装入口。 |
 | [releases/v7.0.13/Crypto.lsr](./releases/v7.0.13/Crypto.lsr) | Crypto 的独立远程订阅，固定到审核通过的 Git 提交；源自 blackmatrix7 的 GPL-2.0 规则，经审核去除关键词、过时或非专属平台并补充现役服务。 |
 | [releases/v7.0.13/AdBlockBalanced.lsr](./releases/v7.0.13/AdBlockBalanced.lsr) | 与原 AdBlock 规则仅差 1 条：移除误拦 `coincheck.com` 主页；广告遥测子域名仍保留拦截。 |
-| [releases/v7.0.3/](./releases/v7.0.3/)、[releases/v7.0.5/](./releases/v7.0.5/) | 其他 40 份远程规则的固定资产；路径内版本反映资源生成批次。 |
-| [releases/v7.0.15/DomesticSupplement.lsr](./releases/v7.0.15/DomesticSupplement.lsr)、[SharedInfrastructure.lsr](./releases/v7.0.15/SharedInfrastructure.lsr) | 复用现有国内补充与通用代理分类，仅更新对应资源的固定快照；原有订阅总数不变。 |
+| [releases/v7.0.16/Apple.lsr](./releases/v7.0.16/Apple.lsr) | Apple Intelligence 与 Siri 的私有云计算域名归入 Apple，AppleOTA 和 Apple 两份订阅优先于 Cloudflare。 |
+| [releases/v7.0.3/](./releases/v7.0.3/)、[releases/v7.0.5/](./releases/v7.0.5/) | 其他历史远程规则快照，继续使用固定提交。 |
+| [releases/v7.0.15/DomesticSupplement.lsr](./releases/v7.0.15/DomesticSupplement.lsr)、[SharedInfrastructure.lsr](./releases/v7.0.16/SharedInfrastructure.lsr) | 复用现有国内补充与通用代理分类，仅更新对应资源的固定快照；原有订阅总数不变。 |
 | [reviewed/v6.5.8/decisions.json](./reviewed/v6.5.8/decisions.json) | 历史规则归属的审阅记录。 |
 | [Beta 上游审核](../docs/BETA_UPSTREAM_AUTOMATION.md) | 候选来源的审阅流程，不会直接替换正式配置。 |
 

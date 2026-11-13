@@ -1,13 +1,13 @@
 {
   "schema_version": 2,
-  "label": "v7.0.15",
+  "label": "v7.0.16",
   "profile_sha256": {
-    "LoonKit.lcf": "23f73efc78fb285b4b13ad70fbf922570ca9a74668a96c68247b21f1feca7fb0"
+    "LoonKit.lcf": "9f41e86fd329c981c50920c43ce2bb5ab6a89c9b0f654cb7efaa17e2ab586267"
   },
-  "runtime_directives_sha256": "c8590e10397924fbd4cccae5d6722e1996934813538287e0d3df76b0c9444d21",
+  "runtime_directives_sha256": "cd3252d57c61bc894ebe31ecc46a626bed8f48fb4b982945595acd908ddfe1cc",
   "remote_subscription_count": 44,
-  "remote_rule_count": 196796,
-  "runtime_rule_matcher_count": 196796,
+  "remote_rule_count": 196797,
+  "runtime_rule_matcher_count": 196797,
   "runtime_resources": [
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
@@ -130,6 +130,26 @@
       "matcher_count": 8
     },
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
+      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
+      "path": "rules/releases/v7.0.3/AppleOTA.lsr",
+      "policy": "Apple",
+      "tag": "Our-AppleOTA",
+      "enabled": "true",
+      "sha256": "7330e1e6f9b9d9330acc3c28ae63683244f41860aa1543a7619a6092d723ed4f",
+      "matcher_count": 82
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/Apple.lsr",
+      "commit": "46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee",
+      "path": "rules/releases/v7.0.16/Apple.lsr",
+      "policy": "Apple",
+      "tag": "Our-Apple",
+      "enabled": "true",
+      "sha256": "429492040d201d7cefa5317efb0807fc30136f1e7cf67d522342de326916dae4",
+      "matcher_count": 1560
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Cloudflare.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/Cloudflare.lsr",
@@ -210,24 +230,14 @@
       "matcher_count": 9
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
-      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
-      "path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/SharedInfrastructure.lsr",
+      "commit": "46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee",
+      "path": "rules/releases/v7.0.16/SharedInfrastructure.lsr",
       "policy": "Proxy",
       "tag": "Our-SharedInfrastructure",
       "enabled": "true",
-      "sha256": "7018eabf90921143fc3a20e4ac52b3869d08f2b56ccc8dbd42b4224fc1706811",
-      "matcher_count": 23
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/AppleOTA.lsr",
-      "policy": "Apple",
-      "tag": "Our-AppleOTA",
-      "enabled": "true",
-      "sha256": "7330e1e6f9b9d9330acc3c28ae63683244f41860aa1543a7619a6092d723ed4f",
-      "matcher_count": 82
+      "sha256": "31f7b3409eb7e0247d71865cd06da69a520d621c81453776b814f13774c6f5a1",
+      "matcher_count": 25
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr",
@@ -410,16 +420,6 @@
       "matcher_count": 645
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/Apple.lsr",
-      "policy": "Apple",
-      "tag": "Our-Apple",
-      "enabled": "true",
-      "sha256": "aed19bd3798bf72196c33bc08b008f817ead1f1ce15888458a48a624d1c0071e",
-      "matcher_count": 1561
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/Steam.lsr",
@@ -485,6 +485,12 @@
     "Speedtest": [
       "Our-Speedtest"
     ],
+    "AppleOTA": [
+      "Our-AppleOTA"
+    ],
+    "Apple": [
+      "Our-Apple"
+    ],
     "Cloudflare": [
       "Our-Cloudflare"
     ],
@@ -511,9 +517,6 @@
     ],
     "SharedInfrastructure": [
       "Our-SharedInfrastructure"
-    ],
-    "AppleOTA": [
-      "Our-AppleOTA"
     ],
     "Steam": [
       "Our-SteamGlobal",
@@ -570,9 +573,6 @@
     "Microsoft": [
       "Our-Microsoft"
     ],
-    "Apple": [
-      "Our-Apple"
-    ],
     "Paypal": [
       "Our-Paypal"
     ],
@@ -592,6 +592,8 @@
     "AI": 81,
     "GitHub": 29,
     "Speedtest": 8,
+    "AppleOTA": 82,
+    "Apple": 1560,
     "Cloudflare": 7,
     "Spotify": 15,
     "Twitch": 7,
@@ -600,8 +602,7 @@
     "Reddit": 12,
     "Linkedin": 6,
     "Abema": 9,
-    "SharedInfrastructure": 23,
-    "AppleOTA": 82,
+    "SharedInfrastructure": 25,
     "Steam": 56,
     "YouTube": 183,
     "Netflix": 30,
@@ -620,7 +621,6 @@
     "HBO": 88,
     "Google": 681,
     "Microsoft": 645,
-    "Apple": 1561,
     "Paypal": 246,
     "ChinaDirect": 114705
   },
@@ -723,7 +723,7 @@
     "channel": "stable"
   },
   "previous_release": {
-    "version": "v7.0.14",
-    "profile_sha256": "6a6cb5739d8698dbc02bb46a997f0d557461898682a078838e487f1863aa27f1"
+    "version": "v7.0.15",
+    "profile_sha256": "23f73efc78fb285b4b13ad70fbf922570ca9a74668a96c68247b21f1feca7fb0"
   }
 }

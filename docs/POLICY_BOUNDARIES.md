@@ -22,7 +22,7 @@ python3 scripts/test_suites.py current
 - **本地特例保持稳定**：`raw.githubusercontent.com` 仍由 `[Rule]` 中既有 Proxy 特例接管。此次不添加本地域名，也不扩大本地规则。
 - **兜底保持稳定**：命中明确规则时使用该规则对应的策略；否则走 `GEOIP,CN,DIRECT,no-resolve`，其余由 `FINAL,Final` 选择。Final 可以由用户选为 Proxy 或 DIRECT，不等同于所有未收录域名都强制代理。
 
-## 本次候选修复
+## v7.0.16 正式修复
 
 ### Apple Intelligence / Siri
 
@@ -36,11 +36,11 @@ DOMAIN,cp4.cloudflare.com
 
 `guzzoni.apple.com`、`*.smoot.apple.com` 和 `apple-relay.apple.com` 已由 `DOMAIN-SUFFIX,apple.com` 覆盖，无须重复添加。还移除了 4 条已被 `DOMAIN-SUFFIX,apple.com.edgekey.net` 覆盖的同策略冗余匹配，保留其完整匹配范围。
 
-**注意发布顺序**：当前 Cloudflare 的 `DOMAIN-SUFFIX,cloudflare.com` 位于 Apple 之前。只增加上述 Apple 域名还不能让 Cloudflare 下的 Apple PCC 请求归属 Apple。下一次正式发布必须将既有 `Our-AppleOTA` 与 `Our-Apple` 两份远程订阅移到 `Our-Cloudflare` 之前，保持 `Our-AppleOTA` 优先于 `Our-Apple`；仍均 `policy=Apple`。其他 Cloudflare 服务（例如 `api.cloudflare.com`）继续 `policy=Cloudflare`。
+**正式发布顺序**：v7.0.16 将 AppleOTA、Apple 远程订阅排在通用 Cloudflare 前面，均沿用 `policy=Apple`，其他 Cloudflare 服务继续使用 `policy=Cloudflare`。
 
 ### Stripe 付款和风控端点
 
-正式规则的 `stripe.com`、`api.stripe.com`、`m.stripe.network` 当前未明确分流，会落到 Final。候选 `rules/releases/v7.0.16/SharedInfrastructure.lsr` 只增加 Stripe 官方自有域名：
+v7.0.15 的 `stripe.com`、`api.stripe.com`、`m.stripe.network` 曾落到 Final。v7.0.16 的 `rules/releases/v7.0.16/SharedInfrastructure.lsr` 只增加 Stripe 官方自有域名：
 
 ```text
 DOMAIN-SUFFIX,stripe.com
@@ -49,10 +49,10 @@ DOMAIN-SUFFIX,stripe.network
 
 将这些规则保留在既有 `Our-SharedInfrastructure` 远程订阅中，继续 `policy=Proxy`。不新增 Stripe 策略组，不扩展到其他商户、共享支付网关或整个 CDN 域名。
 
-## 发布与回归
+## v7.0.16 发布与回归
 
-1. 先合并候选规则资产。历史 `v7.0.3`、`v7.0.15` 文件不作修改。
-2. 进行新的正式发布时，把现有 Apple 和 SharedInfrastructure 两条远程引用固定到新资产的**发布提交 SHA**。同步调整 AppleOTA / Apple 在 Cloudflare 前面的订阅顺序；不向本地 `[Rule]` 插入域名。保持远程订阅数量与策略组数量不变。
+1. 已合并新规则资产并固定 Git 提交 SHA。历史 `v7.0.3`、`v7.0.15` 文件不作修改。
+2. Apple 与 SharedInfrastructure 已改用新资产的不可变提交，AppleOTA / Apple 顺序调整已落实。本地 `[Rule]`、远程订阅数量和策略组数量均不变。
 3. 使用 `scripts/release_engine.py` 的正式流程生成 `LoonKit.lcf`、manifest、资源锁、摘要，运行所有 CI 验证。绝不把已发布的 SHA 改成随 main 浮动的 URL。
 4. 回归检查 Apple PCC、Siri、普通 Cloudflare、Stripe 付款、Google、YouTube、Gemini、ChatGPT、国内直连及 Final。上线后以 Loon 请求日志核对策略命中与连接结果，记录实际 DNS / IP / GeoIP 情况。
 

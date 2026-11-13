@@ -34,6 +34,22 @@
       "sha256": "42e731d670beca7a45d60be57ecf7517511db0f0493fbe0979079b7cb7bef105"
     },
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/Apple.lsr",
+      "commit": "46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee",
+      "path": "rules/releases/v7.0.16/Apple.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.16/Apple.lsr",
+      "sha256": "429492040d201d7cefa5317efb0807fc30136f1e7cf67d522342de326916dae4"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee/rules/releases/v7.0.16/SharedInfrastructure.lsr",
+      "commit": "46ca9564c4ae6b9bb6ccc789ddad192a8ab1dcee",
+      "path": "rules/releases/v7.0.16/SharedInfrastructure.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.16/SharedInfrastructure.lsr",
+      "sha256": "31f7b3409eb7e0247d71865cd06da69a520d621c81453776b814f13774c6f5a1"
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AIScoped.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/AIScoped.lsr",
@@ -48,14 +64,6 @@
       "kind": "rule",
       "local_path": "rules/releases/v7.0.3/AnimeCrazy.lsr",
       "sha256": "104f56290a7247cc98d3e8a111f058edcd40119660de9adc46df22e9f7195c34"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/Apple.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.3/Apple.lsr",
-      "sha256": "aed19bd3798bf72196c33bc08b008f817ead1f1ce15888458a48a624d1c0071e"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
@@ -360,14 +368,6 @@
       "kind": "rule",
       "local_path": "rules/releases/v7.0.15/DomesticSupplement.lsr",
       "sha256": "d387979eb1091927f19bfe1d379cd649850c52da05c0d6dd8cf1e56cbebb0a79"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
-      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
-      "path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
-      "sha256": "7018eabf90921143fc3a20e4ac52b3869d08f2b56ccc8dbd42b4224fc1706811"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
