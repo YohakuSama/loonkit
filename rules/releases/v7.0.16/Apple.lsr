@@ -7,6 +7,7 @@
 # *.smoot.apple.com and apple-relay.apple.com.
 # Private Cloud Compute hosts below are outside apple.com.
 # Match exact relay hosts; do not classify all Cloudflare or Fastly traffic as Apple.
+# Four older apple.com.edgekey.net subrules are superseded by its existing suffix.
 DOMAIN,apple-relay.cloudflare.com
 DOMAIN,apple-relay.fastly-edge.com
 DOMAIN,cp4.cloudflare.com
@@ -17,7 +18,6 @@ DOMAIN,beatselectronicsllc.tt.omtrdc.net
 DOMAIN,e16991.b.akamaiedge.net
 DOMAIN,edge.apple
 DOMAIN,icons.axm-usercontent-apple.com
-DOMAIN,lookup-api.apple.com.edgekey.net
 DOMAIN,p-events-delivery.akamaized.net
 DOMAIN-SUFFIX,100beatscheap.com
 DOMAIN-SUFFIX,12diasdepresentesdeitunes.com
@@ -971,7 +971,6 @@ DOMAIN-SUFFIX,gmnetworks.net
 DOMAIN-SUFFIX,gobeatsye.com
 DOMAIN-SUFFIX,gobuyonlinestore.net
 DOMAIN-SUFFIX,goodsdunk.net
-DOMAIN-SUFFIX,gsp4-cn.ls.apple.com.edgekey.net
 DOMAIN-SUFFIX,headphonepubs.com
 DOMAIN-SUFFIX,headphones-cool.com
 DOMAIN-SUFFIX,headphones-dre.com
@@ -1487,7 +1486,6 @@ DOMAIN-SUFFIX,soso7778.com
 DOMAIN-SUFFIX,specialtyheadphones.com
 DOMAIN-SUFFIX,spektral.cc
 DOMAIN-SUFFIX,spiritclubs.com
-DOMAIN-SUFFIX,store.apple.com.edgekey.net
 DOMAIN-SUFFIX,straightouttasomewhere.com
 DOMAIN-SUFFIX,studiobeatsbydrdre.com
 DOMAIN-SUFFIX,sulwerphoto.com
@@ -1547,7 +1545,6 @@ DOMAIN-SUFFIX,wpewebkit.org
 DOMAIN-SUFFIX,wuxiapple.com
 DOMAIN-SUFFIX,wwapple.net
 DOMAIN-SUFFIX,www-sms-apple.com
-DOMAIN-SUFFIX,www.apple.com.edgekey.net
 DOMAIN-SUFFIX,wwwapple.com
 DOMAIN-SUFFIX,wwwapple.net
 DOMAIN-SUFFIX,wwwapplemusic.com
