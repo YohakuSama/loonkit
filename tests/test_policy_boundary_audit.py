@@ -38,8 +38,12 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         ]
         self.assertGreaterEqual(sum(p["count"] for p in prior), 2)
         order = list(self.tags)
+        # Keep the original AppleOTA-before-Apple order, then put both before
+        # the generic Cloudflare domain suffix. They retain policy=Apple.
         order.remove("Our-Apple")
-        order.insert(order.index("Our-Cloudflare"), "Our-Apple")
+        order.remove("Our-AppleOTA")
+        slot = order.index("Our-Cloudflare")
+        order[slot:slot] = ["Our-AppleOTA", "Our-Apple"]
         fixed = analyze(replacements=self.apple_candidate, priority=tuple(order))
         shadowed = [
             p for p in fixed["policy_pairs"]
@@ -49,6 +53,23 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         print("POLICY_AUDIT_BASELINE", json.dumps({
             "counts": self.base["summary"],
             "top_pairs": self.base["policy_pairs"][:25],
+        }, ensure_ascii=False))
+        from route_diagnostics import Router
+        router = Router()
+        sample = (
+            "apple.com", "guzzoni.apple.com", "search.smoot.apple.com",
+            "apple-relay.cloudflare.com", "cp4.cloudflare.com",
+            "apple-relay.fastly-edge.com", "api.cloudflare.com",
+            "google.com", "beacons.gvt2.com", "youtube.com",
+            "github.com", "raw.githubusercontent.com", "copilot.microsoft.com",
+            "openai.com", "chatgpt.com", "anthropic.com", "gemini.google.com",
+            "microsoft.com", "wikipedia.org", "reddit.com", "discord.com",
+            "telegram.org", "netflix.com", "paypal.com", "steamcommunity.com",
+            "quark.cn", "stripe.com", "cloudflare.com",
+            "never-registered-service-example.invalid",
+        )
+        print("POLICY_AUDIT_ROUTE_PROBES", json.dumps({
+            host: router.match(host)["predicted_policy"] for host in sample
         }, ensure_ascii=False))
         print("POLICY_AUDIT_APPLE_PREVIEW", json.dumps({
             "counts": fixed["summary"],
