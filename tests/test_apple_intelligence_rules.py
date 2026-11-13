@@ -20,6 +20,13 @@ SIRI_APPLE_HOSTS = (
     "apple-relay.apple.com",
 )
 
+SUPERSEDED_EDGEKEY_RULES = (
+    "DOMAIN,lookup-api.apple.com.edgekey.net",
+    "DOMAIN-SUFFIX,gsp4-cn.ls.apple.com.edgekey.net",
+    "DOMAIN-SUFFIX,store.apple.com.edgekey.net",
+    "DOMAIN-SUFFIX,www.apple.com.edgekey.net",
+)
+
 
 def rules(path: Path) -> list[str]:
     return [
@@ -45,9 +52,19 @@ class AppleIntelligenceRulesTest(unittest.TestCase):
         cls.before = rules(PREVIOUS)
         cls.after = rules(CANDIDATE)
 
-    def test_existing_apple_rules_remain_in_original_order(self) -> None:
+    def test_existing_apple_rules_remain_covered_and_in_order(self) -> None:
         new_iter = iter(self.after)
-        self.assertTrue(all(any(item == prior for item in new_iter) for prior in self.before))
+        retained = [rule for rule in self.before if rule not in SUPERSEDED_EDGEKEY_RULES]
+        self.assertTrue(all(any(item == prior for item in new_iter) for prior in retained))
+        for rule in SUPERSEDED_EDGEKEY_RULES:
+            with self.subTest(superfluous=rule):
+                self.assertIn(rule, self.before)
+                self.assertNotIn(rule, self.after)
+                # All removed exact/narrow suffix matches are covered by the
+                # existing same-policy parent, including child hosts.
+                host = rule.split(",", 1)[1]
+                self.assertTrue(any(matches(parent, host) for parent in self.after))
+                self.assertTrue(any(matches(parent, "nested." + host) for parent in self.after))
 
     def test_siri_and_apple_relay_already_match_apple_suffix(self) -> None:
         self.assertIn("DOMAIN-SUFFIX,apple.com", self.before)
