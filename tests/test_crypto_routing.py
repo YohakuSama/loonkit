@@ -71,7 +71,7 @@ class CryptoRoutingTests(unittest.TestCase):
         self.assertFalse(any(r["policy"] == "Crypto" for r in self.model["rules"]))
         self.assertFalse(any(",Crypto" in line for line in self.router.sections["Rule"]))
         remote = self.model["remote_rules"]
-        self.assertEqual(len(remote), 44)
+        self.assertEqual(len(remote), 46)
         self.assertEqual([r["source_group"] for r in remote[:2]], ["AdBlock", "Crypto"])
         self.assertEqual(remote[-1]["source_group"], "ChinaDirect")
         self.assertEqual(self.remote["tag"], "Our-Crypto")
