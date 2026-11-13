@@ -1,0 +1,27 @@
+# LoonKit reviewed shared services; international commerce boundary from o-ocn/loon-rules GPL-2.0
+DOMAIN,api.statsig.com
+DOMAIN,client-api.arkoselabs.com
+DOMAIN-SUFFIX,featuregates.org
+DOMAIN-SUFFIX,host.livekit.cloud
+DOMAIN-SUFFIX,turn.livekit.cloud
+DOMAIN-SUFFIX,aliexpress.com
+DOMAIN-SUFFIX,lazada.com
+DOMAIN-SUFFIX,daraz.com
+# Issue #186: Wikimedia family and Duolingo international site, reviewed proxy additions.
+# Added domain roots checked against v2fly/domain-list-community data/wikimedia and data/duolingo (MIT license).
+# duolingo.cn stays outside this international proxy supplement.
+DOMAIN-SUFFIX,duolingo.com
+DOMAIN-SUFFIX,mediawiki.org
+DOMAIN-SUFFIX,w.wiki
+DOMAIN-SUFFIX,wikibooks.org
+DOMAIN-SUFFIX,wikidata.org
+DOMAIN-SUFFIX,wikimedia.org
+DOMAIN-SUFFIX,wikimediafoundation.org
+DOMAIN-SUFFIX,wikinews.org
+DOMAIN-SUFFIX,wikipedia.org
+DOMAIN-SUFFIX,wikiquote.org
+DOMAIN-SUFFIX,wikisource.org
+DOMAIN-SUFFIX,wikiversity.org
+DOMAIN-SUFFIX,wikivoyage.org
+DOMAIN-SUFFIX,wiktionary.org
+DOMAIN-SUFFIX,wmfusercontent.org
