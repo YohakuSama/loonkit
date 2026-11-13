@@ -72,6 +72,17 @@ class AppleIntelligenceRulesTest(unittest.TestCase):
             with self.subTest(host=host):
                 self.assertTrue(any(matches(rule, host) for rule in self.after))
 
+    def test_candidate_diff_is_precise_and_deduplicated(self) -> None:
+        self.assertEqual(
+            set(self.after) - set(self.before),
+            {"DOMAIN," + host for host in PCC_SHARED_HOSTS},
+        )
+        self.assertEqual(
+            set(self.before) - set(self.after),
+            set(SUPERSEDED_EDGEKEY_RULES),
+        )
+        self.assertEqual(len(self.after), len(set(self.after)))
+
     def test_private_cloud_compute_shared_hosts_are_exact(self) -> None:
         for host in PCC_SHARED_HOSTS:
             with self.subTest(host=host):
