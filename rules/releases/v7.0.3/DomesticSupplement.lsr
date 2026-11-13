@@ -2,3 +2,6 @@
 DOMAIN-SUFFIX,abchina.com.cn
 DOMAIN-SUFFIX,t3go.cn
 DOMAIN-SUFFIX,wo.cn
+# Issue #186: Quark first-party domains, reviewed domestic direct additions.
+DOMAIN-SUFFIX,myquark.cn
+DOMAIN-SUFFIX,quark.cn
