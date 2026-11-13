@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "baseline": "v7.0.15",
+  "purpose": "Bound the existing first-match cross-policy fully-shadowed cases; forbid unreviewed additions.",
+  "limits": {
+    "Google -> DIRECT [SUFFIX_SHADOW]": 45,
+    "AdBlock -> DIRECT [SUFFIX_SHADOW]": 15,
+    "YouTube -> Google [SUFFIX_SHADOW]": 8,
+    "AdBlock -> Disney [SUFFIX_SHADOW]": 7,
+    "AdBlock -> Apple [SUFFIX_SHADOW]": 3,
+    "Steam -> DIRECT [SUFFIX_SHADOW]": 2,
+    "Crypto -> DIRECT [EXACT_DUPLICATE]": 2,
+    "AdBlock -> AI [SUFFIX_SHADOW]": 1,
+    "AdBlock -> Dazn [SUFFIX_SHADOW]": 1,
+    "YouTube -> DIRECT [SUFFIX_SHADOW]": 1
+  },
+  "review_notes": {
+    "AdBlock": "Advertising and telemetry matches intentionally take priority over broader service roots, including some service-owned subdomains. Requires on-device validation for functionality.",
+    "DIRECT": "ChinaDirect is last and is never allowed to override earlier service/crypto rules. Its covered entries are redundant fallback input, not active DIRECT behavior.",
+    "Google": "YouTube-specific broad gvt1/gvt2 CDN ownership creates known overlaps with Google beacons. Keep current behavior pending app-level evidence; do not silently change shared CDN routing.",
+    "Apple": "Apple PCC specific Cloudflare hosts require Apple and AppleOTA *both* before generic Cloudflare remote subscription on the next pinned release.",
+    "Exact duplicate": "Two MDex entries occur in late ChinaDirect after Crypto; earlier Crypto has precedence. Review when replacing the enormous pinned ChinaDirect snapshot."
+  },
+  "first_match": "Report only deterministic hostname DOMAIN and DOMAIN-SUFFIX shadows. Separate reversed/partial overlaps, keyword, IP, GeoIP, client actual matches and observed outcomes."
+}
