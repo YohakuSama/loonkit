@@ -21,7 +21,10 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
             row["tag"] for row in
             json.loads((ROOT / "build/profile.json").read_text(encoding="utf-8"))["remote_rules"]
         ]
-        cls.apple_candidate = {"Our-Apple": "rules/releases/v7.0.16/Apple.lsr"}
+        cls.candidates = {
+            "Our-Apple": "rules/releases/v7.0.16/Apple.lsr",
+            "Our-SharedInfrastructure": "rules/releases/v7.0.16/SharedInfrastructure.lsr",
+        }
 
     def test_active_remote_assets_match_manifest_and_final(self):
         manifest = json.loads((ROOT / "build/release_manifest.json").read_text(encoding="utf-8"))
@@ -31,7 +34,7 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         self.assertTrue(self.base["geoip_cn_before_final"])
 
     def test_apple_private_cloud_compute_requires_explicit_priority(self):
-        original = analyze(replacements=self.apple_candidate)
+        original = analyze(replacements=self.candidates)
         prior = [
             p for p in original["policy_pairs"]
             if p["earlier_policy"] == "Cloudflare" and p["later_policy"] == "Apple"
@@ -44,7 +47,46 @@ class PolicyBoundaryAuditTests(unittest.TestCase):
         order.remove("Our-AppleOTA")
         slot = order.index("Our-Cloudflare")
         order[slot:slot] = ["Our-AppleOTA", "Our-Apple"]
-        fixed = analyze(replacements=self.apple_candidate, priority=tuple(order))
+        checks = (
+            "apple-relay.cloudflare.com", "apple-relay.fastly-edge.com",
+            "cp4.cloudflare.com", "api.cloudflare.com", "guzzoni.apple.com",
+            "search.smoot.apple.com", "api.stripe.com", "m.stripe.network",
+            "stripe.com", "google.com", "youtube.com", "chatgpt.com",
+            "raw.githubusercontent.com", "quark.cn", "example-unknown.invalid",
+        )
+        fixed = analyze(replacements=self.candidates, priority=tuple(order), probes=checks)
+        expected = {
+            "apple-relay.cloudflare.com": "Apple",
+            "apple-relay.fastly-edge.com": "Apple",
+            "cp4.cloudflare.com": "Apple",
+            "api.cloudflare.com": "Cloudflare",
+            "guzzoni.apple.com": "Apple",
+            "search.smoot.apple.com": "Apple",
+            "api.stripe.com": "Proxy",
+            "m.stripe.network": "Proxy",
+            "stripe.com": "Proxy",
+            "google.com": "Google",
+            "youtube.com": "YouTube",
+            "chatgpt.com": "ChatGPT",
+            "raw.githubusercontent.com": "Proxy",
+            "quark.cn": "DIRECT",
+            "example-unknown.invalid": "Final (subject to GEOIP/ASN/runtime)",
+        }
+        for host, policy in expected.items():
+            with self.subTest(host=host):
+                self.assertEqual(fixed["domain_probes"][host]["policy"], policy)
+        # A new rule must not unexpectedly hide a rule of another service.
+        baseline = {
+            (x["earlier_policy"], x["later_policy"], x["reason"]): x["count"]
+            for x in self.base["policy_pairs"] if x["reason"] != "LATER_BROAD_SUFFIX_OVERLAP"
+        }
+        proposed = {
+            (x["earlier_policy"], x["later_policy"], x["reason"]): x["count"]
+            for x in fixed["policy_pairs"] if x["reason"] != "LATER_BROAD_SUFFIX_OVERLAP"
+        }
+        for key, count in proposed.items():
+            self.assertLessEqual(count, baseline.get(key, 0), "new full shadow: " + str(key))
+        print("POLICY_AUDIT_CANDIDATE_PROBES", json.dumps(fixed["domain_probes"], ensure_ascii=False))
         shadowed = [
             p for p in fixed["policy_pairs"]
             if p["earlier_policy"] == "Cloudflare" and p["later_policy"] == "Apple"
