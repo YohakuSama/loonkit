@@ -138,14 +138,6 @@
       "sha256": "1b0251bad38add15db47beb0c77a8512b7b6a048a86fb6af49a865cd56980e89"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/DomesticSupplement.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.3/DomesticSupplement.lsr",
-      "sha256": "88a1856295532f0859916e01d354f08e0eb05909bf3a7f0d8101c17a54ba7f9c"
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Facebook.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/Facebook.lsr",
@@ -274,14 +266,6 @@
       "sha256": "61c3d2dd1d96ff7363a96c12e16febb40c794c3725751d9e1c93a9e3b623ddbb"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/SharedInfrastructure.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.3/SharedInfrastructure.lsr",
-      "sha256": "4a8dd4509829a7a661ec1f985a9b9b5d33bd2fef294fa146d90366ab4215e76a"
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Speedtest.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/Speedtest.lsr",
@@ -370,6 +354,22 @@
       "sha256": "7ed1afd1772a81cedf24c845677c05b9b9cb4fcace4bbf026223dc6f50436e14"
     },
     {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/DomesticSupplement.lsr",
+      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
+      "path": "rules/releases/v7.0.15/DomesticSupplement.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.15/DomesticSupplement.lsr",
+      "sha256": "d387979eb1091927f19bfe1d379cd649850c52da05c0d6dd8cf1e56cbebb0a79"
+    },
+    {
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
+      "path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "kind": "rule",
+      "local_path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "sha256": "7018eabf90921143fc3a20e4ac52b3869d08f2b56ccc8dbd42b4224fc1706811"
+    },
+    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/90659c20351c37fe505d7db18896baf0aeb8f59d/rules/releases/v7.0.13/AdBlockBalanced.lsr",
       "commit": "90659c20351c37fe505d7db18896baf0aeb8f59d",
       "path": "rules/releases/v7.0.13/AdBlockBalanced.lsr",
@@ -392,22 +392,6 @@
       "kind": "icon",
       "local_path": "icons/Crypto.png",
       "sha256": "fb80163641af852f63e06dd1df9b4d34cb23e4b6ca062f911e2b07f0df6b8100"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/QuarkDirect.lsr",
-      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
-      "path": "rules/releases/v7.0.14/QuarkDirect.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.14/QuarkDirect.lsr",
-      "sha256": "59025744593ea0856c142ed63ad1521fdfd93a8d989d2c95c4a49ef2003c6b28"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
-      "path": "rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "kind": "rule",
-      "local_path": "rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "sha256": "3b02a7c89ba0dd9bf48768659664201999bbddaa88e7c2e9ad58e35dc77a580f"
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/d82214d057b27a68d6b9c07c61fb126a69adc903/icons/AI.png",

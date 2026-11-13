@@ -68,7 +68,7 @@ README、操作指南、规则说明或诊断说明的文字更新**不需要启
 在干净 Git 工作树运行：
 
 ```bash
-python3 scripts/release_engine.py --start-next v7.0.15
+python3 scripts/release_engine.py --start-next v7.0.16
 ```
 
 命令预检当前发布，记录前一版本摘要，并生成下一版配置、清单、checksum 与发布说明。配置模型和资源引用继续使用原值，不生成旧配置基线或新维护脚本。随后补充发布说明并执行上述验证。

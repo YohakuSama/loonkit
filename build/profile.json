@@ -536,25 +536,13 @@
       "source_group": "Crypto"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/QuarkDirect.lsr",
-      "policy": "DIRECT",
-      "tag": "Our-QuarkDirect",
-      "source_group": "QuarkDirect"
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "policy": "Proxy",
-      "tag": "Our-WikipediaDuolingo",
-      "source_group": "WikipediaDuolingo"
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
       "policy": "DIRECT",
       "tag": "Our-DomesticCore",
       "source_group": "DomesticCore"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/DomesticSupplement.lsr",
       "policy": "DIRECT",
       "tag": "Our-DomesticSupplement",
       "source_group": "DomesticCore"
@@ -656,7 +644,7 @@
       "source_group": "Abema"
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
       "policy": "Proxy",
       "tag": "Our-SharedInfrastructure",
       "source_group": "SharedInfrastructure"

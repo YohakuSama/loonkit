@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "label": "v7.0.14",
+  "label": "v7.0.15",
   "profile_sha256": {
-    "LoonKit.lcf": "6a6cb5739d8698dbc02bb46a997f0d557461898682a078838e487f1863aa27f1"
+    "LoonKit.lcf": "23f73efc78fb285b4b13ad70fbf922570ca9a74668a96c68247b21f1feca7fb0"
   },
-  "runtime_directives_sha256": "e5de384dea0d4deaa443256228a5ef8f6092fe11be1da74c2720958646846abd",
-  "remote_subscription_count": 46,
+  "runtime_directives_sha256": "c8590e10397924fbd4cccae5d6722e1996934813538287e0d3df76b0c9444d21",
+  "remote_subscription_count": 44,
   "remote_rule_count": 196796,
   "runtime_rule_matcher_count": 196796,
   "runtime_resources": [
@@ -30,26 +30,6 @@
       "matcher_count": 219
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/QuarkDirect.lsr",
-      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
-      "path": "rules/releases/v7.0.14/QuarkDirect.lsr",
-      "policy": "DIRECT",
-      "tag": "Our-QuarkDirect",
-      "enabled": "true",
-      "sha256": "59025744593ea0856c142ed63ad1521fdfd93a8d989d2c95c4a49ef2003c6b28",
-      "matcher_count": 2
-    },
-    {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/beefdc33dd7f94079941eff06005a53ade9c5b1b/rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "commit": "beefdc33dd7f94079941eff06005a53ade9c5b1b",
-      "path": "rules/releases/v7.0.14/WikipediaDuolingo.lsr",
-      "policy": "Proxy",
-      "tag": "Our-WikipediaDuolingo",
-      "enabled": "true",
-      "sha256": "3b02a7c89ba0dd9bf48768659664201999bbddaa88e7c2e9ad58e35dc77a580f",
-      "matcher_count": 15
-    },
-    {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr",
       "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
       "path": "rules/releases/v7.0.3/DomesticCore.lsr",
@@ -60,14 +40,14 @@
       "matcher_count": 6
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/DomesticSupplement.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/DomesticSupplement.lsr",
+      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
+      "path": "rules/releases/v7.0.15/DomesticSupplement.lsr",
       "policy": "DIRECT",
       "tag": "Our-DomesticSupplement",
       "enabled": "true",
-      "sha256": "88a1856295532f0859916e01d354f08e0eb05909bf3a7f0d8101c17a54ba7f9c",
-      "matcher_count": 3
+      "sha256": "d387979eb1091927f19bfe1d379cd649850c52da05c0d6dd8cf1e56cbebb0a79",
+      "matcher_count": 5
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamCN.lsr",
@@ -230,14 +210,14 @@
       "matcher_count": 9
     },
     {
-      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr",
-      "commit": "673e2b470b45f291ebf15bbf9dca232d10709bad",
-      "path": "rules/releases/v7.0.3/SharedInfrastructure.lsr",
+      "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73/rules/releases/v7.0.15/SharedInfrastructure.lsr",
+      "commit": "8aa47091f5a88aa71ff3f5c9d92d8a85ebaaee73",
+      "path": "rules/releases/v7.0.15/SharedInfrastructure.lsr",
       "policy": "Proxy",
       "tag": "Our-SharedInfrastructure",
       "enabled": "true",
-      "sha256": "4a8dd4509829a7a661ec1f985a9b9b5d33bd2fef294fa146d90366ab4215e76a",
-      "matcher_count": 8
+      "sha256": "7018eabf90921143fc3a20e4ac52b3869d08f2b56ccc8dbd42b4224fc1706811",
+      "matcher_count": 23
     },
     {
       "uri": "https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr",
@@ -477,12 +457,6 @@
     "Crypto": [
       "Our-Crypto"
     ],
-    "QuarkDirect": [
-      "Our-QuarkDirect"
-    ],
-    "WikipediaDuolingo": [
-      "Our-WikipediaDuolingo"
-    ],
     "DomesticCore": [
       "Our-DomesticCore",
       "Our-DomesticSupplement"
@@ -609,9 +583,7 @@
   "source_group_counts": {
     "AdBlock": 76894,
     "Crypto": 219,
-    "QuarkDirect": 2,
-    "WikipediaDuolingo": 15,
-    "DomesticCore": 9,
+    "DomesticCore": 11,
     "SteamCN": 13,
     "DomesticAI": 10,
     "ChatGPT": 19,
@@ -628,7 +600,7 @@
     "Reddit": 12,
     "Linkedin": 6,
     "Abema": 9,
-    "SharedInfrastructure": 8,
+    "SharedInfrastructure": 23,
     "AppleOTA": 82,
     "Steam": 56,
     "YouTube": 183,
@@ -751,7 +723,7 @@
     "channel": "stable"
   },
   "previous_release": {
-    "version": "v7.0.13",
-    "profile_sha256": "3e557ce9ac043a9e8faa9e96e1bddc4e03a957e8439c13d7cd107daf7b0c6c34"
+    "version": "v7.0.14",
+    "profile_sha256": "6a6cb5739d8698dbc02bb46a997f0d557461898682a078838e487f1863aa27f1"
   }
 }
